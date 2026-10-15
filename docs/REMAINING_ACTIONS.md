@@ -6,13 +6,14 @@
 | ধাপ | অবস্থা |
 |---|---|
 | **Code Ready** | ✅ কোডে যাচাই করা যায় এমন App Store requirement-এ কোনো FAIL বাকি নেই। BFS-এর কোড অংশ সম্পন্ন। |
-| **Testing Ready** | ⏳ Automated check pass করেছে। Dev store-এ manual test **একটিও চালানো হয়নি**। |
+| **Testing Ready** | ⏳ Automated check, local migration test আর local security smoke test pass করেছে (`TESTING_CHECKLIST.md`)। Dev store-এ manual test **একটিও চালানো হয়নি**: install করা অ্যাপটা production app, আর আলাদা dev app বা dev DB এখনো নেই। |
 | **App Store Submission Ready** | ❌ Deploy, manual test, listing, screencast, privacy policy আর emergency contact বাকি। |
 | **Officially Approved** | ❌ Submit করা হয়নি। এটা Shopify ঠিক করবে। |
 | **BFS Eligible** | ❌ Launch-এর পরে লাগবে: ৫০টি paid-plan install, ৫টি review, rating আর ২৮ দিনের Web Vitals। |
 | **BFS Approved** | ❌ BFS-এর জন্য apply করার পরে Shopify ঠিক করবে। |
 
 ## Submit করার আগে (ক্রম অনুযায়ী)
+0. **Test environment আলাদা করুন (blocker)।** এখন local `.env` আর Render-এর `.env.render` **একই Neon database** ব্যবহার করে (দুটো URL হুবহু এক), আর repo-তে একটাই app config (`shopify.app.toml`, production app, `automatically_update_urls_on_dev = true`)। তাই এখন `shopify app dev` চালালে (ক) `prisma migrate deploy` production DB-তে চলবে, (খ) production app-এর URL tunnel-এ বদলে যাবে, আর (গ) production app-এ extension-এর dev preview বসবে। সমাধান: Partner Dashboard-এ আলাদা dev app তৈরি করে `shopify app config link` দিয়ে `shopify.app.dev.toml` বানান, `shopify app config use shopify.app.dev.toml` করুন, আর local `.env`-এ Neon-এর একটি **branch** DB-র URL দিন। তারপর dev store-এ সেই dev app install করে `TESTING_CHECKLIST.md` চালান।
 1. **Branch review করে merge করুন।** `git log main..appstore-readiness` দেখুন। Push বা merge শুধু আপনি বললে হবে।
 2. **Production-এ পুরোনো test subscription যাচাই করুন।** আগে কখনো production-এ `BILLING_TEST=true` set করা ছিল কিনা দেখুন। থাকলে real store-এ তৈরি হওয়া test subscription এখন আর গোনা হবে না, ফলে সেই merchant "No plan" দেখবে। Render-এর env history দেখে নিন, আর `BILLING_TEST` env মুছে দিন।
 3. **Render env:** `NODE_ENV=production`, `BILLING_DISABLED` মুছে দিন বা unset রাখুন, `SUPPORT_INBOX_KEY` ≥ ৩২ অক্ষরের random, `SUPPORT_EMAIL` set করুন।
@@ -24,9 +25,10 @@
 9. Review পেজের automated check চালান, তারপর **Submit**। এটাও শুধু আপনার সিদ্ধান্তে।
 
 ## Manual review লাগবে এমন design ঝুঁকি
-- **BFS 4.3.7:** Plan-এ নেই এমন campaign type-ও draft হিসেবে বানানো আর সেভ করা যায় (উপরে banner দিয়ে জানানো থাকে)। Reviewer একে "interactive premium feature" বললে editor-কে read-only বা preview mode করতে হবে।
-- **BFS 4.3.6:** Trial banner-এর "Compare plans" button-কে promotional ধরলে banner-টি dismiss করার ব্যবস্থা আর সেই অবস্থা মনে রাখা লাগবে।
-- **BFS 4.1.1:** Help-এর floating button আর panel custom UI। App Bridge-এর মতো না দেখালে reviewer আপত্তি করতে পারে।
+তিনটিই commit `66fdb27`-এ ঠিক করা হয়েছে (`BFS_READINESS_AUDIT.md`)। শুধু চোখে দেখে যাচাই বাকি:
+- ~~**BFS 4.3.7:** plan-এ নেই এমন campaign type draft হিসেবে সেভ করা যেত~~ → এখন বানানো, সেভ বা activate করা যায় না। আগের campaign read-only খোলে।
+- ~~**BFS 4.3.6:** Dashboard-এর trial banner-এ "Compare plans", dismiss করা যেত না~~ → banner সরানো হয়েছে। Trial-এর তথ্য Plan card-এ।
+- ~~**BFS 4.1.1:** custom floating Help button আর panel~~ → nav-এর Polaris **Help** পেজ।
 
 ## Launch-এর পরে (BFS)
 1. Partner Dashboard → Distribution-এ BFS-এর প্রতিটি criterion দেখুন।

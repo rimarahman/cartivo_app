@@ -2,7 +2,7 @@
 
 - **তারিখ:** ২০২৬-১০-১৫
 - **উৎস:** https://shopify.dev/docs/apps/build/security, https://shopify.dev/docs/apps/build/compliance/privacy-law-compliance, https://shopify.dev/docs/apps/launch/protected-customer-data
-- **পদ্ধতি:** নিজে কোড পড়ে review, তার সঙ্গে একটি আলাদা review agent দিয়ে পুরো branch-এর diff পর্যালোচনা। কোনো penetration test বা production scan করা হয়নি।
+- **পদ্ধতি:** নিজে কোড পড়ে review, একটি আলাদা review agent দিয়ে পুরো branch-এর diff পর্যালোচনা, আর (commit `66fdb27`-এর পরে) production build-এ local HTTP smoke test (নিচে দেখুন)। কোনো penetration test বা production scan করা হয়নি, আর production DB বা production app-এ কোনো request পাঠানো হয়নি।
 
 ## সারাংশ
 
@@ -21,6 +21,8 @@
 | Secret | ✅ | `.env` gitignore-এ আছে। `.env.example`-এ শুধু placeholder। এই branch-এ কোনো secret commit করা হয়নি। |
 | Logging | ✅ | Log-এ শুধু webhook topic আর shop domain থাকে। কোনো token বা payload log হয় না। |
 | Billing bypass | ✅ FIXED | `BILLING_DISABLED` production-এ কাজ করে না। `BILLING_TEST` সরানো হয়েছে। Test charge হয় শুধু development store-এ (`shop.plan.partnerDevelopment`, ১০ মিনিটের cache)। Commit `7f80d7d`, `273d919`। |
+| Billing error | ✅ FIXED | Plans পেজে `billing.request` বা `billing.cancel` ব্যর্থ হলে (Shopify-এর user error, network) আগে generic error page আসত। এখন লাল `ErrorBanner` দেখায়, plan অপরিবর্তিত থাকে, আর error log হয় (commit `66fdb27`)। Approve-এর redirect (`Response`) আগের মতো throw হয়। |
+| Plan gating (server) | ✅ FIXED | Campaign save আর activate server-এও plan যাচাই করে, তাই UI এড়িয়ে সরাসরি POST করলেও plan-এ নেই এমন campaign type সেভ বা চালু হয় না (commit `66fdb27`)। Storefront-এ যা যায় তা আগের মতোই `planCampaigns` দিয়ে ছাঁকা হয়। |
 | Billing callback | ✅ | Return URL-এ (`/app/pricing?upgraded=1`) কিছু বিশ্বাস করা হয় না। Plan সবসময় Shopify থেকে নতুন করে পড়া হয় (`billing.check`)। `app_subscriptions/update` webhook HMAC দিয়ে যাচাই করা। |
 | Access scope | ✅ FIXED | `read_locales,read_products,write_discounts`। `read_themes` সরানো হয়েছে (commit `d81fbd3`)। কোনো protected customer data scope নেই। |
 | HTTPS | ✅ (manual test) | Render managed TLS। TOML-এর সব URL `https://`। |
@@ -50,3 +52,24 @@
 ## বাকি ঝুঁকি
 - Support inbox-এর sign-in-এ rate limit নেই। Key কমপক্ষে ৩২ অক্ষরের random হওয়া উচিত।
 - Production-এ আগে কখনো `BILLING_TEST=true` থাকলে, real store-এ তৈরি হওয়া test subscription এখন আর গোনা হবে না। Deploy করার আগে যাচাই করুন (`REMAINING_ACTIONS.md`)।
+
+## Local production-mode smoke test (২০২৬-১০-১৫, commit `66fdb27`)
+**Setup:** `npm run build`-এর server, `NODE_ENV=production`, ভুয়া `SHOPIFY_API_SECRET`, আর scratchpad-এ চালানো আলাদা Postgres 17.5 (`localhost:54329`)। ইচ্ছা করে `BILLING_DISABLED=true` আর `BILLING_TEST=true` দেওয়া ছিল, দেখার জন্য যে production-এ এগুলো কিছু খোলে না। Production DB, Render বা Shopify-এ কোনো request যায়নি। Browser-এর User-Agent ব্যবহার করা হয়েছে, কারণ library bot-এর request `410` দিয়ে আটকে দেয় (প্রথমবার Node-এর default UA-তে সব `410` এসেছিল, ওই ফলাফল গোনা হয়নি)।
+
+| Test | ফলাফল |
+|---|---|
+| `/auth/login`-এ production-এ manual "Shop domain" form নেই | ✅ |
+| `/app` আর `/app/help` session token ছাড়া app render করে না | ✅ |
+| Embedded document request-এ জাল `id_token` | ✅ `302` → `/auth/session-token` (bounce), app render হয় না |
+| `Authorization: Bearer <জাল token>` দিয়ে `/app/campaigns` | ✅ `401` |
+| Compliance webhook, ভুল HMAC | ✅ `401`, আর কোনো data মোছেনি |
+| Compliance webhook, HMAC header নেই | ✅ `400` (library বাতিল করে) |
+| `customers/data_request`, `customers/redact` (ঠিক HMAC) | ✅ `200` |
+| `shop/redact` (ঠিক HMAC) | ✅ `200`: ওই shop-এর Campaign, Event, ShopSettings, ShopTrial, SupportTicket, ChatMessage সব ০, অন্য shop-এর data অক্ষত |
+| App proxy `/proxy/track`, জাল signature | ✅ `400`, কোনো event সেভ হয়নি |
+| `/support/inbox`, key set নেই | ✅ `404` (বন্ধ) |
+| `/storefront.css` | ✅ `200 text/css` |
+
+মোট **১৯/১৯ pass**। Script: session scratchpad-এর `pg/smoke.mjs` (repo-তে রাখা হয়নি)।
+
+**যা এখনো যাচাই বাকি:** Shopify-এর পাঠানো আসল webhook (dev app-এ `shopify app webhook trigger`), আসল session token দিয়ে admin flow, আর billing-এর approve বা decline। এগুলোর জন্য আলাদা dev app আর dev DB দরকার (`TESTING_CHECKLIST.md`)।

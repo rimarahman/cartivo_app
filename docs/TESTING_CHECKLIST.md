@@ -1,26 +1,28 @@
 # Testing checklist — Cartivo
 
-## ১. Automated check (২০২৬-১০-১৫, local, Node 26.12, branch `appstore-readiness`)
+## ১. Automated check (২০২৬-১০-১৫, local, Node 26.12, branch `appstore-readiness`, commit `66fdb27`)
 
 | Check | Command | ফলাফল |
 |---|---|---|
 | TypeScript | `npm run typecheck` | ✅ কোনো error নেই |
 | ESLint | `npm run lint` | ✅ কোনো error বা warning নেই |
-| Unit test (storefront buyer-protection rules) | `node --test test/` | ✅ ৭/৭ pass |
+| Unit test (buyer-protection rules + plan gating) | `node --test test/` | ✅ ১১/১১ pass (নতুন: `test/plans.test.ts`-এর ৪টি) |
 | Discount Function test | `npm test --workspace extensions/cartkit-discounts` | ✅ ১৩/১৩ pass |
-| মোট (`npm test`) | `npm test` | ✅ ২০/২০ |
+| মোট (`npm test`) | `npm test` | ✅ ২৪/২৪ |
+| Discount Function build (Wasm) | `npm run build --workspace extensions/cartkit-discounts` | ✅ "Function built successfully" (`function.wasm` ১০.৭ KB) |
 | Production build | `npm run build` | ✅ সফল |
 | App config validation | `shopify app config validate` | ✅ "App configuration 'shopify.app.toml' is valid." |
 | Theme check (extension) | `shopify theme check --path extensions/cartkit-theme` | ✅ ৩টি file, কোনো offense নেই |
-| Dependency audit | `npm audit --omit=dev` | ⚠️ ৩৭টি high, সবই tooling-এর transitive dependency (`SECURITY_PRIVACY_AUDIT.md` দেখুন) |
+| DB migration (আলাদা local Postgres 17.5, scratchpad-এ, production DB নয়) | `main`-এর schema → sample data → `migrate deploy` → যাচাই | ✅ পুরোনো row অপরিবর্তিত, নতুন column সব row-এ NULL, লেখা যায়; `migrate status` up to date; `migrate diff` "No difference detected" |
+| Local production-mode security smoke test (`NODE_ENV=production`, ভুয়া secret, আলাদা local DB) | built server-এ HTTP request | ✅ ১৯/১৯ (বিস্তারিত `SECURITY_PRIVACY_AUDIT.md`) |
+| Dependency audit | `npm audit --omit=dev` | ⚠️ ৩৭টি high, সবই build/CLI tooling-এর transitive dependency (`SECURITY_PRIVACY_AUDIT.md` দেখুন) |
 | Code review | আলাদা review agent দিয়ে পুরো diff | ৬টি সমস্যা পাওয়া গেছে: ৫টি ঠিক করা হয়েছে (commit `273d919`), আর ১টি (পুরোনো `BILLING_TEST` subscription) production-এ যাচাই করতে হবে |
 
-**যা চালানো হয়নি:** কোনো development store বা credential ছিল না, তাই নিচের manual test-গুলো **একটিও চালানো হয়নি**। কোনো ফলাফল বানিয়ে লেখা হয়নি।
+**যা চালানো হয়নি:** Development store (`cartivo-app-test.myshopify.com`)-এ install করা অ্যাপটা **production app** (Render, production Neon DB)। এই session-এ Shopify admin-এ login করা কোনো browser ছিল না, storefront password-protected, আর branch-এর code dev store-এ চালাতে হলে deploy বা `shopify app dev` লাগে (দুটোই production app-এর URL বা version বদলায়)। তাই নিচের manual test-গুলো **একটিও চালানো হয়নি**। কোনো ফলাফল বানিয়ে লেখা হয়নি।
 
 ## ২. Manual test (development store-এ)
 
-**প্রস্তুতি:** একটি নতুন dev store (Dawn theme), কয়েকটি product (variant সহ, একটির দাম $0 নয় এমন add-on product), production-এর মতো build (`NODE_ENV=production`), `BILLING_DISABLED` unset।
-
+**প্রস্তুতি:** একটি নতুন dev store (Dawn theme), কয়েকটি product (variant সহ, একটির দাম $0 নয় এমন add-on product), production-এর মতো build (`NODE_ENV=production`), `BILLING_DISABLED` unset। **নিরাপদ পথ:** Partner Dashboard-এ আলাদা একটি dev app (`shopify app config link` → `shopify.app.dev.toml`) আর Neon-এ একটি branch DB ব্যবহার করুন, যাতে `shopify app dev` production app-এর URL আর DB না ছোঁয়।
 ### Install / Auth
 - [ ] Partner Dashboard বা Dev Dashboard থেকে install করুন। OAuth screen-এর পরে সরাসরি `/app` (Dashboard) খুলবে, OAuth-এর আগে কোনো UI দেখাবে না (2.3.2, 2.3.3)।
 - [ ] Chrome incognito-তে (third-party cookie block করা) অ্যাপ খুলে সব পেজ ঘুরে দেখুন (1.1.1)।
@@ -28,7 +30,8 @@
 - [ ] Uninstall করে আবার install করুন। আবার OAuth হবে, কোনো error হবে না (2.3.4)।
 
 ### Billing (test charge)
-- [ ] ৭ দিনের trial চলাকালীন Dashboard-এ trial banner আছে, শুধু একটি।
+- [ ] ৭ দিনের trial চলাকালীন Dashboard-এ কোনো trial banner নেই। ডান দিকের Plan card-এ "Free trial" আর "N days left" badge দেখায়। Plans পেজে trial-এর info banner থাকে (BFS 4.3.4, 4.3.6)।
+- [ ] Plans পেজে subscription শুরু বা cancel ব্যর্থ হলে লাল banner দেখায় আর dismiss না করা পর্যন্ত থাকে (error page নয়)।
 - [ ] Plans → Essential বেছে নিয়ে **approve** করুন। `/app/pricing?upgraded=1`-এ ফিরে আসবে, "Current plan" দেখাবে (1.2.2)।
 - [ ] অন্য plan বেছে নিয়ে **decline** করুন। App ভাঙবে না, আগের plan থেকে যাবে।
 - [ ] Growth-এ upgrade করুন, তারপর Starter-এ downgrade করুন। Modal-এ confirm চাইবে, subscription cancel হবে (1.2.3, BFS 4.1.6)। Shopify admin → Settings → Billing-এ charge history দেখুন।
@@ -55,14 +58,22 @@
 ### Admin UX (BFS)
 - [ ] যেকোনো settings পেজে কিছু বদলালে CSB দেখায়। Save না করে অন্য পেজে যাওয়ার চেষ্টা করলে আটকায় (4.1.5)।
 - [ ] Network বন্ধ করে, বা ভুল config দিয়ে, save ব্যর্থ করান। লাল banner থাকবে যতক্ষণ না dismiss করা হয় (4.2.4)।
-- [ ] Setup guide → "Hide setup guide" চাপুন। Reload করলেও লুকানো থাকবে। Help → "Show setup guide" চাপলে ফিরে আসবে (4.2.2)।
+- [ ] Setup guide → "Hide setup guide" চাপুন। Reload করলেও লুকানো থাকবে। Dashboard-এর Help card → "Show setup guide" চাপলে ফিরে আসবে (4.2.2)।
 - [ ] Campaign delete করতে গেলে `s-modal` খুলবে। Cancel করলে কিছু হবে না, "Delete campaign" চাপলে মুছে যাবে (4.1.6)।
 - [ ] Starter বা Essential plan-এ campaign editor-এর Markets আর Translations ঝাপসা দেখাবে, click বা keyboard দিয়ে ব্যবহার করা যাবে না, আর "Growth plan" link দেখাবে (4.3.7)।
+- [ ] Essential plan-এ Campaigns → "Create another campaign": Upsell, Add-on, BXGY আর Volume card ঝাপসা, click করলে কিছু খোলে না, "Growth plan" বা "Premium plan" badge আর "See plans" link দেখায় (4.3.7)।
+- [ ] Essential plan-এ browser-এ সরাসরি `/app/campaigns/new?type=volume` খুললে Campaigns পেজে ফিরে যায়।
+- [ ] Trial-এ একটি BXGY campaign বানান, তারপর Essential বেছে নিন। Campaign editor read-only (ঝাপসা, Save disabled), উপরে "Needs the Growth plan" banner। Campaigns তালিকায় Deactivate আর Delete কাজ করে, Draft অবস্থায় Activate disabled।
+- [ ] Starter plan-এ Campaigns-এর "Create campaign" button disabled, আর banner-এ লেখা আছে campaign-এর জন্য plan লাগবে।
+- [ ] Nav → Help: FAQ, Live chat, Email us আর Your requests section Polaris-এর মতো দেখায়। কোনো floating button বা overlay নেই, কিছু নিজে থেকে খোলে না (4.1.1, 4.3.3)।
+- [ ] Help → Email us: খালি form পাঠালে field-এ error দেখায়। ঠিকমতো পাঠালে toast "Message sent", আর "Your requests" table-এ নতুন row আসে।
+- [ ] Help → Live chat: Growth বা trial-এ message পাঠানো যায় আর `/support/inbox`-এ পৌঁছায়। Essential-এ chat-এর কোনো control নেই, শুধু "Growth plan" badge আর "See plans" দেখায়।
+- [ ] Trial শেষ, plan বেছে নেওয়া হয়নি (`choose`): Help পেজ খোলে, অন্য পেজ Plans-এ redirect করে।
 - [ ] Discounts → Create discount → Cartivo চাপলে embedded campaign editor খুলবে (BFS 5.5.4)।
 - [ ] Mobile admin (Shopify mobile app বা ৩৭৫ px): পুরো পেজে কোনো horizontal scroll নেই (4.1.2)।
 - [ ] Nav-এ নাম "Cartivo", কাটা ছাড়া পুরোটা দেখায় (deploy করার পরে)।
 
 ### Compliance webhook
 - [ ] `shopify app webhook trigger --topic shop/redact --address <url>/webhooks/compliance` চালালে `200` দেবে আর ওই shop-এর data মুছে যাবে। এটা **শুধু dev DB-তে** চালাবেন।
-- [ ] ভুল HMAC দিয়ে request পাঠালে `401` দেবে।
-- [ ] `customers/data_request` আর `customers/redact` → `200`।
+- [x] ভুল HMAC দিয়ে request পাঠালে `401` দেবে। **Local-এ যাচাই করা হয়েছে** (production build, ভুয়া secret, আলাদা DB)।
+- [x] `customers/data_request` আর `customers/redact` → `200`। **Local-এ যাচাই করা হয়েছে।** Shopify-এর পাঠানো আসল webhook-এ এখনো পরীক্ষা বাকি।

@@ -1,6 +1,6 @@
 # Built for Shopify (BFS) readiness audit — Cartivo
 
-- **তারিখ:** ২০২৬-১০-১৫
+- **তারিখ:** ২০২৬-১০-১৫ (শেষ update: commit `66fdb27`, 4.1.1, 4.3.4, 4.3.6 আর 4.3.7)
 - **উৎস:** https://shopify.dev/docs/apps/launch/built-for-shopify/requirements (২০২৬-১০-১৫ তারিখে যাচাই করা)
 - **Category:** Cartivo একটি **Discount app** (category 5.5), কারণ এটা discount Function ব্যবহার করে। অন্য কোনো category (ads, analytics, bundles, subscription ইত্যাদি) প্রযোজ্য নয়।
 
@@ -44,25 +44,25 @@
 
 | Req | আগে | এখন | শ্রেণি |
 |---|---|---|---|
-| 4.1.1 Admin-এর মতো দেখতে | Indigo থেকে pink gradient hero, custom button, purple রং | **FIXED:** Polaris `s-section`/`s-badge`/`s-button` ব্যবহার, Polaris-এর neutral রং | B (চোখে দেখে যাচাই) |
+| 4.1.1 Admin-এর মতো দেখতে | Indigo থেকে pink gradient hero, custom button, purple রং। প্রতিটি পেজে custom floating "Help" button আর gradient header-যুক্ত নিজস্ব panel (tab, FAQ accordion, chat bubble) | **FIXED:** Polaris `s-section`/`s-badge`/`s-button` ব্যবহার, Polaris-এর neutral রং। Floating button আর panel **সরানো হয়েছে**। Support এখন nav-এর একটি সাধারণ **Help** পেজ (`app/routes/app.help.tsx`): FAQ, Live chat, Email us আর Your requests, সবই Polaris component দিয়ে (`s-section`, `s-table`, `s-badge`, `s-box`)। কিছু নিজে থেকে খোলে না (4.3.3)। | B (চোখে দেখে যাচাই) |
 | 4.1.2 Mobile-friendly | যাচাই করা হয়নি | Grid-গুলো `auto-fill`/`auto-fit`, setup step-গুলো wrap হয় | B |
 | 4.1.3 নাম কেটে যায় না | "Cartivo – Smart Cart & Upsells" (৩০ অক্ষর, কেটে যেত) | **FIXED:** TOML-এ নাম `"Cartivo"` (deploy করার পরে কার্যকর হবে) | A (deploy বাকি) |
 | 4.1.4 Nav menu | `s-app-nav`, `rel="home"`, কোনো emoji নেই | ✅ PASS | – |
 | 4.1.5 Contextual Save Bar | App Bridge `SaveBar` (settings আর campaign editor) | ✅ PASS। CSB খোলা থাকলে অন্য পেজে যাওয়া আটকায় কিনা manual test-এ দেখতে হবে | B |
 | 4.1.6 Modal | `window.confirm()` | **FIXED:** heading, primary-action আর secondary-actions slot সহ `s-modal` (campaign delete, plan downgrade) | B |
 | 4.2.1 বানান ও ব্যাকরণ | – | Copy দেখে নিতে হবে | B |
-| 4.2.2 Onboarding সরিয়ে ফেলা যায় | Setup guide সবসময় দেখাত | **FIXED:** "Hide setup guide" আর Help থেকে "Show setup guide" (`ShopSettings.setupDismissedAt`) | B |
+| 4.2.2 Onboarding সরিয়ে ফেলা যায় | Setup guide সবসময় দেখাত | **FIXED:** "Hide setup guide" আর Dashboard-এর Help card থেকে "Show setup guide" (`ShopSettings.setupDismissedAt`) | B |
 | 4.2.3 Homepage-এ embed status | Theme-এর `settings_data.json` পড়ে বের করা হতো | **FIXED:** App Bridge `shopify.app.extensions()` দিয়ে (`app/components/useEmbedStatus.ts`) | B |
-| 4.2.4 Error লাল আর নিজে থেকে মুছে যায় না | `toast.show(..., {isError})`, যা নিজে থেকে মুছে যেত | **FIXED:** critical `s-banner` থাকে যতক্ষণ না merchant dismiss করে বা আবার সেভ করে (`ErrorBanner`, `useSave`)। Help panel-এর error inline দেখায়। | B |
+| 4.2.4 Error লাল আর নিজে থেকে মুছে যায় না | `toast.show(..., {isError})`, যা নিজে থেকে মুছে যেত | **FIXED:** critical `s-banner` থাকে যতক্ষণ না merchant dismiss করে বা আবার সেভ করে (`ErrorBanner`, `useSave`)। Help পেজের email error আর Plans পেজের billing error-ও critical banner-এ দেখায়। | B |
 | 4.2.5 যুক্তিসঙ্গত action প্রধান দেখায় | – | Modal-এ সবচেয়ে যুক্তিসঙ্গত action (Delete, Switch) primary আর critical tone-এ | B |
 | 4.2.6 Live preview | `Preview` component, editor আর preview পাশাপাশি | ✅ PASS (desktop-এ চোখে দেখে যাচাই করতে হবে) | B |
 | 4.3.1 Outcome-এর দাবি না করা | "raises your average order value", "working hard for you" | **FIXED:** এই লেখাগুলো সরানো বা বদলানো হয়েছে | – |
 | 4.3.2 Pressure না দেওয়া | Trial-এর বাকি দিন static লেখা হিসেবে দেখায়, কোনো animated timer নেই | ✅ PASS | – |
 | 4.3.3 Distraction না রাখা | Pulse animation, unread badge-এর "pop" animation, লাল badge | **FIXED:** animation সরানো হয়েছে, লাল রং শুধু error-এর জন্য | – |
-| 4.3.4 একসঙ্গে অনেক banner না দেখানো | Dashboard-এ trial আর embed warning, দুটো banner পাশাপাশি | **FIXED:** এখন সর্বোচ্চ একটি banner, embed status Status card-এ | – |
+| 4.3.4 একসঙ্গে অনেক banner না দেখানো | Dashboard-এ trial আর embed warning, দুটো banner পাশাপাশি | **FIXED:** Dashboard-এ এখন কোনো স্থায়ী banner নেই (শুধু save error হলে লাল banner)। Trial-এর বাকি দিন Plan card-এ, embed status Status card-এ | – |
 | 4.3.5 Shopify-এর মতো না দেখানো | Purple (#7c3aed), যা Shopify "magic"-এর মতো | **FIXED:** purple সরানো হয়েছে। App icon listing-এর সময় যাচাই করতে হবে | B |
-| 4.3.6 Ad dismiss করা যায় | কোনো ad বা cross-promotion নেই। Trial banner শুধু account-এর status জানায় | ✅ PASS (reviewer একে promotional ধরে কিনা দেখতে হবে) | B |
-| 4.3.7 Premium feature label ও disable | Markets আর Translations section enabled দেখাত | **FIXED:** `Locked` wrapper (`inert`, ঝাপসা) আর কোন plan লাগবে তা লেখা। Campaign type card-এ plan-এর badge। ⚠️ যে campaign type plan-এ নেই, সেটাও draft হিসেবে বানানো আর সেভ করা যায় (উপরে banner দিয়ে জানানো হয়)। Reviewer একে "interactive" ধরতে পারে, তাই manual review দরকার। | B |
+| 4.3.6 Ad dismiss করা যায় | কোনো ad বা cross-promotion নেই, কিন্তু Dashboard-এর trial banner-এ "Compare plans" button ছিল, dismiss করা যেত না | **FIXED:** Dashboard-এর trial banner **সরানো হয়েছে**, তাই dismiss আর "dismiss-এর পরে আবার দেখানো"-র প্রশ্নই নেই। একই তথ্য (plan, বাকি দিন, "See plans") Plan card-এ, যেটা banner নয়। Plans পেজের trial banner থাকছে: merchant নিজেই ওই পেজ খোলেন, আর এটা শুধু account-এর অবস্থা জানায়, কোনো button নেই। | B |
+| 4.3.7 Premium feature label ও disable | Markets আর Translations section enabled দেখাত। Plan-এ নেই এমন campaign type-ও বানানো আর সেভ করা যেত | **FIXED:** `Locked` wrapper (`inert`, ঝাপসা) আর কোন plan লাগবে তা লেখা। Campaign type grid-এ plan-এ নেই এমন type এখন link নয়: ঝাপসা card, lock badge-এ plan-এর নাম, আর আলাদা "See plans" link। `/app/campaigns/new?type=<locked>` Campaigns পেজে redirect করে। আগে বানানো campaign (যেমন trial-এ) editor-এ read-only খোলে, Save disabled, আর server-ও save আর activate প্রত্যাখ্যান করে। Deactivate আর delete সবসময় কাজ করে। Live chat plan-এ না থাকলে কোনো chat control নেই, শুধু badge আর "See plans"। Starter-এ "Create campaign" disabled। | B |
 
 ## 5.5 Discount apps
 
