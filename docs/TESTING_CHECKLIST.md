@@ -71,7 +71,7 @@
 - [ ] Trial শেষ, plan বেছে নেওয়া হয়নি (`choose`): Help পেজ খোলে, অন্য পেজ Plans-এ redirect করে।
 - [ ] Discounts → Create discount → Cartivo চাপলে embedded campaign editor খুলবে (BFS 5.5.4)।
 - [ ] Mobile admin (Shopify mobile app বা ৩৭৫ px): পুরো পেজে কোনো horizontal scroll নেই (4.1.2)।
-- [ ] Nav-এ নাম "SC Cartivo", কাটা ছাড়া পুরোটা দেখায়। Theme editor-এ embed-এর নাম "SC Cartivo cart drawer", Discounts-এ "SC Cartivo rewards" (deploy করার পরে)। Dev store-এর পুরোনো discount-এর নাম "Cartivo rewards" থেকে যাবে, নিজে বদলাতে হবে বা reinstall করতে হবে।
+- [ ] Nav-এ নাম "Cartivo", কাটা ছাড়া পুরোটা দেখায় (deploy করার পরে)।
 
 ### Compliance webhook
 - [ ] `shopify app webhook trigger --topic shop/redact --address <url>/webhooks/compliance` চালালে `200` দেবে আর ওই shop-এর data মুছে যাবে। এটা **শুধু dev DB-তে** চালাবেন।

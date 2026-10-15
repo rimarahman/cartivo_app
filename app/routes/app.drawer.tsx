@@ -138,7 +138,7 @@ export default function DrawerSettings() {
           <Switch label="Open the drawer when a product is added to cart" {...d("openOnAdd")} />
           <Switch
             label="Open the drawer when the cart icon is clicked"
-            details="Replaces your theme's cart page/drawer with SC Cartivo."
+            details="Replaces your theme's cart page/drawer with Cartivo."
             {...d("interceptCartLinks")}
           />
           <Grid>

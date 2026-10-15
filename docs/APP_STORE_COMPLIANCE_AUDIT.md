@@ -66,7 +66,7 @@
 | 4.5.2 | Regular app | কোনো `channel_config` extension নেই। |
 | 5.1.1 | Theme app extension | শুধু `extensions/cartkit-theme` (app embed + app block)। Asset API বা ScriptTag নেই। এখন theme file পড়াও হয় না। |
 | 5.1.3 | Onboarding + deep link | Dashboard-এর setup guide আর `activateAppId=` deep link (`app/routes/app._index.tsx`)। |
-| 5.1.4 | App name branding | Storefront-এ "SC Cartivo" লেখা বা লোগো দেখানো হয় না (`cartkit.js`/`cartkit.css`-এ খুঁজে দেখা হয়েছে)। |
+| 5.1.4 | App name branding | Storefront-এ "Cartivo" লেখা বা লোগো দেখানো হয় না (`cartkit.js`/`cartkit.css`-এ খুঁজে দেখা হয়েছে)। |
 | 5.1.5 | সংগ্রহ করা data merchant-কে ফেরত | কোনো customer data সংগ্রহ করা হয় না। Analytics event-এ কোনো PII নেই (`proxy.track.tsx`: type, campaignId, value)। |
 
 ## NEEDS MANUAL TEST
@@ -75,7 +75,7 @@
 |---|---|
 | 1.2.2 | Dev store-এ charge approve, decline (decline করলে app ভাঙবে না), আর uninstall করে reinstall করলে আবার charge চাওয়া হয় কিনা। |
 | 2.1.1 / 2.1.2 / 2.1.3 | Reviewer-এর মতো প্রতিটি পেজ ঘুরে দেখা: কোনো 404/500 নেই, UI bug নেই। |
-| 2.1.4 | Settings বা campaign সেভ করলে metafield আর "SC Cartivo rewards" automatic discount ঠিকমতো sync হয় কিনা। |
+| 2.1.4 | Settings বা campaign সেভ করলে metafield আর "Cartivo rewards" automatic discount ঠিকমতো sync হয় কিনা। |
 | 3.1.1 | `https://cartivo-app.onrender.com`-এর TLS certificate valid কিনা (Render managed)। |
 | 5.1.2 | Theme editor আর online store-এ embed ও volume block কোনো error ছাড়া দেখায় কিনা (Dawn-এ)। |
 

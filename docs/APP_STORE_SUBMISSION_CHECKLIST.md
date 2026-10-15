@@ -3,7 +3,7 @@
 উৎস: https://shopify.dev/docs/apps/launch/app-store-review/submit-app-for-review, https://shopify.dev/docs/apps/launch/shopify-app-store/best-practices, https://shopify.dev/docs/apps/launch/shopify-app-store/app-store-requirements (section 4), সব ২০২৬-১০-১৫ তারিখে যাচাই করা। নিচের listing copy শুধু **draft**। কিছুই publish বা submit করা হয়নি।
 
 ## Configuration (Dev Dashboard / Partner Dashboard)
-- [ ] `appstore-readiness` merge করে `shopify app deploy` চালান (নতুন নাম "SC Cartivo", scope থেকে `read_themes` বাদ, webhook `2026-10`)। ⚠️ এটা আপনার অনুমতি নিয়ে করতে হবে।
+- [ ] `appstore-readiness` merge করে `shopify app deploy` চালান (নতুন নাম "Cartivo", scope থেকে `read_themes` বাদ, webhook `2026-10`)। ⚠️ এটা আপনার অনুমতি নিয়ে করতে হবে।
 - [ ] App URL বা domain-এ "Shopify" বা "Example" শব্দ থাকবে না (`cartivo-app.onrender.com` ✅)।
 - [ ] Compliance webhook subscribe করা আছে (TOML ✅)।
 - [ ] App icon: **1200×1200 px**, JPEG বা PNG। Shopify লোগো ব্যবহার করবেন না, Shopify-এর first-party অ্যাপের মতো gradient ব্যবহার করবেন না, icon-এ কোনো দাম লিখবেন না।
@@ -16,7 +16,7 @@
 ## Listing
 | Field | নিয়ম | Draft |
 |---|---|---|
-| App name | ≤ ৩০ অক্ষর, TOML-এর নামের সঙ্গে মিল থাকতে হবে (4.1.1), brand আগে | **SC: Cartivo - Cart & Upsells** (২৮ অক্ষর)। TOML-এ (admin nav) ছোট নাম **SC Cartivo**, যাতে nav-এ কেটে না যায় (BFS 4.1.3)। দুটো নাম "similar", তাই 4.1.1 মানা হয়। ⚠️ "SC (Sticky Cart)" (TenGrowth) নামে একটা app আগে থেকে আছে, তাই "SC Cart" বা "SC Sticky Cart" নয়। "Cartivo" শব্দটাই আলাদা করে। Submit-এর আগে App Store-এ "Cartivo" আর "SC Cartivo" খুঁজে দেখুন। |
+| App name | ≤ ৩০ অক্ষর, TOML-এর নামের সঙ্গে মিল থাকতে হবে (4.1.1), brand আগে | **Cartivo: Slide Cart & Upsells** (২৯ অক্ষর)। TOML-এ (admin nav) ছোট নাম **Cartivo**, যাতে nav-এ কেটে না যায় (BFS 4.1.3)। দুটো নাম "similar", তাই 4.1.1 মানা হয়। Developer name: **Softique Commerce** (Partner profile)। ⚠️ "SC" prefix ব্যবহার করবেন না: Shop Circle-এর app-গুলোর নাম "SC …" দিয়ে শুরু হয় (4.1.2)। Submit-এর আগে App Store-এ "Cartivo" খুঁজে দেখুন। |
 | App card subtitle | Keyword stuffing বা stats চলবে না | Slide cart with free gift goals, upsells and a sticky add-to-cart |
 | App introduction | ≤ ১০০ অক্ষর, কোনো দাবি বা stat নয় (4.3.3) | Give shoppers a slide cart that shows rewards, upsells and offers before checkout. ("fast" বাদ: মাপা দাবি নয়) |
 | App details | ≤ ৫০০ অক্ষর, কোনো guarantee বা stat নয় | Cartivo replaces your theme's cart with a customizable slide cart. Show a progress bar toward free shipping or a free gift, recommend products inside the cart, run Buy X Get Y and volume discounts, and add optional extras like gift wrapping that shoppers choose themselves. A sticky add-to-cart and floating cart button help shoppers on every page. Set it up in the Shopify admin with a live preview, no code needed. |

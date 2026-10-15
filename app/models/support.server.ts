@@ -112,7 +112,7 @@ async function notifyTeam(t: { id: string; shop: string; email: string; category
   if (!url) return;
   const topic = SUPPORT_CATEGORIES[t.category as SupportCategory] ?? t.category;
   const text = [
-    `New SC Cartivo support request #${t.id}`,
+    `New Cartivo support request #${t.id}`,
     `Store: ${t.shop}`,
     `Reply to: ${t.email}`,
     `Topic: ${topic}`,

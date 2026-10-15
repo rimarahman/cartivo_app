@@ -23,7 +23,7 @@ export default function App() {
   return (
     <div className={styles.index}>
       <div className={styles.content}>
-        <h1 className={styles.heading}>SC: Cartivo - Cart &amp; Upsells</h1>
+        <h1 className={styles.heading}>Cartivo: Slide Cart &amp; Upsells</h1>
         <p className={styles.text}>
           A slide cart with free gifts, cart goals and upsells for your Shopify store.
         </p>
@@ -40,7 +40,7 @@ export default function App() {
           </Form>
         ) : (
           <p className={styles.text}>
-            Install SC Cartivo from the Shopify App Store, then open it from the Apps section of your Shopify admin.
+            Install Cartivo from the Shopify App Store, then open it from the Apps section of your Shopify admin.
           </p>
         )}
         <ul className={styles.list}>
