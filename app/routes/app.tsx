@@ -37,7 +37,9 @@ export default function App() {
   return (
     <AppProvider apiKey={apiKey}>
       <s-app-nav>
-        <s-link href="/app" rel="home">Dashboard</s-link>
+        {/* rel="home": clicking the app name opens /app, and this link is hidden from the menu.
+            Spread because @shopify/polaris-types doesn't type `rel` on s-link yet. */}
+        <s-link href="/app" {...{ rel: "home" }}>Dashboard</s-link>
         <s-link href="/app/drawer">Cart drawer</s-link>
         <s-link href="/app/campaigns">Campaigns</s-link>
         <s-link href="/app/sticky">Sticky & floating cart</s-link>
