@@ -25,6 +25,24 @@
 
 **Submission-এর আগে বাকি (code নয়):** deploy, dev store-এ manual test, listing (icon, screenshot, screencast), privacy policy, emergency contact (`APP_STORE_SUBMISSION_CHECKLIST.md`)।
 
+## ১ক. Marketing ও promotion requirement (২০২৬-১০-১৫, official doc থেকে মিলিয়ে দেখা)
+
+| Requirement | অবস্থা | প্রমাণ |
+|---|---|---|
+| 1.1.4 শুধু factual তথ্য, কোনো fake urgency বা false purchase notification নয় | ✅ FIXED | Countdown শুধু merchant-এর দেওয়া আসল শেষ তারিখে চলে। Per-visitor timer বাদ। "X people viewing" বা "just bought" ধরনের কোনো feature নেই। "You save" আর কাটা দাম Shopify cart-এর আসল `total_discount` আর `compare_at_price` থেকে আসে। Plans পেজের "Most popular" আর "Best value" badge-এর পিছনে কোনো data ছিল না, তাই এখন factual: "Live chat included" আর "All features"। Ribbon-এর রং একই। |
+| 1.1.9 Optional charge আগে থেকে বাছা নয় | ✅ | Add-on checkbox সবসময় untick থাকে। BXGY-তে শুধু 100% free item auto-add হয়। |
+| 1.3, 1.3.1 Review চাওয়া বা incentive | ✅ | App, storefront বা email-এ কোথাও review বা rating চাওয়া হয় না। কোনো feature review-এর বিনিময়ে আটকে রাখা নেই। |
+| 2.2.6 Admin-এ অন্য app-এর promotion বা ad | ✅ | কোনো cross-promotion, ad বা অন্য app-এর link নেই। |
+| 4.1.1, 4.1.2 নাম | ✅ draft ঠিক করা | TOML-এ "Cartivo"। Listing draft-ও "Cartivo" (আগে ছিল "Cartivo – Smart Cart & Upsells")। Name uniqueness App Store-এ খুঁজে দেখতে হবে। |
+| 4.2.1–4.2.3 Pricing ঠিক ও সম্পূর্ণ, ছবিতে দাম নয় | ✅ | App (`PAID_PLANS`), billing config (`shopify.server.ts`) আর listing draft-এ একই দাম: $10, $20, $60 প্রতি ৩০ দিনে, Starter free, ৭ দিনের app trial। ⏳ Icon আর screenshot-এ দাম নেই, তৈরির সময় দেখে নিতে হবে। |
+| 4.3.3, 4.3.4 Stat, guarantee, "the best", "the first" বা "the only" নয় | ✅ draft ঠিক করা | Listing draft-এ কোনো stat বা guarantee নেই। Introduction থেকে "fast" বাদ দেওয়া হয়েছে। App-এর লেখা থেকে "raises your AOV" আর "working hard for you" আগেই বাদ দেওয়া হয়েছে। |
+| 4.3.6, 4.3.7 Testimonial নয় | ✅ | কোথাও নেই। |
+| 4.3.8 Requirement listing-এ লেখা | ✅ draft-এ যোগ করা | "Requires an Online Store 2.0 theme that supports app embeds." |
+| 4.4.3 Shopify trademark | ✅ | Icon, app বা storefront-এ Shopify-এর লোগো নেই। "Shopify Markets" শুধু compatibility বোঝাতে। ⏳ Icon আর screenshot তৈরির সময় দেখে নিতে হবে। |
+| 5.1.4 Storefront-এ app-এর branding | ✅ | Storefront-এ কোনো "Powered by Cartivo" নেই। |
+
+**বাকি (merchant-এর দিক):** Announcement-এর default লেখা "Free shipping on orders over $50" শুধু উদাহরণ। Merchant না বদলে চালু করলে storefront-এ ভুল offer দেখাতে পারে। এটা Shopify-এর কোনো requirement ভাঙে না, তবে onboarding-এ মনে করিয়ে দেওয়া ভালো।
+
 ## ২. Built for Shopify readiness
 **Code অংশ সম্পন্ন।** এই session-এ তিনটি বাকি ঝুঁকি ঠিক করা হয়েছে (commit `66fdb27`):
 

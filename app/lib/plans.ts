@@ -41,7 +41,8 @@ export const PAID_PLANS: Record<PaidPlanId, { name: string; price: number; tagli
     name: "Growth",
     price: 20,
     tagline: "Upsell and sell internationally",
-    badge: "Most popular",
+    // Factual labels only (App Store 1.1.4): no "most popular" or "best value" claims without data behind them.
+    badge: "Live chat included",
     features: [
       "Everything in Essential",
       "In-cart upsells & one-click add-ons",
@@ -55,7 +56,7 @@ export const PAID_PLANS: Record<PaidPlanId, { name: string; price: number; tagli
     name: "Premium",
     price: 60,
     tagline: "Every feature, no limits",
-    badge: "Best value",
+    badge: "All features",
     features: ["Everything in Growth", "Volume discounts", "Unlimited active campaigns", "Priority live chat support"],
   },
 };

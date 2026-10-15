@@ -16,9 +16,9 @@
 ## Listing
 | Field | নিয়ম | Draft |
 |---|---|---|
-| App name | ≤ ৩০ অক্ষর, TOML-এর নামের মতো হতে হবে | **Cartivo – Smart Cart & Upsells** (৩০ অক্ষর) |
+| App name | ≤ ৩০ অক্ষর, TOML-এর নামের সঙ্গে মিল থাকতে হবে (4.1.1), brand আগে | **Cartivo** (TOML-এর সঙ্গে হুবহু এক)। চাইলে "Cartivo – Slide Cart & Upsells" (brand আগে, মিল আছে), কিন্তু একই নাম রাখাই নিরাপদ। "Smart" ধরনের দাবি বাদ। |
 | App card subtitle | Keyword stuffing বা stats চলবে না | Slide cart with free gift goals, upsells and a sticky add-to-cart |
-| App introduction | ≤ ১০০ অক্ষর | Give shoppers a fast slide cart that shows rewards, upsells and offers before checkout. |
+| App introduction | ≤ ১০০ অক্ষর, কোনো দাবি বা stat নয় (4.3.3) | Give shoppers a slide cart that shows rewards, upsells and offers before checkout. ("fast" বাদ: মাপা দাবি নয়) |
 | App details | ≤ ৫০০ অক্ষর, কোনো guarantee বা stat নয় | Cartivo replaces your theme's cart with a customizable slide cart. Show a progress bar toward free shipping or a free gift, recommend products inside the cart, run Buy X Get Y and volume discounts, and add optional extras like gift wrapping that shoppers choose themselves. A sticky add-to-cart and floating cart button help shoppers on every page. Set it up in the Shopify admin with a live preview, no code needed. |
 | Feature list | প্রতিটি ≤ ৮০ অক্ষর | Slide cart drawer with your brand colors and live preview · Free shipping and free gift goals with a progress bar · In-cart upsells, Buy X Get Y and volume discounts · Sticky add-to-cart and floating cart button · Translations and country targeting for Shopify Markets |
 | Pricing | Trial, free plan আর সব charge উল্লেখ করতে হবে; দাম শুধু Pricing section-এ | Starter: Free · Essential: $10/30 days · Growth: $20/30 days · Premium: $60/30 days · প্রথম ৭ দিন সব feature free (app trial)। ⚠️ Trial **app নিজে চালায়**, Shopify-র billing trial নয়। Pricing-এর লেখায় লিখুন: "7-day free trial of all features, then choose Starter (free) or a paid plan"। |
@@ -26,7 +26,7 @@
 | Feature image | 1600×900, এক জায়গায় focus, alt text | – |
 | Demo screencast | English (বা English subtitle): install → embed চালু → drawer customize → goal তৈরি → storefront | তৈরি করতে হবে |
 | Languages | শুধু সেই ভাষা যেখানে admin UI আছে | **English** (storefront-এর লেখা অনুবাদ করা যায়, এটা App details-এ বলা যেতে পারে) |
-| Sales channel requirement | Online store লাগে | "Merchant must have online store" ✅ select করুন |
+| Sales channel ও requirement (4.3.8) | Online store লাগে, আর theme-এর শর্ত listing-এ লিখতে হবে | "Merchant must have online store" ✅ select করুন। App details বা requirement-এ লিখুন: "Requires an Online Store 2.0 theme that supports app embeds." |
 | Category / tags | সঠিক হতে হবে | যেমন "Cart customization", "Upsell and cross-sell" (Partner form-এর তালিকা থেকে বেছে নিন) |
 | Privacy policy URL | লাগবে | তৈরি করুন (`SECURITY_PRIVACY_AUDIT.md`-এর "Privacy policy-তে যা উল্লেখ করতে হবে" অংশ দেখুন) |
 | Terms of service | সুপারিশ | তৈরি করুন |
