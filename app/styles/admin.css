@@ -41,7 +41,7 @@
 .ckx-type-cta span { transition: transform .2s var(--ckx-ease); }
 .ckx-type:hover .ckx-type-cta span { transform: translateX(3px); }
 /* Campaign type the plan doesn't include: not a link, dimmed, with the plan badge and a Plans link. */
-.ckx-type-locked { cursor: default; background: var(--ckx-soft); }
+.ckx-type-locked { cursor: default; }
 .ckx-type-locked:hover { border-color: var(--ckx-border); }
 .ckx-type-dim { display: flex; flex-direction: column; gap: 8px; flex: 1 0 auto; opacity: .55; }
 /* Plan-gated controls (components/ui Locked): visibly disabled, and inert so they can't be used. */
