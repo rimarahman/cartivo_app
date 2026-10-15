@@ -220,10 +220,10 @@ export default function Dashboard() {
       <s-section heading="Last 30 days">
         <div className="ckx-grid" style={{ ["--ckx-min" as string]: "140px" }}>
           <StatCard icon="cart" label="Cart opens" value={data.counts.drawer_open || 0} />
-          <StatCard icon="product-add" label="Upsells added" value={data.counts.upsell_add || 0} />
-          <StatCard icon="gift-card" label="Gifts unlocked" value={data.counts.gift_added || 0} />
-          <StatCard icon="bolt" label="Sticky cart adds" value={data.counts.sticky_add || 0} />
-          <StatCard icon="credit-card" label="Checkouts started" value={data.counts.checkout_click || 0} />
+          <StatCard icon="product-add" label="Upsells added" value={data.counts.upsell_add || 0} tint="#fce7f3" />
+          <StatCard icon="gift-card" label="Gifts unlocked" value={data.counts.gift_added || 0} tint="#dcfce7" />
+          <StatCard icon="bolt" label="Sticky cart adds" value={data.counts.sticky_add || 0} tint="#fef3c7" />
+          <StatCard icon="credit-card" label="Checkouts started" value={data.counts.checkout_click || 0} tint="#cffafe" />
         </div>
       </s-section>
 

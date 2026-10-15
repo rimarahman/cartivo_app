@@ -160,7 +160,7 @@ export function SideCard({ title, action, children }: { title: string; action?: 
   );
 }
 
-export function StatCard({ icon, label, value, tint = "#f1f1f1" }: { icon: Icon; label: string; value: ReactNode; tint?: string }) {
+export function StatCard({ icon, label, value, tint = "#eef2ff" }: { icon: Icon; label: string; value: ReactNode; tint?: string }) {
   return (
     <div className="ckx-stat">
       <span className="ckx-stat-icon" style={{ background: tint }}>

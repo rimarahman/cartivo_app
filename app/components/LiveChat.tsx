@@ -83,7 +83,7 @@ function merge(current: ChatMessageView[], incoming: ChatMessageView[]) {
 
 const time = (iso: string) => new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 
-// Merchant side of the chat, on the Help page. Polaris components only; the bubbles are s-box cards.
+// Merchant side of the chat, on the Help page: Polaris controls, chat bubbles styled like the support inbox.
 export function LiveChat({ chat }: { chat: ReturnType<typeof useLiveChat> }) {
   const [text, setText] = useState("");
   const listRef = useRef<HTMLDivElement>(null);
@@ -121,22 +121,20 @@ export function LiveChat({ chat }: { chat: ReturnType<typeof useLiveChat> }) {
         </s-text>
       </s-stack>
       <div className="ckx-chat-scroll" ref={listRef} aria-live="polite">
-        <s-stack gap="small-200">
-          <Bubble mine={false} body="Hi! Ask us anything about Cartivo: setup, your theme, campaigns or billing." />
-          {chat.messages.map((m) => (
-            <Bubble
-              key={m.id}
-              mine={m.sender === "merchant"}
-              body={m.body}
-              meta={`${m.sender === "agent" ? "Cartivo team · " : ""}${time(m.createdAt)}`}
-            />
-          ))}
-          {chat.pending.map((m) => (
-            <Bubble key={m.id} mine body={m.body} meta={m.failed ? chat.error || "Not sent" : "Sending…"} failed={m.failed} />
-          ))}
-          {!chat.loaded && <s-spinner size="base" accessibilityLabel="Loading conversation" />}
-        </s-stack>
-      </div>
+        <Bubble mine={false} body="Hi! Ask us anything about Cartivo: setup, your theme, campaigns or billing." />
+        {chat.messages.map((m) => (
+          <Bubble
+            key={m.id}
+            mine={m.sender === "merchant"}
+            body={m.body}
+            meta={`${m.sender === "agent" ? "Cartivo team · " : ""}${time(m.createdAt)}`}
+          />
+        ))}
+        {chat.pending.map((m) => (
+          <Bubble key={m.id} mine body={m.body} meta={m.failed ? chat.error || "Not sent" : "Sending…"} failed={m.failed} />
+        ))}
+        {!chat.loaded && <s-spinner size="base" accessibilityLabel="Loading conversation" />}
+    </div>
       <TextField label="Message" multiline={2} maxLength={2000} value={text} onChange={setText} />
       <s-stack direction="inline">
         <s-button variant="primary" onClick={send} {...(!text.trim() || chat.sending ? { disabled: true } : {})}>
@@ -149,17 +147,9 @@ export function LiveChat({ chat }: { chat: ReturnType<typeof useLiveChat> }) {
 
 function Bubble({ mine, body, meta, failed }: { mine: boolean; body: string; meta?: string; failed?: boolean }) {
   return (
-    <div className={`ckx-chat-row${mine ? " ckx-me" : ""}`}>
-      <s-box padding="small-200" borderRadius="base" borderWidth="base" background={mine ? "subdued" : "base"} maxInlineSize="80%">
-        <s-stack gap="small-300">
-          <s-text>{body}</s-text>
-          {meta && (
-            <s-text color="subdued" {...(failed ? { tone: "critical" } : {})}>
-              {meta}
-            </s-text>
-          )}
-        </s-stack>
-      </s-box>
+    <div className={`ckx-chat-msg ${mine ? "ckx-me" : "ckx-them"}${failed ? " ckx-failed" : ""}`}>
+      <div className="ckx-chat-bubble">{body}</div>
+      {meta && <span className="ckx-chat-time">{meta}</span>}
     </div>
   );
 }
