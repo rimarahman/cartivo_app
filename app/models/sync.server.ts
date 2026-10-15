@@ -4,6 +4,7 @@ import db from "../db.server";
 import { getSettings, listCampaigns, type CampaignRecord } from "./store.server";
 import { parseCurrencyAmounts, type ProductRef } from "../lib/defaults";
 import type { PlanInfo } from "../lib/plans";
+import { applyBuyerProtection } from "../lib/storefront-rules";
 
 // The plan facts publishing needs (id/trialEndsAt end trial-only campaigns on time).
 export type SyncPlan = Pick<PlanInfo, "features"> & Partial<Pick<PlanInfo, "id" | "trialEndsAt">>;
@@ -36,7 +37,7 @@ function storefrontRef(ref: ProductRef | null | undefined) {
 const refs = (list: ProductRef[] = []) => list.map(storefrontRef).filter(Boolean);
 
 function storefrontCampaign(c: CampaignRecord) {
-  const cfg = { ...c.config };
+  const cfg = applyBuyerProtection(c.type, c.config);
   switch (c.type) {
     case "rewards":
       cfg.tiers = (cfg.tiers || [])

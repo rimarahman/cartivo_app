@@ -214,6 +214,8 @@ function RewardsEditor({ config, set }: Props) {
 }
 
 function BxgyEditor({ config, set }: Props) {
+  // Only free items can be added for the shopper; a partly discounted item needs their consent (App Store 1.1.9).
+  const free = Number(config.percent) >= 100;
   return (
     <s-section heading="Buy X Get Y">
       <s-stack gap="base">
@@ -222,7 +224,7 @@ function BxgyEditor({ config, set }: Props) {
         <ProductPicker
           label="Customer gets"
           variants
-          details="The first variant is added automatically when 'auto-add' is on."
+          details="When the item is free and 'auto-add' is on, the first variant is added for the shopper."
           value={config.getProducts}
           onChange={(v) => set({ getProducts: v })}
         />
@@ -230,7 +232,16 @@ function BxgyEditor({ config, set }: Props) {
           <NumberField label="Quantity they get" min={1} {...bind(config, set, "getQuantity")} />
           <NumberField label="Discount on those items" suffix="%" min={1} max={100} details="100% = free" {...bind(config, set, "percent")} />
         </Grid>
-        <Checkbox label="Automatically add the 'get' product to the cart" {...bind(config, set, "autoAdd")} />
+        <Checkbox
+          label="Automatically add the free 'get' product to the cart"
+          details={
+            free
+              ? "Shoppers can remove it from the cart."
+              : "Only free items (100% off) are added automatically. With a partial discount, shoppers add the item themselves so the cart total never goes up without their consent."
+          }
+          disabled={!free}
+          {...bind(config, set, "autoAdd")}
+        />
         <Grid>
           <TextField
             label="Promo message"
@@ -329,19 +340,12 @@ function AnnouncementEditor({ config, set }: Props) {
           <Checkbox label="Show a countdown timer" {...bind(config, set, "timerEnabled")} />
           {config.timerEnabled && (
             <>
-              <Select
-                label="Timer type"
-                options={[
-                  { label: "Fixed end date", value: "fixed" },
-                  { label: "Evergreen (per visitor)", value: "evergreen" },
-                ]}
-                {...bind(config, set, "timerType")}
+              {/* Only real deadlines: per-visitor "evergreen" timers were removed as fake urgency (App Store 1.1.4). */}
+              <DateTimeField
+                label="Offer ends at"
+                details="Use the real end of your offer. Leave empty to use the campaign's end date; without either, no timer is shown."
+                {...bind(config, set, "timerEnd")}
               />
-              {config.timerType === "fixed" ? (
-                <DateTimeField label="Ends at" {...bind(config, set, "timerEnd")} />
-              ) : (
-                <NumberField label="Minutes per visitor" min={1} {...bind(config, set, "evergreenMinutes")} />
-              )}
               <TextField label="Timer text" details="Variable: {{timer}}" {...bind(config, set, "timerText")} />
               <Checkbox label="Hide when the timer reaches zero" {...bind(config, set, "hideWhenExpired")} />
             </>
@@ -393,7 +397,9 @@ function AddonEditor({ config, set }: Props) {
           <TextField label="Checkbox label" details="Variable: {{price}}" {...bind(config, set, "label")} />
           <TextField label="Description" {...bind(config, set, "description")} />
         </Grid>
-        <Checkbox label="Checked by default (adds automatically)" {...bind(config, set, "defaultChecked")} />
+        <s-paragraph>
+          The checkbox always starts unticked: the add-on is only added when the shopper ticks it.
+        </s-paragraph>
       </s-stack>
     </s-section>
   );

@@ -247,6 +247,11 @@
     var sets = overlap ? Math.floor(buyUnits / (buyQ + getQ)) : Math.floor(buyUnits / buyQ);
     return { overlap: overlap, hasBuy: hasBuy, want: sets * getQ, unlocked: sets > 0 };
   }
+  // Only free (100% off) "get" items are added for the shopper. A partly discounted item would raise the
+  // cart total, so the shopper adds it themselves (App Store requirement 1.1.9: explicit buyer consent).
+  function bxgyAutoAdd(c) {
+    return !!c.config.autoAdd && Number(c.config.percent) >= 100;
+  }
 
   // Works out which automatic lines (gifts, auto-added BXGY items, add-ons) must change.
   function planAutoLines() {
@@ -290,7 +295,7 @@
       var lines = cart.items.filter(function (i) { return prop(i, "_cartkit_bxgy") === c.id; });
       var have = lines.reduce(function (s, l) { return s + l.quantity; }, 0);
       var state = bxgyState(c);
-      var want = cfg.autoAdd && !state.overlap ? state.want : 0;
+      var want = bxgyAutoAdd(c) && !state.overlap ? state.want : 0;
       if (have > want) {
         lines.forEach(function (l, idx) { updates[l.key] = idx === 0 ? want : 0; });
       } else if (want > have && target && target.variantId && !declined.has("bxgy:" + c.id) && !failedAdds.has("bxgy:" + c.id)) {
@@ -305,12 +310,10 @@
     var addonIds = {};
     campaignsOf("addon").forEach(function (c) {
       addonIds[c.id] = true;
-      var product = c.config.product;
       var lines = cart.items.filter(function (i) { return prop(i, "_cartkit_addon") === c.id; });
+      // Add-ons are paid, so they're never added or pre-selected for the shopper: only ticking the box adds one
+      // (App Store requirement 1.1.9). Older configs may still carry defaultChecked; it's ignored.
       if (!hasReal) lines.forEach(function (l) { updates[l.key] = 0; });
-      else if (!lines.length && c.config.defaultChecked && product && product.variantId && !declined.has("addon:" + c.id) && !failedAdds.has("addon:" + c.id)) {
-        adds.push({ id: Number(product.variantId), quantity: 1, properties: { _cartkit_addon: c.id }, _key: "addon:" + c.id });
-      }
     });
     cart.items.forEach(function (i) {
       var id = prop(i, "_cartkit_addon");
@@ -461,7 +464,7 @@
     if (!c) { els.announcement.hidden = true; return; }
     var cfg = c.config;
     var messages = (cfg.messages || []).map(function (m, i) { return ct(c, "messages." + i); }).filter(Boolean);
-    var timer = cfg.timerEnabled ? '<div class="ck-timer" data-ck-timer="' + esc(c.id) + '"></div>' : "";
+    var timer = cfg.timerEnabled && timerEnd(c) ? '<div class="ck-timer" data-ck-timer="' + esc(c.id) + '"></div>' : "";
     els.announcement.hidden = !messages.length && !timer;
     els.announcement.style.background = cfg.backgroundColor;
     els.announcement.style.color = cfg.textColor;
@@ -472,19 +475,13 @@
     updateTimers();
   }
 
+  // The countdown only shows a real deadline: the timer's end date, else the campaign's end date.
+  // Per-visitor ("evergreen") timers restarted for every shopper, which is fake urgency (App Store
+  // requirement 1.1.4), so old configs that still use them show no timer. 0 = no timer.
   function timerEnd(c) {
     var cfg = c.config;
-    if (cfg.timerType === "evergreen") {
-      var ls = store("localStorage");
-      var key = "cartkit_timer_" + c.id;
-      var end = Number(ls && ls.getItem(key));
-      if (!end) {
-        end = Date.now() + (Number(cfg.evergreenMinutes) || 15) * 60000;
-        try { ls && ls.setItem(key, String(end)); } catch (e) { /* ignore */ }
-      }
-      return end;
-    }
-    return Date.parse(cfg.timerEnd) || 0;
+    if (cfg.timerType === "evergreen") return 0;
+    return Date.parse(cfg.timerEnd) || Date.parse(c.endsAt) || 0;
   }
   function updateTimers() {
     document.querySelectorAll("[data-ck-timer]").forEach(function (el) {
@@ -651,7 +648,7 @@
       var st = bxgyState(c);
       var pct = Number(c.config.percent) || 0;
       var vars = { buyQuantity: c.config.buyQuantity, getQuantity: c.config.getQuantity, discount: pct >= 100 ? "free" : pct + "% off" };
-      if (st.unlocked && c.config.autoAdd && !st.overlap) html += '<div class="ck-promo ck-promo-success">' + esc(fill(ct(c, "unlockedMessage"), vars)) + "</div>";
+      if (st.unlocked && bxgyAutoAdd(c) && !st.overlap) html += '<div class="ck-promo ck-promo-success">' + esc(fill(ct(c, "unlockedMessage"), vars)) + "</div>";
       else if (st.hasBuy) html += '<div class="ck-promo">' + esc(fill(ct(c, "message"), vars)) + "</div>";
     });
     els.promos.innerHTML = html;

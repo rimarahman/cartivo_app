@@ -1,6 +1,6 @@
 // Thin controlled wrappers around Polaris web components. Events are bound with
 // addEventListener so they work regardless of React's custom-element event support.
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, type ReactNode } from "react";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import type { ProductRef } from "../lib/defaults";
 
@@ -96,9 +96,9 @@ export function NumberField(props: Base<number> & { min?: number; max?: number; 
   );
 }
 
-export function Checkbox(props: Base<boolean>) {
+export function Checkbox(props: Base<boolean> & { disabled?: boolean }) {
   const ref = useBoundElement(!!props.value, props.onChange, (el) => !!el.checked, "checked");
-  return <s-checkbox ref={ref} label={props.label} details={props.details} />;
+  return <s-checkbox ref={ref} label={props.label} details={props.details} {...(props.disabled ? { disabled: true } : {})} />;
 }
 
 export function Switch(props: Base<boolean>) {
@@ -127,10 +127,14 @@ export function ColorField(props: Base<string>) {
 // datetime-local works in every browser; Polaris has no combined date+time field.
 export function DateTimeField(props: Base<string | null>) {
   const local = props.value ? toLocalInput(props.value) : "";
+  const id = useId();
   return (
     <s-stack gap="small-200">
-      <s-text>{props.label}</s-text>
+      <label htmlFor={id}>
+        <s-text>{props.label}</s-text>
+      </label>
       <input
+        id={id}
         type="datetime-local"
         value={local}
         onChange={(e) => props.onChange(e.target.value ? new Date(e.target.value).toISOString() : null)}

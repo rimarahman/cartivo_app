@@ -272,7 +272,7 @@ export const DEFAULT_CAMPAIGN_CONFIG: Record<CampaignType, any> = {
     getProducts: [] as ProductRef[],
     getQuantity: 1,
     percent: 100,
-    autoAdd: true,
+    autoAdd: true, // only applies while percent is 100 (free items)
     message: "Buy {{buyQuantity}}, get {{getQuantity}} {{discount}}!",
     unlockedMessage: "🎁 Your {{discount}} item has been added",
   },
@@ -292,9 +292,7 @@ export const DEFAULT_CAMPAIGN_CONFIG: Record<CampaignType, any> = {
     backgroundColor: "#111111",
     textColor: "#ffffff",
     timerEnabled: false,
-    timerType: "fixed", // fixed | evergreen
-    timerEnd: "",
-    evergreenMinutes: 15,
+    timerEnd: "", // empty = the campaign's end date
     timerText: "Offer ends in {{timer}}",
     hideWhenExpired: true,
   },
@@ -307,7 +305,6 @@ export const DEFAULT_CAMPAIGN_CONFIG: Record<CampaignType, any> = {
     product: null as ProductRef | null,
     label: "Add gift wrapping for {{price}}",
     description: "",
-    defaultChecked: false,
   },
 };
 
