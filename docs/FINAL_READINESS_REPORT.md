@@ -1,6 +1,6 @@
 # Final readiness report — Cartivo
 
-- **তারিখ:** ২০২৬-১০-১৫
+- **তারিখ:** ২০২৬-১০-১৫ (শেষ update: commit `82022a1`। সব automated check এই commit-এ আবার চালানো হয়েছে।)
 - **Branch:** `appstore-readiness` (শুধু local। Push, merge, deploy বা submit কিছুই করা হয়নি। `main` অপরিবর্তিত।)
 - **উৎস:** https://shopify.dev/docs/apps/launch/built-for-shopify/requirements, https://shopify.dev/docs/apps/launch/shopify-app-store/app-store-requirements, https://shopify.dev/docs/apps/design (২০২৬-১০-১৫ তারিখে যাচাই করা। Shopify Dev MCP connect হয়নি, তাই docs সরাসরি পড়া হয়েছে।)
 
@@ -99,11 +99,21 @@
 
 **Docs:** `FINAL_READINESS_REPORT.md` (নতুন), `BFS_READINESS_AUDIT.md`, `TESTING_CHECKLIST.md`, `SECURITY_PRIVACY_AUDIT.md`, `PERFORMANCE_AUDIT.md`, `REMAINING_ACTIONS.md`
 
+## ৭ক. Design (merchant-এর অনুরোধে, commit `5251272`, `a769231`, `82022a1`)
+- `main`-এর রং ফিরিয়ে আনা হয়েছে: indigo `#4f46e5` থেকে pink `#db2777` brand gradient, indigo accent, stat card-এর pastel tint, Help chat-এ gradient bubble, আর Dashboard-এর gradient Status hero।
+- ইচ্ছা করে বাদ: purple `#7c3aed` (BFS 4.3.5, "Shopify Magic"-এর মতো), status dot-এর pulse animation (4.3.3), আর outcome-দাবির লেখা "working hard for you" (4.3.1)।
+- Contrast (WCAG AA ≥ 4.5:1): indigo-র উপর সাদা 6.29, pink-এর উপর সাদা 4.60, সাদার উপর indigo link 6.29। ✅
+- App Store review-এ রংয়ের কোনো নিয়ম নেই, তাই publish-এ বাধা নয়। BFS-এ gradient hero-কে custom UI বলা হতে পারে (4.1.1)। তাহলে `66fdb27`-এর Polaris Status card-এ ফেরত যাওয়া যায়।
+
 ## ৮. Local commit
 আগের ৭টি: `d85fa7b`, `aac60f0`, `d81fbd3`, `7f80d7d`, `f889399`, `273d919`, `1d45b53`
 এই session-এ:
 - `66fdb27` BFS: lock plan-gated campaign types, drop the dashboard trial banner, move support to a Help page
-- docs commit (এই report সহ)
+- `0c577ea` Docs: final readiness report, dev-store test status, local migration and security smoke test results
+- `5251272` Keep the original card background on locked campaign types
+- `a769231` Bring back the indigo-pink brand accents (without the purple), stat card tints and gradient chat bubbles
+- `82022a1` Bring back the gradient status hero on the Dashboard (no purple, no pulse, factual copy)
+- এই report-এর update (docs commit)
 
 ## ৯. বাকি blocker
 1. **আলাদা test environment নেই।** Dev app (`shopify.app.dev.toml`) আর Neon branch DB তৈরি করুন (`REMAINING_ACTIONS.md` ধাপ ০)।
@@ -114,7 +124,16 @@
 6. Production-এ পুরোনো `BILLING_TEST` subscription আছে কিনা যাচাই করা।
 
 ## ১০. GO / NO-GO
-**App Store submission: NO-GO (এখনই নয়)।**
-Code-এর দিক থেকে প্রস্তুত: কোনো জানা compliance FAIL নেই, BFS-এর design ঝুঁকিগুলো ঠিক করা হয়েছে, সব automated check pass। কিন্তু অ্যাপের মূল flow (install, billing, buyer consent, storefront) একবারও আসল store-এ চালানো হয়নি, আর submit করা version-টা এখনো deploy হয়নি। Shopify reviewer এই flow-গুলোই প্রথমে পরীক্ষা করে।
 
-**GO-এর শর্ত:** blocker ১–৩ আর ৫ শেষ হলে, এবং `TESTING_CHECKLIST.md`-এর "Buyer consent" আর "Billing" section পুরোপুরি pass করলে submit করা যায়।
+| প্রশ্ন | উত্তর |
+|---|---|
+| **Code কি submit-এর জন্য প্রস্তুত?** | ✅ **হ্যাঁ (GO)।** কোডে কোনো জানা App Store FAIL নেই। BFS-এর code অংশ সম্পন্ন। `82022a1`-এ সব check pass: typecheck, lint, test ২৪/২৪ (১১ app, ১৩ Function), production build, `shopify app config validate`, Theme Check (কোনো offense নেই), Function build। আগে থেকে pass: migration test আর security smoke test ১৯/১৯। |
+| **অ্যাপ কি এখনই submit করা যায়?** | ❌ **না (NO-GO)।** Code ঠিক আছে, কিন্তু submit করা version এখনো deploy হয়নি, আর আসল store-এ একটিও manual test হয়নি। Reviewer প্রথমেই install, billing আর storefront পরীক্ষা করে। |
+
+**Submit করার আগে ক্রম অনুযায়ী:**
+1. আলাদা dev app আর Neon branch DB তৈরি করা (§ ৯-এর ১)
+2. `TESTING_CHECKLIST.md`-এর manual test, বিশেষ করে "Buyer consent" আর "Billing" section পুরো pass করা
+3. Branch merge আর `shopify app deploy` (শুধু আপনার অনুমতিতে)
+4. Deploy-এর পরে storefront Lighthouse তুলনা
+5. Listing: icon, screenshot, screencast, privacy policy, emergency contact
+6. Partner Dashboard-এর automated check, তারপর Submit
