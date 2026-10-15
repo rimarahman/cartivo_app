@@ -16,8 +16,8 @@ export function applyBuyerProtection(type: string, config: Record<string, any>):
     delete cfg.defaultChecked;
   }
   if (type === "announcement") {
-    // A countdown only shows a real deadline (timerEnd, else the campaign's end date; none = no timer).
-    // Old per-visitor settings are dropped, so such a timer falls back to that real deadline.
+    // A countdown only shows the offer end date the merchant set (timerEnd; none = no timer). Old per-visitor
+    // settings are dropped, so such a timer shows only if a real end date is set.
     delete cfg.timerType;
     delete cfg.evergreenMinutes;
   }

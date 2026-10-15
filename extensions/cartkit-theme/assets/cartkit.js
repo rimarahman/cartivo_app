@@ -68,6 +68,8 @@
     if (!src) return "";
     src = String(src);
     if (src.indexOf("//") === 0) src = "https:" + src;
+    // Liquid image_url URLs already carry a width; replace it rather than adding a second one.
+    src = src.replace(/([?&])width=\d+&?/, "$1").replace(/[?&]$/, "");
     return src + (src.indexOf("?") > -1 ? "&" : "?") + "width=" + width;
   }
   function money(cents) {
@@ -475,13 +477,14 @@
     updateTimers();
   }
 
-  // The countdown only shows a real deadline: the timer's end date, else the campaign's end date.
-  // Per-visitor ("evergreen") timers restarted for every shopper, which is fake urgency (App Store
-  // requirement 1.1.4), so old configs that still use them show no timer. 0 = no timer.
+  // The countdown only shows the offer end date the merchant set for it. Not the campaign's endsAt: during
+  // the app trial that is capped at the trial end, which isn't an offer deadline. Per-visitor ("evergreen")
+  // timers restarted for every shopper, which is fake urgency (App Store requirement 1.1.4), so old configs
+  // that still use them show no timer. 0 = no timer.
   function timerEnd(c) {
     var cfg = c.config;
     if (cfg.timerType === "evergreen") return 0;
-    return Date.parse(cfg.timerEnd) || Date.parse(c.endsAt) || 0;
+    return Date.parse(cfg.timerEnd) || 0;
   }
   function updateTimers() {
     document.querySelectorAll("[data-ck-timer]").forEach(function (el) {

@@ -19,21 +19,24 @@ export const billingDisabled = () => process.env.NODE_ENV !== "production" && pr
 // Test charges (no money moves) are used in development and, in production, only on Shopify development
 // stores (shop.plan.partnerDevelopment), e.g. Partner test stores and App Review's stores. Every other store
 // gets real charges; there is deliberately no environment switch that could make them free.
-const devStores = new Map<string, boolean>();
+// Cached briefly: a development store transferred to a merchant stops being one, and must get real charges.
+const DEV_STORE_TTL = 10 * 60 * 1000;
+const devStores = new Map<string, { dev: boolean; at: number }>();
 export async function isTestBilling(admin: Admin, shop: string) {
   if (process.env.NODE_ENV !== "production") return true;
   const known = devStores.get(shop);
-  if (known !== undefined) return known;
+  if (known && Date.now() - known.at < DEV_STORE_TTL) return known.dev;
   try {
     const json: any = await (await admin.graphql(`#graphql
       query { shop { plan { partnerDevelopment } } }`)).json();
     const dev = json.data?.shop?.plan?.partnerDevelopment === true;
-    devStores.set(shop, dev);
+    devStores.set(shop, { dev, at: Date.now() });
     return dev;
   } catch (e) {
-    // Unknown: treat as a real store (and don't cache, so the next request asks again).
+    // Keep the last known answer through a transient API error, so a development store isn't briefly treated
+    // as a real one (and sent to the Plans page). Never seen this shop: treat it as a real store.
     console.error("Couldn't read the shop plan", e);
-    return false;
+    return known ? known.dev : false;
   }
 }
 

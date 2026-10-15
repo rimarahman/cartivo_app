@@ -292,7 +292,7 @@ export const DEFAULT_CAMPAIGN_CONFIG: Record<CampaignType, any> = {
     backgroundColor: "#111111",
     textColor: "#ffffff",
     timerEnabled: false,
-    timerEnd: "", // empty = the campaign's end date
+    timerEnd: "", // empty = no timer
     timerText: "Offer ends in {{timer}}",
     hideWhenExpired: true,
   },

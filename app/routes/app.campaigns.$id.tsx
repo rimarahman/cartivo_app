@@ -344,7 +344,7 @@ function AnnouncementEditor({ config, set }: Props) {
               {/* Only real deadlines: per-visitor "evergreen" timers were removed as fake urgency (App Store 1.1.4). */}
               <DateTimeField
                 label="Offer ends at"
-                details="Use the real end of your offer. Leave empty to use the campaign's end date; without either, no timer is shown."
+                details="The real end of your offer. Without a date, no timer is shown."
                 {...bind(config, set, "timerEnd")}
               />
               <TextField label="Timer text" details="Variable: {{timer}}" {...bind(config, set, "timerText")} />
