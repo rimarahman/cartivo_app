@@ -20,7 +20,7 @@ import { SUPPORT_CATEGORIES, type SupportCategory } from "../lib/support";
 import adminStyles from "../styles/admin.css?url";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: adminStyles }];
-export const meta: MetaFunction = () => [{ title: "Cartivo support inbox" }, { name: "robots", content: "noindex" }];
+export const meta: MetaFunction = () => [{ title: "SC Cartivo support inbox" }, { name: "robots", content: "noindex" }];
 
 const POLL_MS = 4000;
 
@@ -80,7 +80,7 @@ function SignIn() {
   return (
     <div className="ckx-inbox-signin">
       <fetcher.Form method="post" className="ckx-card">
-        <h1>Cartivo support inbox</h1>
+        <h1>SC Cartivo support inbox</h1>
         <p>Enter the inbox key (SUPPORT_INBOX_KEY) to answer live chats.</p>
         <input type="hidden" name="intent" value="signin" />
         <input type="password" name="key" placeholder="Inbox key" autoComplete="current-password" required />
@@ -118,7 +118,7 @@ function InboxView(d: Exclude<ReturnType<typeof useLoaderData<typeof loader>>, {
   return (
     <div className="ckx-inbox">
       <header className="ckx-inbox-top">
-        <strong>Cartivo support inbox</strong>
+        <strong>SC Cartivo support inbox</strong>
         <span className="ckx-inbox-online">You&apos;re online{unreadTotal ? ` · ${unreadTotal} unread` : ""}</span>
         <Form method="post">
           <input type="hidden" name="intent" value="signout" />

@@ -99,8 +99,8 @@ export default function Dashboard() {
   const steps = [
     {
       done: live,
-      title: "Turn on the Cartivo app embed",
-      text: "Theme editor → App embeds → Cartivo cart drawer → Save.",
+      title: "Turn on the SC Cartivo app embed",
+      text: "Theme editor → App embeds → SC Cartivo cart drawer → Save.",
       action: (
         <s-button href={editorUrl} target="_blank" variant={live ? "tertiary" : "primary"}>
           {live ? "Open theme editor" : "Turn on"}
@@ -161,11 +161,11 @@ export default function Dashboard() {
             <span className={`ckx-status${live ? " ckx-live" : ""}`}>
               {embed === null ? "Checking your theme…" : live ? "Live on your store" : "App embed is off"}
             </span>
-            <h2>{live ? "Cartivo is live on your store" : "Welcome to Cartivo"}</h2>
+            <h2>{live ? "SC Cartivo is live on your store" : "Welcome to SC Cartivo"}</h2>
             <p>
               {live
                 ? "Your cart drawer, goals, upsells and sticky add-to-cart are showing on your store. Fine-tune them anytime."
-                : "Turn on the Cartivo app embed in your theme editor so the cart drawer shows on your store."}
+                : "Turn on the SC Cartivo app embed in your theme editor so the cart drawer shows on your store."}
             </p>
             <div className="ckx-hero-actions">
               {embed === false && (

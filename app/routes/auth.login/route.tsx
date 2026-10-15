@@ -49,9 +49,9 @@ export default function Auth() {
             </s-section>
           </Form>
         ) : (
-          <s-section heading="Open Cartivo from Shopify">
+          <s-section heading="Open SC Cartivo from Shopify">
             <s-paragraph>
-              Open Cartivo from the Apps section of your Shopify admin. If it isn&apos;t installed yet, install it from
+              Open SC Cartivo from the Apps section of your Shopify admin. If it isn&apos;t installed yet, install it from
               the Shopify App Store.
             </s-paragraph>
           </s-section>

@@ -121,13 +121,13 @@ export function LiveChat({ chat }: { chat: ReturnType<typeof useLiveChat> }) {
         </s-text>
       </s-stack>
       <div className="ckx-chat-scroll" ref={listRef} aria-live="polite">
-        <Bubble mine={false} body="Hi! Ask us anything about Cartivo: setup, your theme, campaigns or billing." />
+        <Bubble mine={false} body="Hi! Ask us anything about SC Cartivo: setup, your theme, campaigns or billing." />
         {chat.messages.map((m) => (
           <Bubble
             key={m.id}
             mine={m.sender === "merchant"}
             body={m.body}
-            meta={`${m.sender === "agent" ? "Cartivo team · " : ""}${time(m.createdAt)}`}
+            meta={`${m.sender === "agent" ? "SC Cartivo team · " : ""}${time(m.createdAt)}`}
           />
         ))}
         {chat.pending.map((m) => (

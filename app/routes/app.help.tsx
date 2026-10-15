@@ -77,7 +77,7 @@ const QUICK_LINKS = [
 const FAQ = [
   {
     q: "The cart drawer doesn't appear on my store",
-    a: "Open the theme editor → App embeds and turn on “Cartivo cart drawer”, then save. Check that the drawer is enabled on the Cart drawer page and that the page isn't listed under “Disable on these URL paths”.",
+    a: "Open the theme editor → App embeds and turn on “SC Cartivo cart drawer”, then save. Check that the drawer is enabled on the Cart drawer page and that the page isn't listed under “Disable on these URL paths”.",
   },
   {
     q: "Clicking my theme's cart icon still goes to the cart page",
@@ -89,15 +89,15 @@ const FAQ = [
   },
   {
     q: "Gift or volume prices aren't discounted at checkout",
-    a: "Cartivo creates an automatic discount called “Cartivo rewards”. Make sure it's active under Discounts in your Shopify admin and that your other discounts can combine with it.",
+    a: "SC Cartivo creates an automatic discount called “SC Cartivo rewards”. Make sure it's active under Discounts in your Shopify admin and that your other discounts can combine with it.",
   },
   {
     q: "How do I translate the cart for other languages or markets?",
     a: "Translate the drawer texts under Custom code & languages → Languages. Each campaign has its own Translations and Markets sections for per-country messages, products and currency thresholds.",
   },
   {
-    q: "What happens if I uninstall Cartivo?",
-    a: "The cart drawer disappears from your theme automatically and no code is left behind. 48 hours after you uninstall, Shopify asks us to erase your store's data, and Cartivo then deletes your settings, campaigns, analytics, chat and support requests. If you reinstall before then, everything is still there.",
+    q: "What happens if I uninstall SC Cartivo?",
+    a: "The cart drawer disappears from your theme automatically and no code is left behind. 48 hours after you uninstall, Shopify asks us to erase your store's data, and SC Cartivo then deletes your settings, campaigns, analytics, chat and support requests. If you reinstall before then, everything is still there.",
   },
 ];
 
@@ -141,7 +141,7 @@ export default function Help() {
   return (
     <s-page heading="Help">
       {embed === false && (
-        <s-banner tone="warning" heading="The Cartivo app embed is off">
+        <s-banner tone="warning" heading="The SC Cartivo app embed is off">
           <s-paragraph>The cart drawer won&apos;t show on your store until you turn on the app embed in your live theme.</s-paragraph>
           <s-button slot="secondary-actions" href="/app">
             Open setup guide
@@ -195,7 +195,7 @@ export default function Help() {
           />
           <Checkbox
             label="Include store diagnostics"
-            details="Store domain, Shopify plan, app embed status, your Cartivo plan and enabled features. No customer or order data."
+            details="Store domain, Shopify plan, app embed status, your SC Cartivo plan and enabled features. No customer or order data."
             value={diagnostics}
             onChange={setDiagnostics}
           />

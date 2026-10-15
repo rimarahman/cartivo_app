@@ -33,7 +33,7 @@
 | 1.1.9 Optional charge আগে থেকে বাছা নয় | ✅ | Add-on checkbox সবসময় untick থাকে। BXGY-তে শুধু 100% free item auto-add হয়। |
 | 1.3, 1.3.1 Review চাওয়া বা incentive | ✅ | App, storefront বা email-এ কোথাও review বা rating চাওয়া হয় না। কোনো feature review-এর বিনিময়ে আটকে রাখা নেই। |
 | 2.2.6 Admin-এ অন্য app-এর promotion বা ad | ✅ | কোনো cross-promotion, ad বা অন্য app-এর link নেই। |
-| 4.1.1, 4.1.2 নাম | ✅ draft ঠিক করা | TOML-এ "Cartivo"। Listing draft-ও "Cartivo" (আগে ছিল "Cartivo – Smart Cart & Upsells")। Name uniqueness App Store-এ খুঁজে দেখতে হবে। |
+| 4.1.1, 4.1.2 নাম | ✅ ঠিক করা | TOML (admin nav)-এ "SC Cartivo", listing-এ "SC: Cartivo - Cart & Upsells" (similar, brand আগে)। "SC (Sticky Cart)" নামে আগের app-এর সঙ্গে গুলিয়ে না যাওয়ার জন্য "Cartivo" রাখা হয়েছে। Name uniqueness App Store-এ খুঁজে দেখতে হবে। |
 | 4.2.1–4.2.3 Pricing ঠিক ও সম্পূর্ণ, ছবিতে দাম নয় | ✅ | App (`PAID_PLANS`), billing config (`shopify.server.ts`) আর listing draft-এ একই দাম: $10, $20, $60 প্রতি ৩০ দিনে, Starter free, ৭ দিনের app trial। ⏳ Icon আর screenshot-এ দাম নেই, তৈরির সময় দেখে নিতে হবে। |
 | 4.3.3, 4.3.4 Stat, guarantee, "the best", "the first" বা "the only" নয় | ✅ draft ঠিক করা | Listing draft-এ কোনো stat বা guarantee নেই। Introduction থেকে "fast" বাদ দেওয়া হয়েছে। App-এর লেখা থেকে "raises your AOV" আর "working hard for you" আগেই বাদ দেওয়া হয়েছে। |
 | 4.3.6, 4.3.7 Testimonial নয় | ✅ | কোথাও নেই। |
@@ -136,7 +136,7 @@
 ## ৯. বাকি blocker
 1. **আলাদা test environment নেই।** Dev app (`shopify.app.dev.toml`) আর Neon branch DB তৈরি করুন (`REMAINING_ACTIONS.md` ধাপ ০)।
 2. **Dev store-এ কোনো manual test হয়নি।** বিশেষ করে buyer consent, billing আর নতুন 4.3.7 ও Help পেজ।
-3. **Deploy হয়নি।** নাম "Cartivo", `read_themes` বাদ, webhook `2026-10` আর সব extension-এর পরিবর্তন এখনো live নয়।
+3. **Deploy হয়নি।** নাম "SC Cartivo", `read_themes` বাদ, webhook `2026-10` আর সব extension-এর পরিবর্তন এখনো live নয়।
 4. **Storefront Lighthouse-এ আগে আর পরের তুলনা হয়নি।**
 5. **Listing asset:** icon, screenshot, screencast, privacy policy, emergency contact।
 6. Production-এ পুরোনো `BILLING_TEST` subscription আছে কিনা যাচাই করা।

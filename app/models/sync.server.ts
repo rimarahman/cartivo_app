@@ -178,7 +178,7 @@ async function ensureDiscount(admin: Admin, shop: string, config: any) {
   }
 
   const base = {
-    title: "Cartivo rewards",
+    title: "SC Cartivo rewards",
     discountClasses: ["PRODUCT", "ORDER", "SHIPPING"],
     startsAt: new Date().toISOString(),
     combinesWith: { orderDiscounts: true, productDiscounts: true, shippingDiscounts: true },

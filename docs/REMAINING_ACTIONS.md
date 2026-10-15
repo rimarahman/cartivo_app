@@ -18,7 +18,7 @@
 2. **Production-এ পুরোনো test subscription যাচাই করুন।** আগে কখনো production-এ `BILLING_TEST=true` set করা ছিল কিনা দেখুন। থাকলে real store-এ তৈরি হওয়া test subscription এখন আর গোনা হবে না, ফলে সেই merchant "No plan" দেখবে। Render-এর env history দেখে নিন, আর `BILLING_TEST` env মুছে দিন।
 3. **Render env:** `NODE_ENV=production`, `BILLING_DISABLED` মুছে দিন বা unset রাখুন, `SUPPORT_INBOX_KEY` ≥ ৩২ অক্ষরের random, `SUPPORT_EMAIL` set করুন।
 4. **DB migration:** deploy-এর সময় `prisma migrate deploy` চলবে, যা `20261015120000_setup_dismissed` apply করবে (শুধু একটি nullable column যোগ হয়, কোনো data বদলায় না)। আগে Neon-এ backup বা branch তৈরি করে রাখার সুপারিশ রইল।
-5. **`shopify app deploy`:** নতুন নাম "Cartivo", scope থেকে `read_themes` বাদ, webhook `2026-10`, আর extension-এর পরিবর্তন release হবে। (Scope কমালে merchant-কে আবার অনুমতি দিতে হয় না।)
+5. **`shopify app deploy`:** নতুন নাম "SC Cartivo", scope থেকে `read_themes` বাদ, webhook `2026-10`, আর extension-এর পরিবর্তন release হবে। (Scope কমালে merchant-কে আবার অনুমতি দিতে হয় না।)
 6. **Dev store-এ manual test** (`TESTING_CHECKLIST.md`)। বিশেষ করে দেখুন: add-on আর BXGY-তে consent, timer, product page-এর slim JSON (ছবিসহ এবং ছবি ছাড়া product), `app.extensions()` embed toggle, billing-এ approve, decline আর reinstall।
 7. **Storefront Lighthouse-এ আগে আর পরের তুলনা** (`PERFORMANCE_AUDIT.md`)। ১০ পয়েন্টের বেশি কমলে `cartkit.js` minify করুন (মাপা লাভ: gz 17.2 থেকে 12.6 KB)।
 8. **Listing** (`APP_STORE_SUBMISSION_CHECKLIST.md`): icon, screenshot, screencast, privacy policy, terms, pricing-এর লেখা, emergency contact।

@@ -61,12 +61,12 @@ export default function AdvancedSettings() {
       <SettingsLayout>
       <SaveCard dirty={dirty} saving={saving} onSave={() => save({ advanced, translations })} onDiscard={discard} />
 
-      <Accordion title="Custom CSS" icon="code" description="Style any Cartivo element. All class names start with .ck-">
+      <Accordion title="Custom CSS" icon="code" description="Style any SC Cartivo element. All class names start with .ck-">
         <TextField
           label="CSS"
           multiline={8}
           placeholder=".ck-drawer { font-family: inherit; }"
-          details="All Cartivo elements use class names starting with .ck-"
+          details="All SC Cartivo elements use class names starting with .ck-"
           {...a("customCss")}
         />
       </Accordion>
@@ -78,12 +78,12 @@ export default function AdvancedSettings() {
         </Grid>
       </Accordion>
 
-      <Accordion title="Custom JavaScript" icon="code-add" description="Run code with the Cartivo API and events">
+      <Accordion title="Custom JavaScript" icon="code-add" description="Run code with the SC Cartivo API and events">
         <TextField
           label="JavaScript"
           multiline={8}
           placeholder={"Cartivo.on('cart:updated', (cart) => console.log(cart));"}
-          details="Runs after Cartivo loads. Available API: Cartivo.open(), Cartivo.close(), Cartivo.refresh(), Cartivo.on(event, fn). Events: open, close, cart:updated, item:added."
+          details="Runs after SC Cartivo loads. Available API: Cartivo.open(), Cartivo.close(), Cartivo.refresh(), Cartivo.on(event, fn). Events: open, close, cart:updated, item:added."
           {...a("customJs")}
         />
       </Accordion>
@@ -100,7 +100,7 @@ export default function AdvancedSettings() {
             <TextField
               label="Extra cart count selectors"
               placeholder=".cart-count"
-              details="Cartivo keeps these in sync with the cart item count."
+              details="SC Cartivo keeps these in sync with the cart item count."
               {...a("cartCountSelector")}
             />
             <TextField
