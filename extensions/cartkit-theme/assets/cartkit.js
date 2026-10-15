@@ -119,6 +119,8 @@
     };
   }
   var declined = sessionSet("cartkit_declined");
+  // Gifts / BXGY items that came out at a price instead of free: not added again this session.
+  var notFree = sessionSet("cartkit_not_free");
   var failedAdds = new Set();
 
   var listeners = {};
@@ -182,7 +184,22 @@
     return api("cart/add.js", { items: items });
   }
   function changeLine(key, quantity) {
+    setLineLocally(key, quantity);
     return api("cart/change.js", { id: key, quantity: quantity });
+  }
+  // Shows a quantity change right away (goals bar, prices, subtotal) instead of after Shopify answers; the
+  // cart Shopify returns afterwards replaces this estimate, also when the change fails.
+  function setLineLocally(key, quantity) {
+    var item = cart.items.filter(function (i) { return i.key === key; })[0];
+    if (!item) return;
+    var q = Math.max(0, quantity);
+    var before = item.final_line_price;
+    item.original_line_price = item.original_price * q;
+    item.final_line_price = item.final_price * q;
+    cart.total_price += item.final_line_price - before;
+    cart.item_count += q - item.quantity;
+    item.quantity = q;
+    if (!q) cart.items = cart.items.filter(function (i) { return i !== item; });
   }
   function updateCart(body) {
     return api("cart/update.js", body);
@@ -278,9 +295,14 @@
         lines.forEach(function (l, idx) {
           if (idx > 0) updates[l.key] = 0;
           else if (l.quantity !== 1) updates[l.key] = 1;
+          // A gift Shopify doesn't make free (discount off, or a code that doesn't combine) is never left in the cart.
+          else if (l.final_line_price > 0) {
+            updates[l.key] = 0;
+            notFree.add(key);
+          }
         });
         var gifts = tier.gifts || [];
-        if (!lines.length && gifts.length === 1 && gifts[0].variantId && !declined.has(key) && !failedAdds.has(key)) {
+        if (!lines.length && gifts.length === 1 && gifts[0].variantId && !declined.has(key) && !failedAdds.has(key) && !notFree.has(key)) {
           adds.push({ id: Number(gifts[0].variantId), quantity: 1, properties: { _cartkit_gift: key }, _key: key });
           events.push(["gift_added", null, c.id]);
         }
@@ -294,13 +316,24 @@
     campaignsOf("bxgy").forEach(function (c) {
       var cfg = c.config;
       var target = (cfg.getProducts || [])[0];
+      var getIds = (cfg.getProducts || []).map(function (p) { return String(p.productId); });
       var lines = cart.items.filter(function (i) { return prop(i, "_cartkit_bxgy") === c.id; });
       var have = lines.reduce(function (s, l) { return s + l.quantity; }, 0);
       var state = bxgyState(c);
-      var want = bxgyAutoAdd(c) && !state.overlap ? state.want : 0;
+      // The discount makes the cheapest "get" units in the cart free, including ones the shopper added
+      // themselves: only the units still missing are added, or an added one would be charged.
+      var owned = cart.items.reduce(function (s, i) {
+        return !isGift(i) && prop(i, "_cartkit_bxgy") !== c.id && getIds.indexOf(productId(i)) > -1 ? s + i.quantity : s;
+      }, 0);
+      var want = bxgyAutoAdd(c) && !state.overlap ? Math.max(0, state.want - owned) : 0;
+      var key = "bxgy:" + c.id;
       if (have > want) {
         lines.forEach(function (l, idx) { updates[l.key] = idx === 0 ? want : 0; });
-      } else if (want > have && target && target.variantId && !declined.has("bxgy:" + c.id) && !failedAdds.has("bxgy:" + c.id)) {
+      } else if (lines.some(function (l) { return l.final_line_price > 0; })) {
+        // Added as free but Shopify charges for it (discount off, or a code that doesn't combine): take it out.
+        lines.forEach(function (l) { updates[l.key] = 0; });
+        notFree.add(key);
+      } else if (want > have && target && target.variantId && !declined.has(key) && !failedAdds.has(key) && !notFree.has(key)) {
         if (lines.length) updates[lines[0].key] = lines[0].quantity + (want - have);
         else {
           adds.push({ id: Number(target.variantId), quantity: want, properties: { _cartkit_bxgy: c.id }, _key: "bxgy:" + c.id });
@@ -315,7 +348,10 @@
       var lines = cart.items.filter(function (i) { return prop(i, "_cartkit_addon") === c.id; });
       // Add-ons are paid, so they're never added or pre-selected for the shopper: only ticking the box adds one
       // (App Store requirement 1.1.9). Older configs may still carry defaultChecked; it's ignored.
-      if (!hasReal) lines.forEach(function (l) { updates[l.key] = 0; });
+      // Unticked: also when the box was unticked while its add was still on its way (the line arrives later).
+      if (!hasReal || declined.has("addon:" + c.id)) lines.forEach(function (l) { updates[l.key] = 0; });
+      // One checkbox, one unit: a second add (double click while the first was on its way) is taken back out.
+      else lines.forEach(function (l, idx) { if (idx > 0) updates[l.key] = 0; else if (l.quantity !== 1) updates[l.key] = 1; });
     });
     cart.items.forEach(function (i) {
       var id = prop(i, "_cartkit_addon");
@@ -358,7 +394,7 @@
   // ---------------------------------------------------------------- DOM
   var root, drawer, els = {};
   var GLASS = S.design.glass ? " ck-glass" : "";
-  var state = { open: false, busy: false, error: "", noteOpen: false, termsChecked: false, discountError: "", upsells: [], upsellKey: "" };
+  var state = { open: false, busy: false, error: "", noteOpen: false, discountOpen: false, termsChecked: false, discountError: "", upsells: [], upsellKey: "" };
 
   function cssVars() {
     var d = S.design, st = S.sticky, f = S.floating;
@@ -377,6 +413,7 @@
       "--ck-progress": d.progressColor,
       "--ck-progress-bg": d.progressBackground,
       "--ck-badge": d.badgeColor,
+      "--ck-badge-text": readableOn(d.badgeColor, d.backgroundColor),
       "--ck-radius": (Number(d.borderRadius) || 0) + "px",
       "--ck-font-size": (Number(d.fontSize) || 14) + "px",
       "--ck-overlay": (Number(d.overlayOpacity) || 0) / 100,
@@ -392,6 +429,39 @@
       "--ck-float-badge-text": f.badgeTextColor,
     };
     return Object.keys(vars).map(function (k) { return k + ":" + vars[k]; }).join(";");
+  }
+
+  // Small text in the badge colour (discount badges, the BXGY promo line, savings) must reach WCAG AA 4.5:1.
+  // Keeps the merchant's colour when it already does; otherwise the same hue, darkened on light drawers and
+  // lightened on dark ones, just enough. Measured against the badge's own 12% tint, the darkest background
+  // these texts sit on.
+  function readableOn(color, background) {
+    var fg = rgb(color), bg = rgb(background);
+    if (!fg || !bg) return color;
+    var tint = mix(bg, fg, 0.12);
+    var toward = luminance(bg) > 0.4 ? [0, 0, 0] : [255, 255, 255];
+    for (var step = 0; step <= 20; step++) {
+      var c = mix(fg, toward, step / 20);
+      if (contrast(c, tint) >= 4.5) return "rgb(" + c.map(Math.round).join(",") + ")";
+    }
+    return color;
+  }
+  function rgb(hex) {
+    var m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(hex || "").trim());
+    if (!m) return null;
+    var h = m[1].length === 3 ? m[1].replace(/./g, "$&$&") : m[1];
+    return [0, 2, 4].map(function (i) { return parseInt(h.slice(i, i + 2), 16); });
+  }
+  function mix(a, b, t) {
+    return a.map(function (v, i) { return v + (b[i] - v) * t; });
+  }
+  function luminance(c) {
+    var l = c.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    return 0.2126 * l[0] + 0.7152 * l[1] + 0.0722 * l[2];
+  }
+  function contrast(a, b) {
+    var x = luminance(a), y = luminance(b);
+    return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
   }
 
   var ICONS = {
@@ -438,6 +508,7 @@
     });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && state.open) close();
+      if (e.key === "Tab" && state.open) trapFocus(e);
     });
 
     if (S.advanced.customCss) {
@@ -445,6 +516,20 @@
       style.textContent = S.advanced.customCss;
       document.head.appendChild(style);
     }
+  }
+
+  // aria-modal dialog: Tab and Shift+Tab cycle through the drawer's controls instead of the page behind it.
+  function trapFocus(e) {
+    var focusable = Array.prototype.filter.call(
+      drawer.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+      function (el) { return el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0; },
+    );
+    if (!focusable.length) { e.preventDefault(); drawer.focus(); return; }
+    var first = focusable[0], last = focusable[focusable.length - 1];
+    var active = document.activeElement;
+    if (!drawer.contains(active)) { e.preventDefault(); (e.shiftKey ? last : first).focus(); }
+    else if (e.shiftKey && (active === first || active === drawer)) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && active === last) { e.preventDefault(); first.focus(); }
   }
 
   function render() {
@@ -507,16 +592,27 @@
     msgs[rotateIndex % msgs.length].classList.add("ck-active");
   }
 
-  function rewardIcon(type) {
-    return type === "free_shipping" ? ICONS.truck : type === "free_gift" ? ICONS.gift : ICONS.percent;
+  // Goals sit at even steps along the line (so their labels never overlap), and the fill moves through each
+  // step in proportion to how far the cart is between the two goals.
+  function goalPercent(c, tiers, value) {
+    var prev = 0;
+    for (var i = 0; i < tiers.length; i++) {
+      var target = tierTarget(c, tiers[i]);
+      if (value < target) {
+        var part = target > prev ? (value - prev) / (target - prev) : 0;
+        return ((i + Math.max(0, part)) / tiers.length) * 100;
+      }
+      prev = target;
+    }
+    return 100;
   }
   function renderGoals() {
     var c = campaignsOf("rewards")[0];
     var tiers = c ? (c.config.tiers || []).slice().sort(function (a, b) { return tierTarget(c, a) - tierTarget(c, b); }) : [];
+    els.goals.classList.toggle("ck-goal-single", tiers.length === 1);
     if (!c || !tiers.length) { els.goals.innerHTML = ""; return; }
     var value = rewardsProgress(c);
-    var max = tierTarget(c, tiers[tiers.length - 1]) || 1;
-    var pct = Math.min(100, (value / max) * 100);
+    var pct = goalPercent(c, tiers, value);
     var next = tiers.filter(function (tier) { return !tierUnlocked(c, tier, value); })[0];
     var message;
     if (next) {
@@ -528,26 +624,26 @@
     } else {
       message = esc(ct(c, "completeText"));
     }
-    // Start the fill at the previous width so it animates, and pop milestones that were just unlocked.
+    // Start the fill at the previous width so it animates, and pop goals that were just unlocked.
     var from = goalState.pct == null ? pct : goalState.pct;
     var doneNow = {};
+    var dots = "";
+    var labels = "";
+    tiers.forEach(function (tier, i) {
+      var done = tierUnlocked(c, tier, value);
+      if (done) doneNow[tier.id] = true;
+      var fresh = done && goalState.pct != null && !goalState.done[tier.id];
+      var label = esc(tierLabel(c, tier));
+      dots += '<span class="ck-milestone' + (done ? " ck-done" : "") + (fresh ? " ck-just-done" : "") + '" style="left:' + ((i + 1) / tiers.length) * 100 + '%" title="' + label + '"></span>';
+      labels += "<span" + (done ? ' class="ck-done"' : "") + ">" + label + "</span>";
+    });
     els.goals.innerHTML =
       '<div class="ck-goal-message">' + message + "</div>" +
-      '<div class="ck-progress"><div class="ck-progress-fill" style="width:' + from + '%"></div>' +
-      tiers.map(function (tier) {
-        var left = Math.min(100, (tierTarget(c, tier) / max) * 100);
-        var done = tierUnlocked(c, tier, value);
-        if (done) doneNow[tier.id] = true;
-        var fresh = done && goalState.pct != null && !goalState.done[tier.id];
-        return '<span class="ck-milestone' + (done ? " ck-done" : "") + (fresh ? " ck-just-done" : "") + '" style="left:' + left + '%" title="' + esc(tierLabel(c, tier)) + '">' + rewardIcon(tier.type) + "</span>";
-      }).join("") +
-      "</div>" +
-      (tiers.length > 1
-        ? '<div class="ck-milestone-labels">' + tiers.map(function (tier) {
-            var left = Math.min(100, (tierTarget(c, tier) / max) * 100);
-            return '<span style="left:' + left + '%">' + esc(tierLabel(c, tier)) + "</span>";
-          }).join("") + "</div>"
-        : "");
+      '<div class="ck-goal-track" style="--n:' + tiers.length + '">' +
+      '<div class="ck-progress"><span class="ck-progress-fill" style="width:' + from + '%"></span>' + dots + "</div>" +
+      // One goal: the message already names it.
+      (tiers.length > 1 ? '<div class="ck-milestone-labels">' + labels + "</div>" : "") +
+      "</div>";
     goalState = { pct: pct, done: doneNow };
     if (from !== pct) {
       var bar = els.goals.querySelector(".ck-progress-fill");
@@ -596,7 +692,8 @@
       var hint = gift ? "" : volumeHint(item);
       return (
         '<div class="ck-item' + (gift ? " ck-item-gift" : "") + '" data-key="' + esc(item.key) + '">' +
-        '<a class="ck-item-image" href="' + esc(item.url) + '">' + (item.image ? '<img src="' + esc(img(item.image, 160)) + '" alt="' + esc(item.product_title) + '" loading="lazy">' : "") + "</a>" +
+        // Same destination as the title link next to it: hidden from screen readers and the Tab order.
+        '<a class="ck-item-image" href="' + esc(item.url) + '" tabindex="-1" aria-hidden="true">' + (item.image ? '<img src="' + esc(img(item.image, 160)) + '" alt="' + esc(item.product_title) + '" loading="lazy">' : "") + "</a>" +
         '<div class="ck-item-info">' +
         (S.drawer.showVendor && item.vendor ? '<div class="ck-vendor">' + esc(item.vendor) + "</div>" : "") +
         '<a class="ck-item-title" href="' + esc(item.url) + '">' + esc(item.product_title) + "</a>" +
@@ -744,7 +841,7 @@
             }).join("") + "</select>"
           : '<input type="hidden" class="ck-upsell-variant" value="' + v.id + '">';
         return '<div class="ck-upsell">' +
-          '<a href="' + esc(url("products/" + p.handle)) + '" class="ck-upsell-image">' + (image ? '<img src="' + esc(img(image, 200)) + '" alt="" loading="lazy">' : "") + "</a>" +
+          '<a href="' + esc(url("products/" + p.handle)) + '" class="ck-upsell-image" tabindex="-1" aria-hidden="true">' + (image ? '<img src="' + esc(img(image, 200)) + '" alt="" loading="lazy">' : "") + "</a>" +
           '<div class="ck-upsell-info"><a href="' + esc(url("products/" + p.handle)) + '" class="ck-upsell-title">' + esc(p.title) + "</a>" +
           '<div class="ck-upsell-price">' + money(v.price) + "</div>" + select +
           '<button type="button" class="ck-btn ck-btn-small" data-ck="upsell-add">' + esc(t("upsells.buttonText")) + "</button></div></div>";
@@ -763,39 +860,70 @@
         var line = cart.items.filter(function (i) { return prop(i, "_cartkit_addon") === c.id; })[0];
         var price = addonPrices[c.id];
         if (price == null && !addonLoading[c.id]) loadAddonPrice(c);
-        html += '<label class="ck-addon"><input type="checkbox" data-ck-addon="' + esc(c.id) + '"' + (line ? " checked" : "") + ">" +
+        // Buyer consent (1.1.9): a paid add-on is only offered once the shopper can see what it costs. Until its
+        // price is known (or when it can't be loaded) there is no checkbox; an add-on already in the cart still
+        // shows, so the shopper can untick it.
+        if (price == null && !line) return;
+        // While a tick/untick is on its way the box shows the shopper's choice, not the cart from before it.
+        var ticked = addonWanted[c.id] != null ? addonWanted[c.id] : !!line;
+        if (price == null) price = line.final_line_price / Math.max(1, line.quantity);
+        var label = ct(c, "label");
+        // The price is always shown, also when the merchant's label (or its translation) leaves out {{price}}.
+        var text = /\{\{\s*price\s*\}\}/.test(label) ? fill(label, { price: money(price) }) : label + " (+" + money(price) + ")";
+        html += '<label class="ck-addon"><input type="checkbox" data-ck-addon="' + esc(c.id) + '"' + (ticked ? " checked" : "") + ">" +
           (product.image ? '<img src="' + esc(img(product.image, 80)) + '" alt="">' : "") +
-          "<span><strong>" + esc(fill(ct(c, "label"), { price: price == null ? "" : money(price) })) + "</strong>" +
+          "<span><strong>" + esc(text) + "</strong>" +
           (ct(c, "description") ? "<small>" + esc(ct(c, "description")) + "</small>" : "") + "</span></label>";
       });
 
+      // Order note and discount code share one row of toggles, both collapsed by default, to keep the footer
+      // short. A saved note shows as a one-line preview; applied codes stay visible as chips.
+      var toggles = [];
+      var panels = "";
       if (d.showNote) {
-        html += '<div class="ck-note"><button type="button" class="ck-link" data-ck="toggle-note">' + esc(t("drawer.noteLabel")) + "</button>" +
-          (state.noteOpen || cart.note ? '<textarea class="ck-note-input" rows="2" placeholder="' + esc(t("drawer.notePlaceholder")) + '">' + esc(cart.note || "") + "</textarea>" : "") + "</div>";
+        var noteOpen = state.noteOpen;
+        toggles.push('<button type="button" class="ck-toggle ck-note-toggle" data-ck="toggle-note" aria-expanded="' + noteOpen + '">' +
+          "<span>" + esc(t("drawer.noteLabel")) + "</span>" +
+          (!noteOpen && cart.note ? '<span class="ck-note-preview">' + esc(cart.note) + "</span>" : "") +
+          ICONS.next + "</button>");
+        if (noteOpen) panels += '<div class="ck-note"><textarea class="ck-note-input" rows="2" placeholder="' + esc(t("drawer.notePlaceholder")) + '">' + esc(cart.note || "") + "</textarea></div>";
       }
       if (d.showDiscountField) {
         var codes = (cart.discount_codes || []).filter(function (c) { return c.applicable; });
         var pending = pendingDiscount();
-        html += '<div class="ck-discount"><div class="ck-discount-row"><input type="text" class="ck-discount-input" placeholder="' + esc(t("drawer.discountPlaceholder")) + '" autocomplete="off">' +
-          '<button type="button" class="ck-btn ck-btn-outline" data-ck="apply-discount">' + esc(t("drawer.discountApplyText")) + "</button></div>" +
+        var discountOpen = state.discountOpen || !!state.discountError;
+        toggles.push('<button type="button" class="ck-toggle" data-ck="toggle-discount" aria-expanded="' + discountOpen + '">' +
+          "<span>" + esc(t("drawer.discountPlaceholder")) + "</span>" + ICONS.next + "</button>");
+        var chips = codes.map(function (c) {
+          return '<span class="ck-code">' + esc(c.code) + ' <button type="button" data-ck="remove-discount" data-code="' + esc(c.code) + '" aria-label="Remove">×</button></span>';
+        }).join("") +
+          (pending && !codes.length ? '<span class="ck-code">' + esc(pending) + ' <button type="button" data-ck="remove-discount" data-code="' + esc(pending) + '" aria-label="Remove">×</button></span>' : "");
+        var discount =
+          (discountOpen
+            ? '<div class="ck-discount-row"><input type="text" class="ck-discount-input" placeholder="' + esc(t("drawer.discountPlaceholder")) + '" autocomplete="off">' +
+              '<button type="button" class="ck-btn ck-btn-outline" data-ck="apply-discount">' + esc(t("drawer.discountApplyText")) + "</button></div>"
+            : "") +
           (state.discountError ? '<div class="ck-error-text">' + esc(state.discountError) + "</div>" : "") +
-          '<div class="ck-codes">' + codes.map(function (c) {
-            return '<span class="ck-code">' + esc(c.code) + ' <button type="button" data-ck="remove-discount" data-code="' + esc(c.code) + '" aria-label="Remove">×</button></span>';
-          }).join("") +
-          (pending && !codes.length ? '<span class="ck-code">' + esc(pending) + ' <button type="button" data-ck="remove-discount" data-code="' + esc(pending) + '" aria-label="Remove">×</button></span>' : "") +
-          "</div></div>";
+          (chips ? '<div class="ck-codes">' + chips + "</div>" : "");
+        // Closed with no codes: nothing, so no empty gap in the footer.
+        if (discount) panels += '<div class="ck-discount">' + discount + "</div>";
       }
+      if (toggles.length) html += '<div class="ck-extras">' + toggles.join("") + "</div>" + panels;
       html += '<div class="ck-custom-bottom">' + (S.advanced.customHtmlBottom || "") + "</div>";
 
       html += '<div class="ck-totals">';
       (cart.cart_level_discount_applications || []).forEach(function (a) {
         html += '<div class="ck-total-row ck-muted"><span>' + esc(a.title) + "</span><span>-" + money(a.total_allocated_amount) + "</span></div>";
       });
-      if (d.showSavings && cart.total_discount > 0) {
-        html += '<div class="ck-total-row ck-savings"><span>' + esc(t("drawer.savingsText")) + "</span><span>" + money(cart.total_discount) + "</span></div>";
-      }
+      // Savings sit next to the subtotal label (one row instead of two); on their own when the subtotal is hidden.
+      var savings = d.showSavings && cart.total_discount > 0
+        ? esc(t("drawer.savingsText")) + " " + money(cart.total_discount)
+        : "";
       if (d.showSubtotal) {
-        html += '<div class="ck-total-row ck-subtotal"><span>' + esc(t("drawer.subtotalText")) + "</span><span>" + money(cart.total_price) + "</span></div>";
+        html += '<div class="ck-total-row ck-subtotal"><span>' + esc(t("drawer.subtotalText")) +
+          (savings ? ' <small class="ck-savings">' + savings + "</small>" : "") + "</span><span>" + money(cart.total_price) + "</span></div>";
+      } else if (savings) {
+        html += '<div class="ck-total-row ck-savings"><span>' + savings + "</span></div>";
       }
       if (d.showTaxesText) html += '<div class="ck-taxes">' + esc(t("drawer.taxesText")) + "</div>";
       html += "</div>";
@@ -809,6 +937,8 @@
         esc(t("drawer.checkoutText")) + (d.showSubtotal ? "" : " · " + money(cart.total_price)) + "</span>" +
         '<span class="ck-checkout-arrow">' + ICONS.arrow + "</span></button>";
     }
+    // e.g. "sold out" from an add to an empty cart: there's no checkout area to show it in.
+    if (!hasItems && state.error) html += '<div class="ck-error-text" role="alert">' + esc(state.error) + "</div>";
     var links = [];
     if (d.showContinueShopping) links.push('<button type="button" class="ck-link" data-ck="close">' + esc(t("drawer.continueShoppingText")) + "</button>");
     if (d.showViewCart && hasItems) links.push('<a class="ck-link" href="' + esc(url("cart")) + '">' + esc(t("drawer.viewCartText")) + "</a>");
@@ -818,6 +948,7 @@
   }
 
   var addonPrices = {};
+  var addonWanted = {};
   var addonLoading = {};
   function loadAddonPrice(c) {
     addonLoading[c.id] = true;
@@ -855,11 +986,13 @@
           if (!cart.discount_codes) {
             // Older cart API without discount support: apply at checkout instead.
             setPendingDiscount(code);
+            state.discountOpen = false;
           } else if (!found || !found.applicable) {
             state.discountError = t("drawer.discountInvalidText");
             return updateCart({ discount: existing.join(",") }).then(getCart);
           } else {
             track("discount_applied");
+            state.discountOpen = false;
           }
         }),
     );
@@ -906,6 +1039,7 @@
       case "pick-gift": {
         var key = btn.getAttribute("data-gift-key");
         declined.delete(key);
+        notFree.delete(key);
         withBusy(addItems([{ id: Number(btn.getAttribute("data-variant")), quantity: 1, properties: { _cartkit_gift: key } }]).then(function () {
           track("gift_added", null, key.split(":")[0]);
         }));
@@ -928,22 +1062,42 @@
         if (list) list.scrollBy({ left: (action === "up-next" ? 1 : -1) * list.clientWidth * 0.8, behavior: "smooth" });
         break;
       }
-      case "toggle-note":
+      case "toggle-note": {
+        // Closing keeps what was typed: it's saved to the cart like on blur.
+        var open = root.querySelector(".ck-note-input");
+        if (open && open.value !== (cart.note || "")) saveNote(open.value);
         state.noteOpen = !state.noteOpen;
         renderFooter();
         var ta = root.querySelector(".ck-note-input");
         if (ta) ta.focus();
         break;
+      }
+      case "toggle-discount": {
+        state.discountOpen = !(state.discountOpen || !!state.discountError);
+        state.discountError = "";
+        renderFooter();
+        var input = root.querySelector(".ck-discount-input");
+        if (input) input.focus();
+        break;
+      }
       case "apply-discount": applyDiscount(); break;
       case "remove-discount": removeDiscount(btn.getAttribute("data-code")); break;
       case "checkout": checkout(); break;
     }
   }
 
+  // Kept locally right away, so the collapsed preview and a reopened note show it before Shopify answers.
+  var notePending = Promise.resolve();
+  function saveNote(value) {
+    if (value === (cart.note || "")) return notePending;
+    cart.note = value;
+    notePending = updateCart({ note: value }).then(function (c) { cart.note = c.note; }).catch(function () {});
+    return notePending;
+  }
   function onDrawerChange(e) {
     var el = e.target;
     if (el.classList.contains("ck-note-input")) {
-      updateCart({ note: el.value }).then(function (c) { cart.note = c.note; });
+      saveNote(el.value);
     } else if (el.classList.contains("ck-terms-input")) {
       state.termsChecked = el.checked;
       state.error = "";
@@ -951,16 +1105,20 @@
       var id = el.getAttribute("data-ck-addon");
       var c = campaignsOf("addon").filter(function (x) { return x.id === id; })[0];
       if (!c) return;
+      addonWanted[id] = el.checked;
+      var line = cart.items.filter(function (i) { return prop(i, "_cartkit_addon") === id; })[0];
+      var done = function () { if (addonWanted[id] === el.checked) delete addonWanted[id]; };
       if (el.checked) {
         declined.delete("addon:" + id);
         failedAdds.delete("addon:" + id);
+        if (line) { done(); return; }
         withBusy(addItems([{ id: Number(c.config.product.variantId), quantity: 1, properties: { _cartkit_addon: id } }]).then(function () {
           track("addon_add", addonPrices[id], id);
-        }));
+        })).then(done);
       } else {
+        // Also covers an add still on its way: reconcile takes the line out when it arrives.
         declined.add("addon:" + id);
-        var line = cart.items.filter(function (i) { return prop(i, "_cartkit_addon") === id; })[0];
-        if (line) withBusy(changeLine(line.key, 0));
+        withBusy(line ? changeLine(line.key, 0) : Promise.resolve()).then(done);
       }
     } else if (el.classList.contains("ck-upsell-variant")) {
       var opt = el.options[el.selectedIndex];
@@ -976,12 +1134,13 @@
       return;
     }
     var note = root.querySelector(".ck-note-input");
-    var saveNote = note && note.value !== (cart.note || "") ? updateCart({ note: note.value }) : Promise.resolve();
+    // Waits for a note save that is still on its way, too.
+    var noteSaved = note ? saveNote(note.value) : notePending;
     track("checkout_click", cart.total_price);
     ga("begin_checkout", { currency: cart.currency, value: cart.total_price / 100 });
     flush();
     var code = pendingDiscount();
-    saveNote.catch(function () {}).then(function () {
+    noteSaved.catch(function () {}).then(function () {
       window.location.href = url("checkout") + (code ? "?discount=" + encodeURIComponent(code) : "");
     });
   }
@@ -1009,9 +1168,19 @@
     emit("close", cart);
   }
 
+  // A refresh asked for while one is loading runs again afterwards: the one in flight may have read the cart
+  // before the change that triggered the new request, and would leave the drawer (and goals) out of date.
   var refreshing = null;
+  var refreshAgain = false;
   function refresh() {
-    if (refreshing) return refreshing;
+    if (refreshing) {
+      refreshAgain = true;
+      return refreshing.then(function () {
+        if (!refreshAgain) return cart;
+        refreshAgain = false;
+        return refresh();
+      });
+    }
     refreshing = getCart()
       .then(reconcile)
       .then(function () {
@@ -1105,7 +1274,8 @@
   var CART_URL = /\/cart\/(add|change|update|clear)(\.js|\.json)?(\?|$)/;
   function watchNetwork() {
     window.fetch = function (input, init) {
-      var reqUrl = typeof input === "string" ? input : input && input.url;
+      // A URL string, a Request, or a URL object.
+      var reqUrl = typeof input === "string" ? input : input && (input.url || input.href);
       return nativeFetch(input, init).then(function (res) {
         if (reqUrl && CART_URL.test(reqUrl) && res.ok) onExternalCartChange(/\/cart\/add/.test(reqUrl));
         return res;
