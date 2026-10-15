@@ -32,7 +32,7 @@ export default function AdvancedSettings() {
   const missingLocales = locales.filter((l) => !l.primary && !translations[l.locale]);
   const [newLocale, setNewLocale] = useState("");
   const [activeLocale, setActiveLocale] = useState(Object.keys(settings.translations || {})[0] || "");
-  const { save, saving } = useSave<Partial<Settings>>();
+  const { save, saving, errorBanner } = useSave<Partial<Settings>>();
   const dirty = isDirty({ advanced, translations }, { advanced: settings.advanced, translations: settings.translations || {} });
   const discard = () => {
     setAdvanced(settings.advanced);
@@ -56,6 +56,7 @@ export default function AdvancedSettings() {
   return (
     <s-page heading="Custom code & languages">
       <SaveActions dirty={dirty} saving={saving} onSave={() => save({ advanced, translations })} onDiscard={discard} />
+      {errorBanner}
 
       <SettingsLayout>
       <SaveCard dirty={dirty} saving={saving} onSave={() => save({ advanced, translations })} onDiscard={discard} />

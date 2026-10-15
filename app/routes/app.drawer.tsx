@@ -49,7 +49,7 @@ export default function DrawerSettings() {
   const [drawer, setDrawer] = useState(settings.drawer);
   const [design, setDesign] = useState(settings.design);
   const [upsells, setUpsells] = useState(settings.upsells);
-  const { save, saving } = useSave<Partial<Settings>>();
+  const { save, saving, errorBanner } = useSave<Partial<Settings>>();
   const dirty = isDirty({ drawer, design, upsells }, { drawer: settings.drawer, design: settings.design, upsells: settings.upsells });
   const discard = () => {
     setDrawer(settings.drawer);
@@ -78,6 +78,7 @@ export default function DrawerSettings() {
   return (
     <s-page heading="Cart drawer" inlineSize="large">
       <SaveActions dirty={dirty} saving={saving} onSave={() => save({ drawer, design, upsells })} onDiscard={discard} />
+      {errorBanner}
 
       <SettingsLayout
         side={

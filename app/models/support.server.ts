@@ -31,17 +31,15 @@ export function validateTicket(input: TicketInput) {
 // Store and theme details that save a round of back-and-forth. Every query fails gracefully.
 export async function collectDiagnostics(admin: Admin, extra: Record<string, unknown>) {
   let shop: any = null;
-  let theme: any = null;
   try {
+    // No theme details: the app doesn't request read_themes (embed status comes from App Bridge instead).
     const json: any = await (
       await admin.graphql(`#graphql
         query {
           shop { name myshopifyDomain primaryDomain { host } currencyCode plan { displayName } }
-          themes(first: 1, roles: [MAIN]) { nodes { name } }
         }`)
     ).json();
     shop = json.data?.shop ?? null;
-    theme = json.data?.themes?.nodes?.[0] ?? null;
   } catch {
     // diagnostics are best-effort
   }
@@ -50,7 +48,6 @@ export async function collectDiagnostics(admin: Admin, extra: Record<string, unk
     domain: shop?.primaryDomain?.host ?? null,
     shopifyPlan: shop?.plan?.displayName ?? null,
     currency: shop?.currencyCode ?? null,
-    theme: theme?.name ?? null,
     ...extra,
   };
 }

@@ -19,6 +19,17 @@ function SIcon(props: { type: NonNullable<JSX.IntrinsicElements["s-icon"]["type"
   return <s-icon type={props.type} tone={props.tone} />;
 }
 
+// Plan-gated controls: greyed out and not interactive (inert), so they look and behave disabled (BFS 4.3.7).
+// The caller shows which plan unlocks them next to it.
+export function Locked({ locked, children }: { locked: boolean; children: ReactNode }) {
+  if (!locked) return <>{children}</>;
+  return (
+    <div className="ckx-locked" aria-disabled="true" {...{ inert: "" }}>
+      {children}
+    </div>
+  );
+}
+
 // Without a plan the grid shows no plan badges; with one, types the plan doesn't include show the plan they need.
 export function CampaignTypeGrid({ plan }: { plan?: PlanInfo }) {
   return (
@@ -131,7 +142,7 @@ export function SideCard({ title, action, children }: { title: string; action?: 
   );
 }
 
-export function StatCard({ icon, label, value, tint = "#eef2ff" }: { icon: Icon; label: string; value: ReactNode; tint?: string }) {
+export function StatCard({ icon, label, value, tint = "#f1f1f1" }: { icon: Icon; label: string; value: ReactNode; tint?: string }) {
   return (
     <div className="ckx-stat">
       <span className="ckx-stat-icon" style={{ background: tint }}>

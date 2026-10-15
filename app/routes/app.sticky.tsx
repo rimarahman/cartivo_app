@@ -17,7 +17,7 @@ export default function StickySettings() {
   const { settings } = useLoaderData<typeof loader>();
   const [sticky, setSticky] = useState(settings.sticky);
   const [floating, setFloating] = useState(settings.floating);
-  const { save, saving } = useSave<Partial<Settings>>();
+  const { save, saving, errorBanner } = useSave<Partial<Settings>>();
   const dirty = isDirty({ sticky, floating }, { sticky: settings.sticky, floating: settings.floating });
   const discard = () => {
     setSticky(settings.sticky);
@@ -36,6 +36,7 @@ export default function StickySettings() {
   return (
     <s-page heading="Sticky add-to-cart & floating cart" inlineSize="large">
       <SaveActions dirty={dirty} saving={saving} onSave={() => save({ sticky, floating })} onDiscard={discard} />
+      {errorBanner}
 
       <SettingsLayout
         side={

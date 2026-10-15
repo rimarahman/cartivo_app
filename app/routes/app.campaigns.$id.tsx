@@ -7,6 +7,7 @@ import { getCampaign, saveCampaign } from "../models/store.server";
 import { getPlan } from "../models/billing.server";
 import { canUse, planFor, planName } from "../lib/plans";
 import { trySync } from "../models/sync.server";
+import { Locked } from "../components/ui";
 import {
   CAMPAIGN_TYPES,
   DEFAULT_CAMPAIGN_CONFIG,
@@ -418,7 +419,7 @@ export default function CampaignEditor() {
   const { campaign: initial, plan, markets } = useLoaderData<typeof loader>();
   const needed = canUse(plan, initial.type as CampaignType) ? null : planName(planFor(initial.type as CampaignType));
   const [campaign, setCampaign] = useState<EditableCampaign>(initial);
-  const { save, saving, fetcher } = useSave<typeof campaign>();
+  const { save, saving, fetcher, errorBanner } = useSave<typeof campaign>();
   const navigate = useNavigate();
 
   // After creating a campaign, move to its permanent URL.
@@ -460,6 +461,7 @@ export default function CampaignEditor() {
           onDiscard={() => setCampaign(initial)}
         />
       </div>
+      {errorBanner}
 
       {needed && (
         <s-banner tone="info" heading={`Needs the ${needed} plan`}>
@@ -494,24 +496,33 @@ export default function CampaignEditor() {
       <s-section heading="Markets">
         {!plan.features.markets && (
           <s-banner tone="info">
-            Country targeting, translations and per-currency amounts apply on the{" "}
+            Country targeting, translations and per-currency amounts are available on the{" "}
             <s-link href="/app/pricing">Growth plan</s-link> and higher. Until then this campaign shows in every country.
           </s-banner>
         )}
-        <CountryTargeting
-          countries={markets.countries}
-          value={campaign.config.countries || []}
-          onChange={(countries) => setConfig({ countries })}
-        />
+        <Locked locked={!plan.features.markets}>
+          <CountryTargeting
+            countries={markets.countries}
+            value={campaign.config.countries || []}
+            onChange={(countries) => setConfig({ countries })}
+          />
+        </Locked>
       </s-section>
 
       <s-section heading="Translations">
-        <CampaignTranslations
-          type={campaign.type as CampaignType}
-          config={campaign.config}
-          locales={markets.locales}
-          onChange={(translations) => setConfig({ translations })}
-        />
+        {!plan.features.markets && (
+          <s-text color="subdued">
+            Available on the <s-link href="/app/pricing">Growth plan</s-link> and higher.
+          </s-text>
+        )}
+        <Locked locked={!plan.features.markets}>
+          <CampaignTranslations
+            type={campaign.type as CampaignType}
+            config={campaign.config}
+            locales={markets.locales}
+            onChange={(translations) => setConfig({ translations })}
+          />
+        </Locked>
       </s-section>
 
       <s-section heading="Schedule">

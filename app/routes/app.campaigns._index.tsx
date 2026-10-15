@@ -1,4 +1,5 @@
 import type { ActionFunctionArgs, HeadersFunction, LoaderFunctionArgs } from "react-router";
+import { useState } from "react";
 import { useFetcher, useLoaderData } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
@@ -8,6 +9,8 @@ import { planCampaigns, trySync } from "../models/sync.server";
 import { canUse, planFor, planName, type PlanInfo } from "../lib/plans";
 import { CAMPAIGN_TYPES } from "../lib/defaults";
 import { CAMPAIGN_META, CampaignTypeGrid } from "../components/ui";
+import { ErrorBanner } from "../components/ErrorBanner";
+import { saveErrorMessage } from "../components/useSave";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { session, billing } = await authenticate.admin(request);
@@ -40,12 +43,14 @@ function scheduleText(c: { startsAt: string | null; endsAt: string | null }) {
 export default function Campaigns() {
   const { campaigns, plan, live } = useLoaderData<typeof loader>();
   const blocked = campaigns.filter((c) => c.status === "active" && !live.includes(c.id));
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<typeof action>();
+  // Campaign waiting for confirmation in the delete modal.
+  const [toDelete, setToDelete] = useState<{ id: string; name: string } | null>(null);
+  // Publishing errors stay on the page until dismissed (BFS 4.2.4); a new result brings the banner back.
+  const [dismissed, setDismissed] = useState<unknown>(null);
+  const error = fetcher.state === "idle" && fetcher.data !== dismissed ? saveErrorMessage(fetcher.data) : null;
 
-  const act = (id: string, intent: string) => {
-    if (intent === "delete" && !confirm("Delete this campaign?")) return;
-    fetcher.submit({ id, intent }, { method: "post" });
-  };
+  const act = (id: string, intent: string) => fetcher.submit({ id, intent }, { method: "post" });
 
   return (
     <s-page heading="Campaigns">
@@ -53,7 +58,9 @@ export default function Campaigns() {
         Create campaign
       </s-button>
 
-{plan.id === "free" && (
+      {error && <ErrorBanner message={error} onDismiss={() => setDismissed(fetcher.data)} />}
+
+      {plan.id === "free" && (
         <s-banner tone="info" heading="Campaigns are part of the paid plans">
           <s-paragraph>
             You can build campaigns on Starter; they show on your store once you <s-link href="/app/pricing">choose a plan</s-link>{" "}
@@ -119,7 +126,13 @@ export default function Campaigns() {
                       >
                         {c.status === "active" ? "Deactivate" : "Activate"}
                       </s-button>
-                      <s-button variant="tertiary" tone="critical" onClick={() => act(c.id, "delete")}>
+                      <s-button
+                        variant="tertiary"
+                        tone="critical"
+                        commandFor="delete-campaign-modal"
+                        command="--show"
+                        onClick={() => setToDelete({ id: c.id, name: c.name })}
+                      >
                         Delete
                       </s-button>
                     </s-stack>
@@ -130,6 +143,25 @@ export default function Campaigns() {
           </s-table>
       </s-section>
       )}
+
+      <s-modal id="delete-campaign-modal" heading="Delete campaign?">
+        <s-paragraph>
+          {toDelete ? `"${toDelete.name}" ` : "This campaign "}is removed from your store and can't be restored.
+        </s-paragraph>
+        <s-button slot="secondary-actions" commandFor="delete-campaign-modal" command="--hide">
+          Cancel
+        </s-button>
+        <s-button
+          slot="primary-action"
+          variant="primary"
+          tone="critical"
+          commandFor="delete-campaign-modal"
+          command="--hide"
+          onClick={() => toDelete && act(toDelete.id, "delete")}
+        >
+          Delete campaign
+        </s-button>
+      </s-modal>
 
       {campaigns.length > 0 && (
         <s-section heading="Create another campaign">

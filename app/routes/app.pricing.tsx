@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs, HeadersFunction, LoaderFunctionArgs } from "react-router";
-import { Form, redirect, useLoaderData, useNavigation } from "react-router";
+import { Form, redirect, useLoaderData, useNavigation, useSubmit } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
 import { billingDisabled, chooseFree, getPlan, isTestBilling, paidPlanName } from "../models/billing.server";
@@ -43,6 +43,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function Pricing() {
   const { plan, billingDisabled } = useLoaderData<typeof loader>();
   const nav = useNavigation();
+  const submit = useSubmit();
   const busy = (value: string) => nav.state !== "idle" && (nav.formData?.get("plan") ?? nav.formData?.get("intent")) === value;
   const paid = PLAN_ORDER.includes(plan.id as PaidPlanId) && !billingDisabled;
   const current = (id: string) => plan.id === id && !billingDisabled;
@@ -74,13 +75,16 @@ export default function Pricing() {
     if (current("free")) return <s-text color="subdued">You&apos;re on {FREE_PLAN.name}.</s-text>;
     if (plan.id === "trial") return <s-text color="subdued">Available when your trial ends.</s-text>;
     const label = plan.id === "choose" ? `Continue with ${FREE_PLAN.name}` : `Switch to ${FREE_PLAN.name}`;
+    // Leaving a paid plan cancels the subscription, so it's confirmed in a modal first.
+    if (paid) {
+      return (
+        <s-button commandFor="downgrade-modal" command="--show" {...(busy("free") ? { loading: true } : {})}>
+          {label}
+        </s-button>
+      );
+    }
     return (
-      <Form
-        method="post"
-        onSubmit={(e) => {
-          if (paid && !confirm(`Switch to ${FREE_PLAN.name}? Your ${plan.name} plan is cancelled and campaigns pause.`)) e.preventDefault();
-        }}
-      >
+      <Form method="post">
         <input type="hidden" name="intent" value="free" />
         <s-button type="submit" {...(busy("free") ? { loading: true } : {})} {...(billingDisabled ? { disabled: true } : {})}>
           {label}
@@ -136,6 +140,28 @@ export default function Pricing() {
           {PLAN_ORDER.map((id) => card(id, paidAction(id)))}
         </div>
       </s-section>
+
+      {paid && (
+        <s-modal id="downgrade-modal" heading={`Switch to ${FREE_PLAN.name}?`}>
+          <s-paragraph>
+            Your {plan.name} subscription is cancelled and your campaigns stop showing on your store. Your settings and
+            campaigns are kept, so you can pick a paid plan again anytime.
+          </s-paragraph>
+          <s-button slot="secondary-actions" commandFor="downgrade-modal" command="--hide">
+            Keep {plan.name}
+          </s-button>
+          <s-button
+            slot="primary-action"
+            variant="primary"
+            tone="critical"
+            commandFor="downgrade-modal"
+            command="--hide"
+            onClick={() => submit({ intent: "free" }, { method: "post" })}
+          >
+            Switch to {FREE_PLAN.name}
+          </s-button>
+        </s-modal>
+      )}
 
       <s-section heading="Questions">
         <s-stack gap="small-200">

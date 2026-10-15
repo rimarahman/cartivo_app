@@ -6,6 +6,7 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 import type { SupportActionData, SupportLoaderData } from "../routes/app.support";
 import { Checkbox, Grid, Select, TextField } from "./fields";
 import { LiveChat, useLiveChat } from "./LiveChat";
+import { useEmbedStatus } from "./useEmbedStatus";
 
 const ROUTE = "/app/support";
 const EMPTY = { category: "setup", subject: "", message: "" };
@@ -55,6 +56,7 @@ export function SupportWidget() {
   const [diagnostics, setDiagnostics] = useState(true);
   const panelRef = useRef<HTMLDivElement>(null);
   const info = data.data;
+  const embed = useEmbedStatus(open);
   const sending = send.state !== "idle";
   const errors = send.data?.errors || {};
   const set = (key: keyof typeof form) => (value: string) => setForm((f) => ({ ...f, [key]: value }));
@@ -81,7 +83,7 @@ export function SupportWidget() {
 
   useEffect(() => {
     if (send.state !== "idle" || !send.data) return;
-    if (send.data.error) shopify.toast.show(send.data.error, { isError: true });
+    // Errors stay in the panel (see sendError below); only success is a toast.
     if (send.data.ok) {
       shopify.toast.show("Message sent. We'll reply by email.");
       data.load(ROUTE);
@@ -97,7 +99,12 @@ export function SupportWidget() {
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const submit = () => send.submit({ ...form, diagnostics: String(diagnostics) }, { method: "post", action: ROUTE });
+  const submit = () =>
+    send.submit(
+      { ...form, diagnostics: String(diagnostics), appEmbed: embed === null ? "unknown" : embed ? "on" : "off" },
+      { method: "post", action: ROUTE },
+    );
+  const sendError = send.state === "idle" ? send.data?.error : undefined;
   const categories = info?.categories ?? { setup: "Setup & installation" };
   const status = (s: string) => (s === "closed" ? "Closed" : s === "answered" ? "Answered" : "Open");
 
@@ -162,13 +169,11 @@ export function SupportWidget() {
             <LiveChat chat={chat} onEmail={() => setTab("contact")} onNavigate={() => setOpen(false)} />
           ) : tab === "help" ? (
             <>
-              {info && info.enabled !== true && (
+              {embed === false && (
                 <div className="ckx-help-alert">
                   <s-icon type="alert-circle" tone="caution" />
                   <span>
-                    {info.enabled === false
-                      ? "The Cartivo app embed is off in your live theme, so the cart won't show. "
-                      : "We couldn't check your theme's app embed. "}
+                    The Cartivo app embed is off in your live theme, so the cart won&apos;t show.{" "}
                     <Link to="/app" onClick={() => setOpen(false)}>
                       Open setup guide
                     </Link>
@@ -220,10 +225,15 @@ export function SupportWidget() {
                 />
                 <Checkbox
                   label="Include store diagnostics"
-                  details="Theme name, app embed status, plan and enabled features. No customer or order data."
+                  details="Store domain, Shopify plan, app embed status, your Cartivo plan and enabled features. No customer or order data."
                   value={diagnostics}
                   onChange={setDiagnostics}
                 />
+                {sendError && (
+                  <s-banner tone="critical" heading="Your message wasn't sent">
+                    <s-paragraph>{sendError}</s-paragraph>
+                  </s-banner>
+                )}
                 <s-button variant="primary" onClick={submit} {...(sending ? { loading: true } : {})}>
                   Send message
                 </s-button>
