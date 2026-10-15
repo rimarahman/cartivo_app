@@ -39,5 +39,14 @@ export default defineConfig({
     { name: "mobile-safari", testMatch: storefront, use: { ...devices["iPhone 14"] } },
     { name: "tablet", testMatch: storefront, use: { ...devices["iPad (gen 7)"] } },
     { name: "server", testMatch: "server/**/*.spec.ts", fullyParallel: false },
+    // Real development store (tests/e2e/live/README.md): only when started by hand with CARTIVO_LIVE_STORE set.
+    ...(process.env.CARTIVO_LIVE_STORE
+      ? [{
+          name: "live",
+          testMatch: "live/**/*.spec.ts",
+          retries: 0,
+          use: { ...devices["Desktop Chrome"], channel: "chrome", baseURL: `https://${process.env.CARTIVO_LIVE_STORE}`, screenshot: "on" as const, trace: "on" as const, video: "off" as const },
+        }]
+      : []),
   ],
 });

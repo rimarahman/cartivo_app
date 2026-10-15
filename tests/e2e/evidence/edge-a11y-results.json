@@ -1,0 +1,1347 @@
+{
+  "config": {
+    "configFile": "D:\\shopify\\corner-cart-app\\playwright.config.ts",
+    "rootDir": "D:/shopify/corner-cart-app/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ],
+      [
+        "line"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "firefox-desktop",
+        "name": "firefox-desktop",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "webkit-desktop",
+        "name": "webkit-desktop",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "mobile-chrome",
+        "name": "mobile-chrome",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "mobile-safari",
+        "name": "mobile-safari",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "tablet",
+        "name": "tablet",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "server",
+        "name": "server",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "server/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "storefront\\cart.spec.ts",
+      "file": "storefront/cart.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Accessibility & keyboard",
+          "file": "storefront/cart.spec.ts",
+          "line": 343,
+          "column": 6,
+          "specs": [
+            {
+              "title": "A11Y-01 drawer is a labelled modal dialog; focus moves in; Escape closes @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4529,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T19:11:35.344Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-a6942bbddfb43c9e897b",
+              "file": "storefront/cart.spec.ts",
+              "line": 344,
+              "column": 3
+            },
+            {
+              "title": "A11Y-02 all drawer buttons have accessible names @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3975,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T19:11:35.325Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-e64913a3bc598cefab1c",
+              "file": "storefront/cart.spec.ts",
+              "line": 357,
+              "column": 3
+            },
+            {
+              "title": "A11Y-03 Tab keeps focus inside the open modal drawer @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3328,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T19:11:35.344Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-9743df0035162a2a06db",
+              "file": "storefront/cart.spec.ts",
+              "line": 368,
+              "column": 3
+            },
+            {
+              "title": "A11Y-01 drawer is a labelled modal dialog; focus moves in; Escape closes @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1500,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T19:11:49.748Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-bdfe24650aa85346a1d3",
+              "file": "storefront/cart.spec.ts",
+              "line": 344,
+              "column": 3
+            },
+            {
+              "title": "A11Y-02 all drawer buttons have accessible names @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1870,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T19:11:51.267Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-b843558aa28772c92943",
+              "file": "storefront/cart.spec.ts",
+              "line": 357,
+              "column": 3
+            },
+            {
+              "title": "A11Y-03 Tab keeps focus inside the open modal drawer @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2065,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T19:11:51.633Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-58342d289048d457b7a9",
+              "file": "storefront/cart.spec.ts",
+              "line": 368,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "storefront\\quality.spec.ts",
+      "file": "storefront/quality.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "A11Y-04 axe: no serious or critical violations in the open drawer @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 6721,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:35.850Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "axe-violations.json",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJpZCI6ICJhcmlhLWFsbG93ZWQtcm9sZSIsCiAgICAiaW1wYWN0IjogIm1pbm9yIiwKICAgICJub2RlcyI6IDEsCiAgICAiaGVscCI6ICJBUklBIHJvbGUgc2hvdWxkIGJlIGFwcHJvcHJpYXRlIGZvciB0aGUgZWxlbWVudCIsCiAgICAidGFyZ2V0cyI6IFsKICAgICAgImFzaWRlIOKAlCBBUklBIHJvbGUgZGlhbG9nIGlzIG5vdCBhbGxvd2VkIGZvciBnaXZlbiBlbGVtZW50IgogICAgXQogIH0sCiAgewogICAgImlkIjogImxhbmRtYXJrLW5vLWR1cGxpY2F0ZS1iYW5uZXIiLAogICAgImltcGFjdCI6ICJtb2RlcmF0ZSIsCiAgICAibm9kZXMiOiAxLAogICAgImhlbHAiOiAiRG9jdW1lbnQgc2hvdWxkIG5vdCBoYXZlIG1vcmUgdGhhbiBvbmUgYmFubmVyIGxhbmRtYXJrIiwKICAgICJ0YXJnZXRzIjogWwogICAgICAiLmNrLWhlYWRlciDigJQgRG9jdW1lbnQgaGFzIG1vcmUgdGhhbiBvbmUgYmFubmVyIGxhbmRtYXJrIgogICAgXQogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-6a26a34524bdcb1f7ccb",
+          "file": "storefront/quality.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"aurora\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 2920,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:40.164Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-01ce028c697a402c1bd5",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"glass\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3690,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:40.476Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-a8ca126a19c6d3e60a8a",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"sunset\" look @p1",
+          "ok": false,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6207,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.35 (foreground color: #78716c, background color: #f8f3ee, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.35 (foreground color: #78716c, background color: #f8f3ee, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19",
+                    "location": {
+                      "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                      "column": 19,
+                      "line": 24
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 22 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39minclude(\u001b[32m\".ck-drawer\"\u001b[39m)\u001b[33m.\u001b[39mwithRules([\u001b[32m\"color-contrast\"\u001b[39m])\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mconst\u001b[39m nodes \u001b[33m=\u001b[39m results\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mflatMap((v) \u001b[33m=>\u001b[39m v\u001b[33m.\u001b[39mnodes\u001b[33m.\u001b[39mmap((n) \u001b[33m=>\u001b[39m \u001b[32m`${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`\u001b[39m))\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 24 |\u001b[39m     expect(nodes)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 25 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m }\n \u001b[90m 27 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                        "column": 19,
+                        "line": 24
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.35 (foreground color: #78716c, background color: #f8f3ee, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  22 |     const results = await new AxeBuilder({ page }).include(\".ck-drawer\").withRules([\"color-contrast\"]).analyze();\n  23 |     const nodes = results.violations.flatMap((v) => v.nodes.map((n) => `${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`));\n> 24 |     expect(nodes).toEqual([]);\n     |                   ^\n  25 |   });\n  26 | }\n  27 |\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19"
+                    },
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:41.284Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-0058a-tions-in-the-sunset-look-p1-chromium-desktop\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-0058a-tions-in-the-sunset-look-p1-chromium-desktop\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                    "column": 19,
+                    "line": 24
+                  }
+                },
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 2476,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.35 (foreground color: #78716c, background color: #f8f3ee, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.35 (foreground color: #78716c, background color: #f8f3ee, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19",
+                    "location": {
+                      "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                      "column": 19,
+                      "line": 24
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 22 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39minclude(\u001b[32m\".ck-drawer\"\u001b[39m)\u001b[33m.\u001b[39mwithRules([\u001b[32m\"color-contrast\"\u001b[39m])\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mconst\u001b[39m nodes \u001b[33m=\u001b[39m results\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mflatMap((v) \u001b[33m=>\u001b[39m v\u001b[33m.\u001b[39mnodes\u001b[33m.\u001b[39mmap((n) \u001b[33m=>\u001b[39m \u001b[32m`${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`\u001b[39m))\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 24 |\u001b[39m     expect(nodes)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 25 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m }\n \u001b[90m 27 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                        "column": 19,
+                        "line": 24
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.35 (foreground color: #78716c, background color: #f8f3ee, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  22 |     const results = await new AxeBuilder({ page }).include(\".ck-drawer\").withRules([\"color-contrast\"]).analyze();\n  23 |     const nodes = results.violations.flatMap((v) => v.nodes.map((n) => `${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`));\n> 24 |     expect(nodes).toEqual([]);\n     |                   ^\n  25 |   });\n  26 | }\n  27 |\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19"
+                    },
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 1,
+                  "startTime": "2026-10-15T19:12:19.307Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-0058a-tions-in-the-sunset-look-p1-chromium-desktop-retry1\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-0058a-tions-in-the-sunset-look-p1-chromium-desktop-retry1\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                    "column": 19,
+                    "line": 24
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-2609861daa0477528cbd",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"ocean\" look @p1",
+          "ok": false,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "failed",
+                  "duration": 4690,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.48 (foreground color: #64748b, background color: #f8f8f9, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.48 (foreground color: #64748b, background color: #f8f8f9, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19",
+                    "location": {
+                      "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                      "column": 19,
+                      "line": 24
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 22 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39minclude(\u001b[32m\".ck-drawer\"\u001b[39m)\u001b[33m.\u001b[39mwithRules([\u001b[32m\"color-contrast\"\u001b[39m])\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mconst\u001b[39m nodes \u001b[33m=\u001b[39m results\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mflatMap((v) \u001b[33m=>\u001b[39m v\u001b[33m.\u001b[39mnodes\u001b[33m.\u001b[39mmap((n) \u001b[33m=>\u001b[39m \u001b[32m`${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`\u001b[39m))\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 24 |\u001b[39m     expect(nodes)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 25 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m }\n \u001b[90m 27 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                        "column": 19,
+                        "line": 24
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.48 (foreground color: #64748b, background color: #f8f8f9, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  22 |     const results = await new AxeBuilder({ page }).include(\".ck-drawer\").withRules([\"color-contrast\"]).analyze();\n  23 |     const nodes = results.violations.flatMap((v) => v.nodes.map((n) => `${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`));\n> 24 |     expect(nodes).toEqual([]);\n     |                   ^\n  25 |   });\n  26 | }\n  27 |\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19"
+                    },
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:43.138Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-c11c0-ations-in-the-ocean-look-p1-chromium-desktop\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-c11c0-ations-in-the-ocean-look-p1-chromium-desktop\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                    "column": 19,
+                    "line": 24
+                  }
+                },
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 2,
+                  "status": "failed",
+                  "duration": 2650,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.48 (foreground color: #64748b, background color: #f8f8f9, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.48 (foreground color: #64748b, background color: #f8f8f9, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19",
+                    "location": {
+                      "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                      "column": 19,
+                      "line": 24
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 22 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39minclude(\u001b[32m\".ck-drawer\"\u001b[39m)\u001b[33m.\u001b[39mwithRules([\u001b[32m\"color-contrast\"\u001b[39m])\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mconst\u001b[39m nodes \u001b[33m=\u001b[39m results\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mflatMap((v) \u001b[33m=>\u001b[39m v\u001b[33m.\u001b[39mnodes\u001b[33m.\u001b[39mmap((n) \u001b[33m=>\u001b[39m \u001b[32m`${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`\u001b[39m))\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 24 |\u001b[39m     expect(nodes)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 25 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m }\n \u001b[90m 27 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                        "column": 19,
+                        "line": 24
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.48 (foreground color: #64748b, background color: #f8f8f9, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  22 |     const results = await new AxeBuilder({ page }).include(\".ck-drawer\").withRules([\"color-contrast\"]).analyze();\n  23 |     const nodes = results.violations.flatMap((v) => v.nodes.map((n) => `${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`));\n> 24 |     expect(nodes).toEqual([]);\n     |                   ^\n  25 |   });\n  26 | }\n  27 |\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19"
+                    },
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 1,
+                  "startTime": "2026-10-15T19:12:19.891Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-c11c0-ations-in-the-ocean-look-p1-chromium-desktop-retry1\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-c11c0-ations-in-the-ocean-look-p1-chromium-desktop-retry1\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                    "column": 19,
+                    "line": 24
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-3f9a5078dbbf91a9b4de",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"forest\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3144,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:44.226Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-412ffebda3dcb4368783",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"midnight\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 3290,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:44.375Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-80ae0e6d532e413d1ce0",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"minimal\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2111,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:47.394Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-035e3c2518a1fd878478",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-04 axe: no serious or critical violations in the open drawer @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2397,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:53.635Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "axe-violations.json",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJpZCI6ICJhcmlhLWFsbG93ZWQtcm9sZSIsCiAgICAiaW1wYWN0IjogIm1pbm9yIiwKICAgICJub2RlcyI6IDEsCiAgICAiaGVscCI6ICJBUklBIHJvbGUgc2hvdWxkIGJlIGFwcHJvcHJpYXRlIGZvciB0aGUgZWxlbWVudCIsCiAgICAidGFyZ2V0cyI6IFsKICAgICAgImFzaWRlIOKAlCBBUklBIHJvbGUgZGlhbG9nIGlzIG5vdCBhbGxvd2VkIGZvciBnaXZlbiBlbGVtZW50IgogICAgXQogIH0sCiAgewogICAgImlkIjogImxhbmRtYXJrLW5vLWR1cGxpY2F0ZS1iYW5uZXIiLAogICAgImltcGFjdCI6ICJtb2RlcmF0ZSIsCiAgICAibm9kZXMiOiAxLAogICAgImhlbHAiOiAiRG9jdW1lbnQgc2hvdWxkIG5vdCBoYXZlIG1vcmUgdGhhbiBvbmUgYmFubmVyIGxhbmRtYXJrIiwKICAgICJ0YXJnZXRzIjogWwogICAgICAiLmNrLWhlYWRlciDigJQgRG9jdW1lbnQgaGFzIG1vcmUgdGhhbiBvbmUgYmFubmVyIGxhbmRtYXJrIgogICAgXQogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-448d2f2d9cc1d3d5ed74",
+          "file": "storefront/quality.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"aurora\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 2128,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:53.885Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-4fd8e382ad52a8c761dc",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"glass\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 2251,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:56.032Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-50090e7c22ef6cd2c7c1",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"sunset\" look @p1",
+          "ok": false,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 2348,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.35 (foreground color: #78716c, background color: #f8f3ee, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.35 (foreground color: #78716c, background color: #f8f3ee, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19",
+                    "location": {
+                      "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                      "column": 19,
+                      "line": 24
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 22 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39minclude(\u001b[32m\".ck-drawer\"\u001b[39m)\u001b[33m.\u001b[39mwithRules([\u001b[32m\"color-contrast\"\u001b[39m])\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mconst\u001b[39m nodes \u001b[33m=\u001b[39m results\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mflatMap((v) \u001b[33m=>\u001b[39m v\u001b[33m.\u001b[39mnodes\u001b[33m.\u001b[39mmap((n) \u001b[33m=>\u001b[39m \u001b[32m`${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`\u001b[39m))\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 24 |\u001b[39m     expect(nodes)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 25 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m }\n \u001b[90m 27 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                        "column": 19,
+                        "line": 24
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.35 (foreground color: #78716c, background color: #f8f3ee, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  22 |     const results = await new AxeBuilder({ page }).include(\".ck-drawer\").withRules([\"color-contrast\"]).analyze();\n  23 |     const nodes = results.violations.flatMap((v) => v.nodes.map((n) => `${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`));\n> 24 |     expect(nodes).toEqual([]);\n     |                   ^\n  25 |   });\n  26 | }\n  27 |\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19"
+                    },
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:56.047Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-0058a-tions-in-the-sunset-look-p1-mobile-chrome\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-0058a-tions-in-the-sunset-look-p1-mobile-chrome\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                    "column": 19,
+                    "line": 24
+                  }
+                },
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 2291,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.35 (foreground color: #78716c, background color: #f8f3ee, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.35 (foreground color: #78716c, background color: #f8f3ee, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19",
+                    "location": {
+                      "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                      "column": 19,
+                      "line": 24
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 22 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39minclude(\u001b[32m\".ck-drawer\"\u001b[39m)\u001b[33m.\u001b[39mwithRules([\u001b[32m\"color-contrast\"\u001b[39m])\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mconst\u001b[39m nodes \u001b[33m=\u001b[39m results\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mflatMap((v) \u001b[33m=>\u001b[39m v\u001b[33m.\u001b[39mnodes\u001b[33m.\u001b[39mmap((n) \u001b[33m=>\u001b[39m \u001b[32m`${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`\u001b[39m))\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 24 |\u001b[39m     expect(nodes)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 25 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m }\n \u001b[90m 27 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                        "column": 19,
+                        "line": 24
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.35 (foreground color: #78716c, background color: #f8f3ee, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  22 |     const results = await new AxeBuilder({ page }).include(\".ck-drawer\").withRules([\"color-contrast\"]).analyze();\n  23 |     const nodes = results.violations.flatMap((v) => v.nodes.map((n) => `${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`));\n> 24 |     expect(nodes).toEqual([]);\n     |                   ^\n  25 |   });\n  26 | }\n  27 |\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19"
+                    },
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 1,
+                  "startTime": "2026-10-15T19:12:29.554Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-0058a-tions-in-the-sunset-look-p1-mobile-chrome-retry1\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-0058a-tions-in-the-sunset-look-p1-mobile-chrome-retry1\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                    "column": 19,
+                    "line": 24
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-692f3cc24d6a44ad93fb",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"ocean\" look @p1",
+          "ok": false,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 3,
+                  "status": "failed",
+                  "duration": 1998,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.48 (foreground color: #64748b, background color: #f8f8f9, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.48 (foreground color: #64748b, background color: #f8f8f9, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19",
+                    "location": {
+                      "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                      "column": 19,
+                      "line": 24
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 22 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39minclude(\u001b[32m\".ck-drawer\"\u001b[39m)\u001b[33m.\u001b[39mwithRules([\u001b[32m\"color-contrast\"\u001b[39m])\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mconst\u001b[39m nodes \u001b[33m=\u001b[39m results\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mflatMap((v) \u001b[33m=>\u001b[39m v\u001b[33m.\u001b[39mnodes\u001b[33m.\u001b[39mmap((n) \u001b[33m=>\u001b[39m \u001b[32m`${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`\u001b[39m))\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 24 |\u001b[39m     expect(nodes)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 25 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m }\n \u001b[90m 27 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                        "column": 19,
+                        "line": 24
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.48 (foreground color: #64748b, background color: #f8f8f9, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  22 |     const results = await new AxeBuilder({ page }).include(\".ck-drawer\").withRules([\"color-contrast\"]).analyze();\n  23 |     const nodes = results.violations.flatMap((v) => v.nodes.map((n) => `${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`));\n> 24 |     expect(nodes).toEqual([]);\n     |                   ^\n  25 |   });\n  26 | }\n  27 |\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19"
+                    },
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:11:58.299Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-c11c0-ations-in-the-ocean-look-p1-mobile-chrome\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-c11c0-ations-in-the-ocean-look-p1-mobile-chrome\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                    "column": 19,
+                    "line": 24
+                  }
+                },
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 3,
+                  "status": "failed",
+                  "duration": 2079,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.48 (foreground color: #64748b, background color: #f8f8f9, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.48 (foreground color: #64748b, background color: #f8f8f9, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19",
+                    "location": {
+                      "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                      "column": 19,
+                      "line": 24
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 22 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39minclude(\u001b[32m\".ck-drawer\"\u001b[39m)\u001b[33m.\u001b[39mwithRules([\u001b[32m\"color-contrast\"\u001b[39m])\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mconst\u001b[39m nodes \u001b[33m=\u001b[39m results\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mflatMap((v) \u001b[33m=>\u001b[39m v\u001b[33m.\u001b[39mnodes\u001b[33m.\u001b[39mmap((n) \u001b[33m=>\u001b[39m \u001b[32m`${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`\u001b[39m))\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 24 |\u001b[39m     expect(nodes)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 25 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m }\n \u001b[90m 27 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                        "column": 19,
+                        "line": 24
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \".ck-taxes — Element has insufficient color contrast of 4.48 (foreground color: #64748b, background color: #f8f8f9, font size: 8.2pt (10.92px), font weight: normal). Expecte\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  22 |     const results = await new AxeBuilder({ page }).include(\".ck-drawer\").withRules([\"color-contrast\"]).analyze();\n  23 |     const nodes = results.violations.flatMap((v) => v.nodes.map((n) => `${n.target.join(\" \")} — ${(n.any[0]?.message || \"\").slice(0, 160)}`));\n> 24 |     expect(nodes).toEqual([]);\n     |                   ^\n  25 |   });\n  26 | }\n  27 |\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:24:19"
+                    },
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 1,
+                  "startTime": "2026-10-15T19:12:32.115Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-c11c0-ations-in-the-ocean-look-p1-mobile-chrome-retry1\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-05-c11c0-ations-in-the-ocean-look-p1-mobile-chrome-retry1\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                    "column": 19,
+                    "line": 24
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-0292ddb8e4a07b12bf33",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"forest\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2495,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:12:53.443Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-89fa4bc75498453ad284",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"midnight\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 2537,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:12:54.584Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-b93233be0c73268a6648",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"minimal\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1980,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T19:12:56.231Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-824984158449eea21832",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-15T19:11:33.539Z",
+    "duration": 91625.99900000001,
+    "expected": 18,
+    "skipped": 0,
+    "unexpected": 4,
+    "flaky": 0
+  }
+}
