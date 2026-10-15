@@ -65,6 +65,7 @@
 - [ ] Essential plan-এ browser-এ সরাসরি `/app/campaigns/new?type=volume` খুললে Campaigns পেজে ফিরে যায়।
 - [ ] Trial-এ একটি BXGY campaign বানান, তারপর Essential বেছে নিন। Campaign editor read-only (ঝাপসা, Save disabled), উপরে "Needs the Growth plan" banner। Campaigns তালিকায় Deactivate আর Delete কাজ করে, Draft অবস্থায় Activate disabled।
 - [ ] Starter plan-এ Campaigns-এর "Create campaign" button disabled, আর banner-এ লেখা আছে campaign-এর জন্য plan লাগবে।
+- [ ] Starter plan-এ Cart drawer → Style: শুধু "Minimal" বেছে নেওয়া যায়। বাকি look (Aurora, Liquid glass, Sunset, Ocean, Forest, Midnight) ঝাপসা, click করলে কিছু হয় না, lock badge-এ "Essential" লেখা। Trial-এ Aurora বেছে নিয়ে তারপর Starter বেছে নিলে storefront-এর drawer Minimal দেখায়। Colors নিজে বদলানো ("custom") Starter-এও চলে।
 - [ ] Nav → Help: FAQ, Live chat, Email us আর Your requests section Polaris-এর মতো দেখায়। কোনো floating button বা overlay নেই, কিছু নিজে থেকে খোলে না (4.1.1, 4.3.3)।
 - [ ] Help → Email us: খালি form পাঠালে field-এ error দেখায়। ঠিকমতো পাঠালে toast "Message sent", আর "Your requests" table-এ নতুন row আসে।
 - [ ] Help → Live chat: Growth বা trial-এ message পাঠানো যায় আর `/support/inbox`-এ পৌঁছায়। Essential-এ chat-এর কোনো control নেই, শুধু "Growth plan" badge আর "See plans" দেখায়।

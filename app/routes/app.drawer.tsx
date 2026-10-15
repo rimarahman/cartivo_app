@@ -8,18 +8,39 @@ import { DrawerPreview } from "../components/Preview";
 import { Accordion, SettingsLayout, SideCard } from "../components/ui";
 import { useSave } from "../components/useSave";
 import { SaveActions, SaveCard, isDirty } from "../components/SaveActions";
-import { DESIGN_PRESETS, type Design, type Settings } from "../lib/defaults";
+import { DESIGN_PRESETS, FREE_DESIGN_PRESET, type Design, type Settings } from "../lib/defaults";
 
 export const loader = ({ request }: LoaderFunctionArgs) => settingsLoader(request);
 export const action = ({ request }: ActionFunctionArgs) => settingsAction(request, ["drawer", "design", "upsells"]);
 
-function PresetPicker({ design, onPick }: { design: Design; onPick: (id: string) => void }) {
+// Looks the plan doesn't include are greyed out, not clickable and labeled with the plan (BFS 4.3.7).
+function PresetPicker({ design, onPick, allPresets }: { design: Design; onPick: (id: string) => void; allPresets: boolean }) {
   return (
     <div className="ckx-presets">
       {DESIGN_PRESETS.map((p) => {
         const d = { ...design, ...p.design };
         const button =
           d.checkoutStyle === "solid" ? d.accentColor : `linear-gradient(100deg, ${d.gradientFrom}, ${d.gradientTo})`;
+        const swatch = (
+          <span className="ckx-preset-swatch" style={{ background: d.backgroundColor }}>
+            <i style={{ width: "55%", background: d.textColor, opacity: 0.85 }} />
+            <i style={{ width: "80%", background: d.progressBackground }}>
+              <i style={{ width: "65%", height: "100%", background: d.progressColor }} />
+            </i>
+            <i style={{ width: "40%", background: d.mutedColor, opacity: 0.5 }} />
+            <b style={{ background: button }} />
+          </span>
+        );
+        if (!allPresets && p.id !== FREE_DESIGN_PRESET) {
+          return (
+            <div key={p.id} className="ckx-preset ckx-preset-locked" aria-disabled="true" title={`${p.label}: Essential plan and higher`}>
+              {swatch}
+              <span className="ckx-preset-name">
+                {p.label} <s-badge icon="lock">Essential</s-badge>
+              </span>
+            </div>
+          );
+        }
         return (
           <button
             key={p.id}
@@ -28,14 +49,7 @@ function PresetPicker({ design, onPick }: { design: Design; onPick: (id: string)
             aria-pressed={design.preset === p.id}
             onClick={() => onPick(p.id)}
           >
-            <span className="ckx-preset-swatch" style={{ background: d.backgroundColor }}>
-              <i style={{ width: "55%", background: d.textColor, opacity: 0.85 }} />
-              <i style={{ width: "80%", background: d.progressBackground }}>
-                <i style={{ width: "65%", height: "100%", background: d.progressColor }} />
-              </i>
-              <i style={{ width: "40%", background: d.mutedColor, opacity: 0.5 }} />
-              <b style={{ background: button }} />
-            </span>
+            {swatch}
             <span className="ckx-preset-name">{p.label}</span>
           </button>
         );
@@ -45,7 +59,7 @@ function PresetPicker({ design, onPick }: { design: Design; onPick: (id: string)
 }
 
 export default function DrawerSettings() {
-  const { settings } = useLoaderData<typeof loader>();
+  const { settings, plan } = useLoaderData<typeof loader>();
   const [drawer, setDrawer] = useState(settings.drawer);
   const [design, setDesign] = useState(settings.design);
   const [upsells, setUpsells] = useState(settings.upsells);
@@ -105,7 +119,13 @@ export default function DrawerSettings() {
       <Accordion title="Style" icon="paint-brush-round" description="One-click looks, liquid glass and the checkout button">
         <s-stack gap="base">
           <s-paragraph>Pick a look in one click, then fine-tune the colors below if you like.</s-paragraph>
-          <PresetPicker design={design} onPick={pickPreset} />
+          {!plan.features.designPresets && (
+            <s-text color="subdued">
+              Starter includes the Minimal look. The other looks are part of the{" "}
+              <s-link href="/app/pricing">Essential plan</s-link> and higher.
+            </s-text>
+          )}
+          <PresetPicker design={design} onPick={pickPreset} allPresets={plan.features.designPresets} />
           <s-divider />
           <Switch
             label="Liquid glass (iOS style)"

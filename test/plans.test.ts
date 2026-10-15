@@ -3,6 +3,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { PLAN_FEATURES, canUse, planFor, type PlanId, type PlanInfo } from "../app/lib/plans.ts";
+import { DEFAULT_SETTINGS, DESIGN_PRESETS, designForPlan } from "../app/lib/defaults.ts";
 
 const plan = (id: PlanId): PlanInfo => ({
   id,
@@ -42,4 +43,30 @@ test("trial and Premium unlock every type", () => {
       assert.equal(canUse(plan(id), type), true, `${id} / ${type}`);
     }
   }
+});
+
+test("only Starter (and 'no plan selected') lock the design looks", () => {
+  for (const id of ["free", "choose"] as const) assert.equal(PLAN_FEATURES[id].designPresets, false, id);
+  for (const id of ["trial", "basic", "grow", "pro"] as const) assert.equal(PLAN_FEATURES[id].designPresets, true, id);
+});
+
+test("Starter: a locked look is published as Minimal", () => {
+  const aurora = { ...DEFAULT_SETTINGS.design, preset: "aurora" };
+  const out = designForPlan(aurora, false);
+  const minimal = DESIGN_PRESETS.find((p) => p.id === "minimal")!.design;
+  assert.equal(out.preset, "minimal");
+  assert.equal(out.accentColor, minimal.accentColor);
+  assert.equal(out.checkoutStyle, minimal.checkoutStyle);
+});
+
+test("Starter keeps Minimal and fine-tuned ('custom') designs", () => {
+  const custom = { ...DEFAULT_SETTINGS.design, preset: "custom", accentColor: "#123456" };
+  assert.deepEqual(designForPlan(custom, false), custom);
+  const minimal = { ...DEFAULT_SETTINGS.design, preset: "minimal" };
+  assert.deepEqual(designForPlan(minimal, false), minimal);
+});
+
+test("paid plans and the trial keep every look", () => {
+  const sunset = { ...DEFAULT_SETTINGS.design, preset: "sunset" };
+  assert.deepEqual(designForPlan(sunset, true), sunset);
 });

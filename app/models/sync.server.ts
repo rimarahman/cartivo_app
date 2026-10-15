@@ -2,7 +2,7 @@
 // theme app extension) and to the discount Function (metafield on an automatic app discount).
 import db from "../db.server";
 import { getSettings, listCampaigns, type CampaignRecord } from "./store.server";
-import { parseCurrencyAmounts, type ProductRef } from "../lib/defaults";
+import { designForPlan, parseCurrencyAmounts, type ProductRef } from "../lib/defaults";
 import type { PlanInfo } from "../lib/plans";
 import { applyBuyerProtection } from "../lib/storefront-rules";
 
@@ -219,7 +219,9 @@ async function ensureDiscount(admin: Admin, shop: string, config: any) {
 }
 
 export async function syncShop(admin: Admin, shop: string, plan: SyncPlan) {
-  const settings = await getSettings(shop);
+  const stored = await getSettings(shop);
+  // A look the plan doesn't include is published as Minimal (Starter), like plan-gated campaigns.
+  const settings = { ...stored, design: designForPlan(stored.design, plan.features.designPresets) };
   const campaigns = planCampaigns(await listCampaigns(shop), plan);
 
   const { currentAppInstallation, shop: shopInfo } = await gql(

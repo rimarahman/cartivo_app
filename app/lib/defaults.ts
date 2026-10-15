@@ -362,3 +362,12 @@ export function deepMerge<T>(base: T, override: any): T {
 export function uid(prefix = "t") {
   return prefix + Math.random().toString(36).slice(2, 9);
 }
+
+// Starter includes only the Minimal look; every other one-click look is part of Essential and higher
+// (BFS 4.3.7: locked in the editor, refused on save). A look the merchant fine-tuned ("custom") stays theirs.
+export const FREE_DESIGN_PRESET = "minimal";
+export function designForPlan(design: Design, allPresets: boolean): Design {
+  if (allPresets || design.preset === FREE_DESIGN_PRESET || design.preset === "custom") return design;
+  const minimal = DESIGN_PRESETS.find((p) => p.id === FREE_DESIGN_PRESET)!;
+  return { ...design, ...minimal.design, preset: FREE_DESIGN_PRESET };
+}

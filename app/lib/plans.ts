@@ -14,19 +14,20 @@ export type PlanFeatures = {
   markets: boolean; // country targeting, campaign translations, per-currency thresholds
   prioritySupport: boolean;
   liveChat: boolean; // live chat with the support team (email support is in every plan)
+  designPresets: boolean; // every one-click cart look; without it only the Minimal look (Starter)
 };
 
 const ALL_TYPES: CampaignType[] = ["rewards", "announcement", "upsell", "addon", "bxgy", "volume"];
 
 export const PLAN_FEATURES: Record<PlanId, PlanFeatures> = {
-  free: { campaignTypes: [], maxActiveCampaigns: 0, markets: false, prioritySupport: false, liveChat: false },
+  free: { campaignTypes: [], maxActiveCampaigns: 0, markets: false, prioritySupport: false, liveChat: false, designPresets: false },
   // Trial over, no plan picked yet: Starter features until they choose.
-  choose: { campaignTypes: [], maxActiveCampaigns: 0, markets: false, prioritySupport: false, liveChat: false },
-  basic: { campaignTypes: ["rewards", "announcement"], maxActiveCampaigns: 3, markets: false, prioritySupport: false, liveChat: false },
-  grow: { campaignTypes: ["rewards", "announcement", "upsell", "addon", "bxgy"], maxActiveCampaigns: 10, markets: true, prioritySupport: false, liveChat: true },
-  pro: { campaignTypes: ALL_TYPES, maxActiveCampaigns: Infinity, markets: true, prioritySupport: true, liveChat: true },
+  choose: { campaignTypes: [], maxActiveCampaigns: 0, markets: false, prioritySupport: false, liveChat: false, designPresets: false },
+  basic: { campaignTypes: ["rewards", "announcement"], maxActiveCampaigns: 3, markets: false, prioritySupport: false, liveChat: false, designPresets: true },
+  grow: { campaignTypes: ["rewards", "announcement", "upsell", "addon", "bxgy"], maxActiveCampaigns: 10, markets: true, prioritySupport: false, liveChat: true, designPresets: true },
+  pro: { campaignTypes: ALL_TYPES, maxActiveCampaigns: Infinity, markets: true, prioritySupport: true, liveChat: true, designPresets: true },
   // The trial unlocks everything.
-  trial: { campaignTypes: ALL_TYPES, maxActiveCampaigns: Infinity, markets: true, prioritySupport: true, liveChat: true },
+  trial: { campaignTypes: ALL_TYPES, maxActiveCampaigns: Infinity, markets: true, prioritySupport: true, liveChat: true, designPresets: true },
 };
 
 // Billing plan names as configured in shopify.server.ts (also what Shopify shows the merchant).
@@ -35,7 +36,7 @@ export const PAID_PLANS: Record<PaidPlanId, { name: string; price: number; tagli
     name: "Essential",
     price: 10,
     tagline: "Grow order value with goals",
-    features: ["Everything in Starter", "Free shipping & free gift goals", "Announcements & countdown timers", "Up to 3 active campaigns"],
+    features: ["Everything in Starter", "All cart designs", "Free shipping & free gift goals", "Announcements & countdown timers", "Up to 3 active campaigns"],
   },
   grow: {
     name: "Growth",
@@ -64,7 +65,7 @@ export const PAID_PLANS: Record<PaidPlanId, { name: string; price: number; tagli
 // The free Starter plan (also included in every paid plan).
 export const FREE_PLAN = { name: "Starter", tagline: "The essentials, free forever" };
 export const FREE_FEATURES = [
-  "Slide cart drawer",
+  "Slide cart drawer (Minimal design)",
   "Sticky add-to-cart",
   "Floating mini cart",
   "Order notes, discount field, terms checkbox",
