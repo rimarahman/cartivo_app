@@ -3,7 +3,7 @@ import type {
   HeadersFunction,
   LoaderFunctionArgs,
 } from "react-router";
-import { useFetcher, useLoaderData } from "react-router";
+import { Link, useFetcher, useLoaderData } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
 import db from "../db.server";
@@ -151,38 +151,44 @@ export default function Dashboard() {
       {errorBanner}
 
       {/* No trial or plan banner (BFS 4.3.4/4.3.6): the trial days left are in the Plan card, and the app embed
-          status in the Status card. */}
+          status in the Status hero below. */}
 
-      <s-section heading="Status">
-        <s-stack gap="base">
-          <s-stack direction="inline" gap="small-200" alignItems="center">
-            {embed === null ? (
-              <s-badge>Checking your theme…</s-badge>
-            ) : live ? (
-              <s-badge tone="success" icon="check-circle">
-                Live on your store
-              </s-badge>
-            ) : (
-              <s-badge tone="warning" icon="alert-triangle">
-                App embed is off
-              </s-badge>
-            )}
-          </s-stack>
-          <s-paragraph>
-            {live
-              ? "Your cart drawer, goals, upsells and sticky add-to-cart are showing on your store. Fine-tune them anytime."
-              : "Turn on the Cartivo app embed in your theme editor so the cart drawer shows on your store."}
-          </s-paragraph>
-          <s-stack direction="inline" gap="small-200">
-            {embed === false && (
-              <s-button href={editorUrl} target="_blank" variant="primary">
-                Turn on in theme editor
-              </s-button>
-            )}
-            <s-button href="/app/drawer">Customize cart</s-button>
-            <s-button href="/app/campaigns">Campaigns</s-button>
-          </s-stack>
-        </s-stack>
+      {/* Status hero, same look as before the BFS pass. Copy stays factual (no outcome claims, BFS 4.3.1) and the
+          status dot doesn't pulse (BFS 4.3.3). */}
+      <s-section padding="none">
+        <div className="ckx-hero">
+          <div>
+            <span className={`ckx-status${live ? " ckx-live" : ""}`}>
+              {embed === null ? "Checking your theme…" : live ? "Live on your store" : "App embed is off"}
+            </span>
+            <h2>{live ? "Cartivo is live on your store" : "Welcome to Cartivo"}</h2>
+            <p>
+              {live
+                ? "Your cart drawer, goals, upsells and sticky add-to-cart are showing on your store. Fine-tune them anytime."
+                : "Turn on the Cartivo app embed in your theme editor so the cart drawer shows on your store."}
+            </p>
+            <div className="ckx-hero-actions">
+              {embed === false && (
+                <a className="ckx-hero-btn ckx-solid" href={editorUrl} target="_blank" rel="noreferrer">
+                  Turn on in theme editor ↗
+                </a>
+              )}
+              <Link className={`ckx-hero-btn${live ? " ckx-solid" : ""}`} to="/app/drawer">
+                Customize cart
+              </Link>
+              <Link className="ckx-hero-btn" to="/app/campaigns">
+                Campaigns
+              </Link>
+            </div>
+          </div>
+          <div className="ckx-hero-art" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+          </div>
+        </div>
       </s-section>
 
       {!setupHidden && (
