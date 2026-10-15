@@ -7,7 +7,7 @@ import { StatCard } from "../components/ui";
 
 const EVENT_LABELS: Record<string, string> = {
   drawer_open: "Cart drawer opens",
-  item_add: "Products added (via CartKit)",
+  item_add: "Products added (via Cartivo)",
   upsell_add: "Upsells added",
   gift_added: "Free gifts unlocked",
   bxgy_added: "Buy X Get Y items added",

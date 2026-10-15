@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "fbeacb55d88c763e6b36e9c52600d1d9"
-name = "Cartivo – Smart Cart & Upsells"
+name = "Cartivo"
 application_url = "https://cartivo-app.onrender.com"
 embedded = true
 
@@ -9,7 +9,7 @@ embedded = true
 automatically_update_urls_on_dev = true
 
 [webhooks]
-api_version = "2027-01"
+api_version = "2026-10"
 
   [[webhooks.subscriptions]]
   uri = "/webhooks/compliance"

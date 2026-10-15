@@ -1,4 +1,4 @@
-/* CartKit storefront: slide cart drawer, cart goals & free gifts, upsells, sticky add-to-cart,
+/* Cartivo storefront: slide cart drawer, cart goals & free gifts, upsells, sticky add-to-cart,
    floating cart, announcements & timers. Configuration comes from the app embed (cartkit-embed.liquid). */
 (function () {
   "use strict";
@@ -349,7 +349,7 @@
         .then(step);
     }
     return step()
-      .catch(function (e) { console.warn("CartKit:", e); })
+      .catch(function (e) { console.warn("Cartivo:", e); })
       .then(function () { reconciling = false; });
   }
 
@@ -1019,7 +1019,7 @@
         emit("cart:updated", cart);
         return cart;
       })
-      .catch(function (e) { console.warn("CartKit:", e); })
+      .catch(function (e) { console.warn("Cartivo:", e); })
       .then(function (c) { refreshing = null; return c; });
     return refreshing;
   }
@@ -1317,7 +1317,8 @@
     buildSticky();
     renderVolumeTables();
     render();
-    setInterval(updateTimers, 1000);
+    // Tick only when a countdown is on, instead of querying the page every second for nothing.
+    if (campaignsOf("announcement").some(function (c) { return c.config.timerEnabled; })) setInterval(updateTimers, 1000);
     setInterval(rotateAnnouncements, Math.max(2, Number((campaignsOf("announcement")[0] || { config: {} }).config.rotateSeconds) || 4) * 1000);
     refresh();
     window.addEventListener("pageshow", function (e) { if (e.persisted) refresh(); });
@@ -1326,15 +1327,17 @@
 
     if (S.advanced.customJs) {
       try {
-        new Function("CartKit", S.advanced.customJs)(window.CartKit);
+        // Custom code gets the API as `Cartivo`, and as `CartKit` for code written before the rename.
+        new Function("Cartivo", "CartKit", S.advanced.customJs)(window.Cartivo, window.Cartivo);
       } catch (e) {
-        console.error("CartKit custom JS error:", e);
+        console.error("Cartivo custom JS error:", e);
       }
     }
     emit("ready", cart);
   }
 
-  window.CartKit = {
+  // Public storefront API. `CartKit` is the pre-rename name, kept so existing custom code keeps working.
+  window.Cartivo = window.CartKit = {
     __loaded: true,
     open: open,
     close: close,

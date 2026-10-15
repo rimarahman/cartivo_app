@@ -1,4 +1,4 @@
-/* CartKit storefront styles. All selectors are prefixed with .ck- to avoid theme conflicts. */
+/* Cartivo storefront styles. All selectors are prefixed with .ck- to avoid theme conflicts. */
 html.ck-locked { overflow: hidden; }
 html.ck-hide-theme-cart cart-drawer,
 html.ck-hide-theme-cart cart-notification,

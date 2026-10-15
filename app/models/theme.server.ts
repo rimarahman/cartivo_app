@@ -1,4 +1,4 @@
-// Reads the live theme to tell whether the CartKit app embed is turned on.
+// Reads the live theme to tell whether the Cartivo app embed is turned on.
 type Admin = { graphql: (query: string, options?: any) => Promise<Response> };
 
 export const EMBED_HANDLE = "cartkit-embed";

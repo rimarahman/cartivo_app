@@ -178,7 +178,7 @@ async function ensureDiscount(admin: Admin, shop: string, config: any) {
   }
 
   const base = {
-    title: "CartKit rewards",
+    title: "Cartivo rewards",
     discountClasses: ["PRODUCT", "ORDER", "SHIPPING"],
     startsAt: new Date().toISOString(),
     combinesWith: { orderDiscounts: true, productDiscounts: true, shippingDiscounts: true },
@@ -272,7 +272,7 @@ export async function trySync(admin: Admin, shop: string, plan: SyncPlan) {
     await syncShop(admin, shop, plan);
     return { ok: true as const, error: null };
   } catch (e: any) {
-    console.error("CartKit sync failed", e);
+    console.error("Cartivo sync failed", e);
     return { ok: false as const, error: String(e?.message || e) };
   }
 }

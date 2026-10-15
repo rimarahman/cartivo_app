@@ -137,7 +137,7 @@ export default function DrawerSettings() {
           <Switch label="Open the drawer when a product is added to cart" {...d("openOnAdd")} />
           <Switch
             label="Open the drawer when the cart icon is clicked"
-            details="Replaces your theme's cart page/drawer with CartKit."
+            details="Replaces your theme's cart page/drawer with Cartivo."
             {...d("interceptCartLinks")}
           />
           <Grid>
@@ -216,9 +216,9 @@ export default function DrawerSettings() {
             <Grid>
               <Select
                 label="Source"
-                details="Automatic uses Shopify's AI product recommendations. Manual uses your upsell campaigns."
+                details="Automatic uses Shopify's product recommendations. Manual uses your upsell campaigns."
                 options={[
-                  { label: "Automatic (AI recommendations)", value: "auto" },
+                  { label: "Automatic (Shopify recommendations)", value: "auto" },
                   { label: "Manual (upsell campaigns)", value: "manual" },
                   { label: "Manual first, then automatic", value: "both" },
                 ]}

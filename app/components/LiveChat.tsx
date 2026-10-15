@@ -1,4 +1,4 @@
-// Live chat with the CartKit team inside the Help panel. Polls /app/chat: every few seconds while the chat
+// Live chat with the Cartivo team inside the Help panel. Polls /app/chat: every few seconds while the chat
 // is on screen, slowly otherwise (for the unread badge on the Help button).
 import { useEffect, useRef, useState } from "react";
 import { Link, useFetcher } from "react-router";
@@ -101,7 +101,7 @@ export function LiveChat({ chat, onEmail, onNavigate }: { chat: ReturnType<typeo
       <div className="ckx-chat-locked">
         <span className="ckx-chat-locked-icon" aria-hidden="true">💬</span>
         <strong>Live chat is part of Growth and Premium</strong>
-        <p>Chat with the CartKit team in real time. Email support stays free on every plan.</p>
+        <p>Chat with the Cartivo team in real time. Email support stays free on every plan.</p>
         <Link to="/app/pricing" className="ckx-chat-locked-cta" onClick={onNavigate}>
           See plans
         </Link>
@@ -121,13 +121,13 @@ export function LiveChat({ chat, onEmail, onNavigate }: { chat: ReturnType<typeo
       </div>
       <div className="ckx-chat-list" ref={listRef} aria-live="polite">
         <div className="ckx-chat-msg ckx-them">
-          <div className="ckx-chat-bubble">Hi! 👋 Ask us anything about CartKit: setup, your theme, campaigns or billing.</div>
+          <div className="ckx-chat-bubble">Hi! 👋 Ask us anything about Cartivo: setup, your theme, campaigns or billing.</div>
         </div>
         {chat.messages.map((m) => (
           <div key={m.id} className={`ckx-chat-msg ckx-${m.sender === "merchant" ? "me" : "them"}`}>
             <div className="ckx-chat-bubble">{m.body}</div>
             <span className="ckx-chat-time">
-              {m.sender === "agent" ? "CartKit team · " : ""}
+              {m.sender === "agent" ? "Cartivo team · " : ""}
               {time(m.createdAt)}
             </span>
           </div>

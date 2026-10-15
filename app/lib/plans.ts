@@ -67,7 +67,7 @@ export const FREE_FEATURES = [
   "Sticky add-to-cart",
   "Floating mini cart",
   "Order notes, discount field, terms checkbox",
-  "AI product recommendations",
+  "Automatic product recommendations",
   "Custom CSS / HTML / JS",
 ];
 

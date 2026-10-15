@@ -20,7 +20,7 @@ const QUICK_LINKS = [
 const FAQ = [
   {
     q: "The cart drawer doesn't appear on my store",
-    a: "Open the theme editor → App embeds and turn on “CartKit cart drawer”, then save. Check that the drawer is enabled on the Cart drawer page and that the page isn't listed under “Disable on these URL paths”.",
+    a: "Open the theme editor → App embeds and turn on “Cartivo cart drawer”, then save. Check that the drawer is enabled on the Cart drawer page and that the page isn't listed under “Disable on these URL paths”.",
   },
   {
     q: "Clicking my theme's cart icon still goes to the cart page",
@@ -32,15 +32,15 @@ const FAQ = [
   },
   {
     q: "Gift or volume prices aren't discounted at checkout",
-    a: "CartKit creates an automatic discount called “CartKit rewards”. Make sure it's active under Discounts in your Shopify admin and that your other discounts can combine with it.",
+    a: "Cartivo creates an automatic discount called “Cartivo rewards”. Make sure it's active under Discounts in your Shopify admin and that your other discounts can combine with it.",
   },
   {
     q: "How do I translate the cart for other languages or markets?",
     a: "Translate the drawer texts under Custom code & languages → Languages. Each campaign has its own Translations and Markets sections for per-country messages, products and currency thresholds.",
   },
   {
-    q: "What happens if I uninstall CartKit?",
-    a: "The cart drawer disappears from your theme automatically and no code is left behind. Your CartKit settings, campaigns and support requests are deleted.",
+    q: "What happens if I uninstall Cartivo?",
+    a: "The cart drawer disappears from your theme automatically and no code is left behind. 48 hours after you uninstall, Shopify asks us to erase your store's data, and Cartivo then deletes your settings, campaigns, analytics, chat and support requests. If you reinstall before then, everything is still there.",
   },
 ];
 
@@ -128,7 +128,7 @@ export function SupportWidget() {
         tabIndex={-1}
         role="dialog"
         aria-modal="true"
-        aria-label="CartKit support"
+        aria-label="Cartivo support"
         aria-hidden={!open}
         className={`ckx-help-panel${open ? " ckx-open" : ""}`}
       >
@@ -167,7 +167,7 @@ export function SupportWidget() {
                   <s-icon type="alert-circle" tone="caution" />
                   <span>
                     {info.enabled === false
-                      ? "The CartKit app embed is off in your live theme, so the cart won't show. "
+                      ? "The Cartivo app embed is off in your live theme, so the cart won't show. "
                       : "We couldn't check your theme's app embed. "}
                     <Link to="/app" onClick={() => setOpen(false)}>
                       Open setup guide

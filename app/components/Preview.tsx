@@ -167,7 +167,7 @@ export function DrawerPreview({ settings }: { settings: Partial3 }) {
                   <img src={item.image} alt="" />
                 </a>
                 <div className="ck-item-info">
-                  {d.showVendor && <div className="ck-vendor">CartKit Co.</div>}
+                  {d.showVendor && <div className="ck-vendor">Cartivo Co.</div>}
                   <a className="ck-item-title" href="#preview">
                     {item.title}
                   </a>

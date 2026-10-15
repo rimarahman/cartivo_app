@@ -1,4 +1,4 @@
-// Mandatory privacy webhooks. CartKit stores no customer data; shop/redact deletes all shop data.
+// Mandatory privacy webhooks. Cartivo stores no customer data; shop/redact deletes all shop data.
 import type { ActionFunctionArgs } from "react-router";
 import { authenticate } from "../shopify.server";
 import { deleteShopData } from "../models/store.server";

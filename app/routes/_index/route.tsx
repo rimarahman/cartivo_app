@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs } from "react-router";
 import { redirect, Form, useLoaderData } from "react-router";
 
 import { login } from "../../shopify.server";
+import { manualLoginAllowed } from "../auth.login/manual.server";
 
 import styles from "./styles.module.css";
 
@@ -12,7 +13,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     throw redirect(`/app?${url.searchParams.toString()}`);
   }
 
-  return { showForm: Boolean(login) };
+  // App Store requirement 2.3.1: merchants install and open the app from Shopify, never by typing a shop domain.
+  return { showForm: Boolean(login) && manualLoginAllowed() };
 };
 
 export default function App() {
@@ -21,11 +23,11 @@ export default function App() {
   return (
     <div className={styles.index}>
       <div className={styles.content}>
-        <h1 className={styles.heading}>CartKit – Cart Drawer &amp; Free Gift</h1>
+        <h1 className={styles.heading}>Cartivo – Smart Cart &amp; Upsells</h1>
         <p className={styles.text}>
-          A slide cart with free gifts, cart goals and upsells that raises your average order value.
+          A slide cart with free gifts, cart goals and upsells for your Shopify store.
         </p>
-        {showForm && (
+        {showForm ? (
           <Form className={styles.form} method="post" action="/auth/login">
             <label className={styles.label}>
               <span>Shop domain</span>
@@ -36,6 +38,10 @@ export default function App() {
               Log in
             </button>
           </Form>
+        ) : (
+          <p className={styles.text}>
+            Install Cartivo from the Shopify App Store, then open it from the Apps section of your Shopify admin.
+          </p>
         )}
         <ul className={styles.list}>
           <li>
@@ -47,8 +53,8 @@ export default function App() {
             bar that unlocks free shipping, gifts and discounts.
           </li>
           <li>
-            <strong>Upsells &amp; promotions</strong>. AI recommendations, Buy X
-            Get Y, volume discounts, timers and one-click add-ons.
+            <strong>Upsells &amp; promotions</strong>. Product recommendations,
+            Buy X Get Y, volume discounts, countdowns and one-click add-ons.
           </li>
         </ul>
       </div>

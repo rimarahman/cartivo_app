@@ -92,8 +92,8 @@ export default function Dashboard() {
   const steps = [
     {
       done: live,
-      title: "Turn on the CartKit app embed",
-      text: "Theme editor → App embeds → CartKit cart drawer → Save.",
+      title: "Turn on the Cartivo app embed",
+      text: "Theme editor → App embeds → Cartivo cart drawer → Save.",
       action: (
         <s-button
           href={editorUrl}
@@ -161,7 +161,7 @@ export default function Dashboard() {
             <h2>
               {live
                 ? "Your cart is working hard for you"
-                : "Welcome to CartKit"}
+                : "Welcome to Cartivo"}
             </h2>
             <p>
               {live
@@ -217,7 +217,7 @@ export default function Dashboard() {
           heading="Cart drawer is not enabled on your theme"
         >
           <s-paragraph>
-            Turn on the CartKit app embed in your theme editor to show the cart
+            Turn on the Cartivo app embed in your theme editor to show the cart
             drawer on your store.
           </s-paragraph>
           <s-button href={editorUrl} target="_blank" variant="primary">
