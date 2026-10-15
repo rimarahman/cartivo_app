@@ -1,0 +1,33 @@
+{%- comment -%}
+  Product page block: shows the quantity-break table of an active CartKit volume discount.
+  Rendered by cartkit.js (requires the CartKit app embed to be enabled).
+{%- endcomment -%}
+{%- if product -%}
+  <div
+    class="ck-volume-table"
+    data-product-id="{{ product.id }}"
+    data-price="{{ product.selected_or_first_available_variant.price }}"
+    data-show-each="{{ block.settings.show_each_price }}"
+    data-best-label="{% if block.settings.highlight_best %}{{ block.settings.best_label | escape }}{% endif %}"
+    style="--ck-vt-accent: {{ block.settings.accent_color }};"
+    {{ block.shopify_attributes }}
+  ></div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:volume.name",
+  "target": "section",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows the tiers of your active CartKit volume discount. Create one under Campaigns in the CartKit app."
+    },
+    { "type": "color", "id": "accent_color", "label": "Highlight color", "default": "#16a34a" },
+    { "type": "checkbox", "id": "show_each_price", "label": "Show price per item", "default": true },
+    { "type": "checkbox", "id": "highlight_best", "label": "Highlight the best deal", "default": true },
+    { "type": "text", "id": "best_label", "label": "Best deal label", "default": "Best value" }
+  ]
+}
+{% endschema %}

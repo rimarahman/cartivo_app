@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
+// enough when changing adapters.
+// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+// Global cart drawer / sticky cart / design settings for a shop (JSON blob)
+model ShopSettings {
+  shop       String   @id
+  data       String
+  discountId String?
+  updatedAt  DateTime @updatedAt
+}
+
+// Promotions: rewards (free gift / free shipping tiers), bxgy, volume, announcement, upsell, addon
+model Campaign {
+  id        String    @id @default(cuid())
+  shop      String
+  type      String
+  name      String
+  status    String    @default("draft")
+  priority  Int       @default(0)
+  config    String
+  startsAt  DateTime?
+  endsAt    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([shop])
+}
+
+// Storefront analytics events received through the app proxy
+model Event {
+  id         Int      @id @default(autoincrement())
+  shop       String
+  type       String
+  campaignId String?
+  value      Float?
+  createdAt  DateTime @default(now())
+
+  @@index([shop, createdAt])
+}
+
+// Support requests sent by merchants from the Support page
+model SupportTicket {
+  id          String   @id @default(cuid())
+  shop        String
+  email       String
+  category    String
+  subject     String
+  message     String
+  diagnostics String?
+  status      String   @default("open")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([shop, createdAt])
+}
+
+// Live chat between a store and the CartKit support team (one thread per shop)
+model ChatMessage {
+  id        String    @id @default(cuid())
+  shop      String
+  sender    String // "merchant" | "agent"
+  body      String
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([shop, createdAt])
+}
+
+// Last time a support agent had the inbox open (drives the Online / Away status)
+model SupportPresence {
+  id       String   @id
+  lastSeen DateTime
+}
+
+// When the shop's 7-day all-features trial started. Kept on uninstall so the trial can't restart.
+model ShopTrial {
+  shop         String    @id
+  startedAt    DateTime  @default(now())
+  freeChosenAt DateTime? // set when the merchant picks the Free plan after the trial
+}

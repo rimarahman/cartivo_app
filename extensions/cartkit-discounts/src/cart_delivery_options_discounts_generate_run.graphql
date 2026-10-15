@@ -1,0 +1,43 @@
+query DeliveryInput {
+  presentmentCurrencyRate
+  localization {
+    country {
+      isoCode
+    }
+    language {
+      isoCode
+    }
+  }
+  shop {
+    localTime {
+      date
+    }
+  }
+  cart {
+    cost {
+      subtotalAmount {
+        currencyCode
+      }
+    }
+    lines {
+      quantity
+      cost {
+        subtotalAmount {
+          amount
+        }
+      }
+      gift: attribute(key: "_cartkit_gift") {
+        value
+      }
+    }
+    deliveryGroups {
+      id
+    }
+  }
+  discount {
+    discountClasses
+    metafield(namespace: "$app:cartkit", key: "function-configuration") {
+      jsonValue
+    }
+  }
+}

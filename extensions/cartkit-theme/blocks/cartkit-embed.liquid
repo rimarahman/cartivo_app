@@ -1,0 +1,44 @@
+{%- comment -%}
+  App embed: loads CartKit (cart drawer, sticky add-to-cart, floating cart) on every page.
+  Settings and campaigns are managed in the CartKit app and stored in an app-data metafield.
+{%- endcomment -%}
+{%- assign ck_config = app.metafields.cartkit.config.value -%}
+{%- if ck_config -%}
+  {{ 'cartkit.css' | asset_url | stylesheet_tag }}
+  <script id="cartkit-config" type="application/json">{{ ck_config | json }}</script>
+  <script id="cartkit-context" type="application/json">
+    {
+      "moneyFormat": {{ shop.money_format | json }},
+      "locale": {{ request.locale.iso_code | json }},
+      "country": {{ localization.country.iso_code | json }},
+      "language": {{ localization.language.iso_code | json }},
+      "rootUrl": {{ routes.root_url | json }},
+      "template": {{ template.name | json }},
+      "designMode": {{ request.design_mode | json }},
+      "previewDrawer": {{ block.settings.preview_drawer | json }},
+      "cart": {{ cart | json }},
+      "product": {% if template.name == 'product' and product %}{{ product | json }}{% else %}null{% endif %}
+    }
+  </script>
+  <script src="{{ 'cartkit.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:embed.name",
+  "target": "body",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Colors, texts, campaigns and the sticky add-to-cart are set up in the CartKit app."
+    },
+    {
+      "type": "checkbox",
+      "id": "preview_drawer",
+      "label": "Preview the cart drawer in the theme editor",
+      "info": "Opens the drawer while you edit your theme. Shoppers never see this.",
+      "default": false
+    }
+  ]
+}
+{% endschema %}
