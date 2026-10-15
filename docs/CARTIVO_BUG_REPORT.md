@@ -91,7 +91,7 @@ OBS-4 below is corrected: support tickets are limited to 5 per hour per shop (ve
 - **Evidence:** axe `link-name` violation (3 nodes) in `A11Y-04`. The upsell image links always had `alt=""`; cart lines without an image produced empty links.
 - **Fix:** The image links duplicate the title link next to them, so they are now `aria-hidden="true" tabindex="-1"`.
 
-## BUG-08 — Colour contrast (open)
+## BUG-08 — Colour contrast (fixed in the second pass)
 
 - **Evidence:** axe `color-contrast`, serious:
   - `#16a34a` on `#e3f4e9`: 2.88:1 (discount badge, BXGY promo line);
