@@ -93,7 +93,7 @@ const FAQ = [
   },
   {
     q: "How do I translate the cart for other languages or markets?",
-    a: "Translate the drawer texts under Custom code & languages → Languages. Each campaign has its own Translations and Markets sections for per-country messages, products and currency thresholds.",
+    a: "On the Growth plan and higher, translate the drawer texts under Custom code & languages → Languages. Each campaign has its own Translations and Markets sections for per-country messages, products and currency thresholds.",
   },
   {
     q: "What happens if I uninstall Cartivo?",

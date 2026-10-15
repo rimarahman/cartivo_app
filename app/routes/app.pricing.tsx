@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Form, redirect, useActionData, useLoaderData, useNavigation, useSubmit } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
-import { billingDisabled, chooseFree, getPlan, isTestBilling, paidPlanName } from "../models/billing.server";
+import { billingDisabled, chooseFree, devPlan, getPlan, isTestBilling, paidPlanName } from "../models/billing.server";
 import { trySync } from "../models/sync.server";
 import { ErrorBanner } from "../components/ErrorBanner";
 import { FREE_FEATURES, FREE_PLAN, PAID_PLANS, PLAN_ORDER, TRIAL_DAYS, type PaidPlanId } from "../lib/plans";
@@ -13,7 +13,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const plan = await getPlan(billing, session.shop, admin);
   // Returning from the billing confirmation page: publish the new plan's campaigns right away.
   if (new URL(request.url).searchParams.get("upgraded")) await trySync(admin, session.shop, plan);
-  return { plan, billingDisabled: billingDisabled() };
+  return { plan, billingDisabled: billingDisabled(), devPlan: devPlan() };
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -58,7 +58,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Pricing() {
-  const { plan, billingDisabled } = useLoaderData<typeof loader>();
+  const { plan, billingDisabled, devPlan } = useLoaderData<typeof loader>();
   const result = useActionData<typeof action>();
   // Billing errors stay until dismissed (BFS 4.2.4); a new result brings the banner back.
   const [dismissed, setDismissed] = useState<unknown>(null);
@@ -107,7 +107,7 @@ export default function Pricing() {
     return (
       <Form method="post">
         <input type="hidden" name="intent" value="free" />
-        <s-button type="submit" {...(busy("free") ? { loading: true } : {})} {...(billingDisabled ? { disabled: true } : {})}>
+        <s-button type="submit" {...(busy("free") ? { loading: true } : {})} {...(billingDisabled || devPlan ? { disabled: true } : {})}>
           {label}
         </s-button>
       </Form>
@@ -128,7 +128,7 @@ export default function Pricing() {
         <s-button
           type="submit"
           variant={id === "grow" ? "primary" : "secondary"}
-          {...(billingDisabled ? { disabled: true } : {})}
+          {...(billingDisabled || devPlan ? { disabled: true } : {})}
           {...(busy(id) ? { loading: true } : {})}
         >
           {label}
@@ -140,19 +140,25 @@ export default function Pricing() {
   return (
     <s-page heading="Plans">
       {error && <ErrorBanner message={error} onDismiss={() => setDismissed(result)} />}
+      {devPlan && !billingDisabled && (
+        <s-banner tone="info">
+          Development: the app runs as {plan.name} (DEV_PLAN={devPlan} in .env), so no Shopify charge is needed. Remove
+          DEV_PLAN to test real billing.
+        </s-banner>
+      )}
       {billingDisabled && (
         <s-banner tone="info">Billing is disabled (BILLING_DISABLED=true), so every feature is unlocked.</s-banner>
       )}
-      {!billingDisabled && plan.id === "trial" && (
+      {!billingDisabled && !devPlan && plan.id === "trial" && (
         <s-banner tone="info" heading={`Free trial: ${plan.trialDaysLeft} day${plan.trialDaysLeft === 1 ? "" : "s"} left`}>
           Every feature is unlocked for your first {TRIAL_DAYS} days. When the trial ends you&apos;ll pick a plan here:
           Starter (free), Essential, Growth or Premium.
         </s-banner>
       )}
-      {!billingDisabled && plan.id === "choose" && (
+      {!billingDisabled && !devPlan && plan.id === "choose" && (
         <s-banner tone="warning" heading="Your 7-day free trial has ended">
-          Choose a plan to continue. Starter (free) keeps your cart drawer, sticky add-to-cart and floating cart; paid plans add
-          campaigns. Your settings and campaigns are saved.
+          Choose a plan to continue. Starter (free) keeps your cart drawer; paid plans add sticky add-to-cart, the floating
+          cart and campaigns. Your settings and campaigns are saved.
         </s-banner>
       )}
 
@@ -166,7 +172,8 @@ export default function Pricing() {
       {paid && (
         <s-modal id="downgrade-modal" heading={`Switch to ${FREE_PLAN.name}?`}>
           <s-paragraph>
-            Your {plan.name} subscription is cancelled and your campaigns stop showing on your store. Your settings and
+            Your {plan.name} subscription is cancelled. Your campaigns, sticky add-to-cart, floating cart, custom code and
+            translations stop showing on your store, and the cart drawer switches to the Minimal look. Your settings and
             campaigns are kept, so you can pick a paid plan again anytime.
           </s-paragraph>
           <s-button slot="secondary-actions" commandFor="downgrade-modal" command="--hide">
@@ -194,6 +201,16 @@ export default function Pricing() {
           <s-paragraph>
             <s-text type="strong">Can I change plans later?</s-text> Yes, anytime. Shopify prorates the difference and bills you
             with your Shopify invoice.
+          </s-paragraph>
+          <s-paragraph>
+            <s-text type="strong">Which cart designs come with each plan?</s-text> Starter has the Minimal look. Essential adds
+            Ocean and Forest, Growth adds Sunset and Midnight, and Premium adds Aurora and Liquid glass. On every plan you can
+            fine-tune the colors of your look.
+          </s-paragraph>
+          <s-paragraph>
+            <s-text type="strong">What happens if I move to a lower plan?</s-text> Nothing is deleted. Features your new plan
+            doesn&apos;t include stop showing on your store, and a cart design above your plan switches to Minimal. Choose a
+            higher plan again and they come back.
           </s-paragraph>
         </s-stack>
       </s-section>

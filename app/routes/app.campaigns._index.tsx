@@ -76,7 +76,7 @@ export default function Campaigns() {
       {plan.id === "free" && (
         <s-banner tone="info" heading="Campaigns are part of the paid plans">
           <s-paragraph>
-            Starter includes the cart drawer, sticky add-to-cart and floating cart. To create campaigns,{" "}
+            Starter includes the cart drawer. To create campaigns,{" "}
             <s-link href="/app/pricing">choose a plan</s-link> (from $10/month).
           </s-paragraph>
         </s-banner>

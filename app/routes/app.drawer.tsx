@@ -5,16 +5,17 @@ import { boundary } from "@shopify/shopify-app-react-router/server";
 import { settingsAction, settingsLoader } from "../models/actions.server";
 import { Checkbox, ColorField, Grid, NumberField, Select, Switch, TextField } from "../components/fields";
 import { DrawerPreview } from "../components/Preview";
-import { Accordion, SettingsLayout, SideCard } from "../components/ui";
+import { Accordion, Locked, SettingsLayout, SideCard } from "../components/ui";
 import { useSave } from "../components/useSave";
 import { SaveActions, SaveCard, isDirty } from "../components/SaveActions";
-import { DESIGN_PRESETS, FREE_DESIGN_PRESET, type Design, type Settings } from "../lib/defaults";
+import { DESIGN_PRESETS, GLASS_TIER, type Design, type DesignTier, type Settings } from "../lib/defaults";
+import { designTierPlan } from "../lib/plans";
 
 export const loader = ({ request }: LoaderFunctionArgs) => settingsLoader(request);
 export const action = ({ request }: ActionFunctionArgs) => settingsAction(request, ["drawer", "design", "upsells"]);
 
 // Looks the plan doesn't include are greyed out, not clickable and labeled with the plan (BFS 4.3.7).
-function PresetPicker({ design, onPick, allPresets }: { design: Design; onPick: (id: string) => void; allPresets: boolean }) {
+function PresetPicker({ design, onPick, tier }: { design: Design; onPick: (id: string) => void; tier: DesignTier }) {
   return (
     <div className="ckx-presets">
       {DESIGN_PRESETS.map((p) => {
@@ -31,12 +32,12 @@ function PresetPicker({ design, onPick, allPresets }: { design: Design; onPick: 
             <b style={{ background: button }} />
           </span>
         );
-        if (!allPresets && p.id !== FREE_DESIGN_PRESET) {
+        if (p.tier > tier) {
           return (
-            <div key={p.id} className="ckx-preset ckx-preset-locked" aria-disabled="true" title={`${p.label}: Essential plan and higher`}>
+            <div key={p.id} className="ckx-preset ckx-preset-locked" aria-disabled="true" title={`${p.label}: ${designTierPlan(p.tier)} plan and higher`}>
               {swatch}
               <span className="ckx-preset-name">
-                {p.label} <s-badge icon="lock">Essential</s-badge>
+                {p.label} <s-badge icon="lock">{designTierPlan(p.tier)}</s-badge>
               </span>
             </div>
           );
@@ -119,19 +120,25 @@ export default function DrawerSettings() {
       <Accordion title="Style" icon="paint-brush-round" description="One-click looks, liquid glass and the checkout button">
         <s-stack gap="base">
           <s-paragraph>Pick a look in one click, then fine-tune the colors below if you like.</s-paragraph>
-          {!plan.features.designPresets && (
+          {plan.features.designTier < 3 && (
             <s-text color="subdued">
-              Starter includes the Minimal look. The other looks are part of the{" "}
-              <s-link href="/app/pricing">Essential plan</s-link> and higher.
+              Each plan adds more looks: Essential 3, Growth 5, Premium all of them with liquid glass.{" "}
+              <s-link href="/app/pricing">See plans</s-link>
             </s-text>
           )}
-          <PresetPicker design={design} onPick={pickPreset} allPresets={plan.features.designPresets} />
+          <PresetPicker design={design} onPick={pickPreset} tier={plan.features.designTier} />
           <s-divider />
-          <Switch
-            label="Liquid glass (iOS style)"
-            details="Frosted, translucent drawer floating over your store, with a glossy pill checkout button."
-            {...ds("glass")}
-          />
+          <Locked locked={plan.features.designTier < GLASS_TIER}>
+            <Switch
+              label="Liquid glass (iOS style)"
+              details={
+                plan.features.designTier < GLASS_TIER
+                  ? `Part of the ${designTierPlan(GLASS_TIER)} plan.`
+                  : "Frosted, translucent drawer floating over your store, with a glossy pill checkout button."
+              }
+              {...ds("glass")}
+            />
+          </Locked>
           <Grid>
             <Select
               label="Checkout button"

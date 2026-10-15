@@ -1,5 +1,5 @@
 // Plan catalog shared by the server (gating, billing) and the admin UI (pricing page, upgrade hints).
-import type { CampaignType } from "./defaults";
+import type { CampaignType, DesignTier } from "./defaults";
 
 // Every feature is unlocked for the first 7 days. After that the merchant must pick a plan on the Plans page:
 // Starter (free), Essential, Growth or Premium ("choose" until they do). Paid plans have no trial of their own.
@@ -14,20 +14,23 @@ export type PlanFeatures = {
   markets: boolean; // country targeting, campaign translations, per-currency thresholds
   prioritySupport: boolean;
   liveChat: boolean; // live chat with the support team (email support is in every plan)
-  designPresets: boolean; // every one-click cart look; without it only the Minimal look (Starter)
+  designTier: DesignTier; // one-click cart looks up to this tier (see DESIGN_PRESETS): Starter only Minimal, Premium all
+  stickyCart: boolean; // sticky add-to-cart bar and floating cart button (Essential and higher)
+  customCss: boolean; // custom CSS (Essential and higher)
+  customCode: boolean; // custom HTML and JavaScript in the drawer (Growth and higher)
 };
 
 const ALL_TYPES: CampaignType[] = ["rewards", "announcement", "upsell", "addon", "bxgy", "volume"];
 
 export const PLAN_FEATURES: Record<PlanId, PlanFeatures> = {
-  free: { campaignTypes: [], maxActiveCampaigns: 0, markets: false, prioritySupport: false, liveChat: false, designPresets: false },
+  free: { campaignTypes: [], maxActiveCampaigns: 0, markets: false, prioritySupport: false, liveChat: false, designTier: 0, stickyCart: false, customCss: false, customCode: false },
   // Trial over, no plan picked yet: Starter features until they choose.
-  choose: { campaignTypes: [], maxActiveCampaigns: 0, markets: false, prioritySupport: false, liveChat: false, designPresets: false },
-  basic: { campaignTypes: ["rewards", "announcement"], maxActiveCampaigns: 3, markets: false, prioritySupport: false, liveChat: false, designPresets: true },
-  grow: { campaignTypes: ["rewards", "announcement", "upsell", "addon", "bxgy"], maxActiveCampaigns: 10, markets: true, prioritySupport: false, liveChat: true, designPresets: true },
-  pro: { campaignTypes: ALL_TYPES, maxActiveCampaigns: Infinity, markets: true, prioritySupport: true, liveChat: true, designPresets: true },
+  choose: { campaignTypes: [], maxActiveCampaigns: 0, markets: false, prioritySupport: false, liveChat: false, designTier: 0, stickyCart: false, customCss: false, customCode: false },
+  basic: { campaignTypes: ["rewards", "announcement"], maxActiveCampaigns: 3, markets: false, prioritySupport: false, liveChat: false, designTier: 1, stickyCart: true, customCss: true, customCode: false },
+  grow: { campaignTypes: ["rewards", "announcement", "upsell", "addon", "bxgy"], maxActiveCampaigns: 10, markets: true, prioritySupport: false, liveChat: true, designTier: 2, stickyCart: true, customCss: true, customCode: true },
+  pro: { campaignTypes: ALL_TYPES, maxActiveCampaigns: Infinity, markets: true, prioritySupport: true, liveChat: true, designTier: 3, stickyCart: true, customCss: true, customCode: true },
   // The trial unlocks everything.
-  trial: { campaignTypes: ALL_TYPES, maxActiveCampaigns: Infinity, markets: true, prioritySupport: true, liveChat: true, designPresets: true },
+  trial: { campaignTypes: ALL_TYPES, maxActiveCampaigns: Infinity, markets: true, prioritySupport: true, liveChat: true, designTier: 3, stickyCart: true, customCss: true, customCode: true },
 };
 
 // Billing plan names as configured in shopify.server.ts (also what Shopify shows the merchant).
@@ -35,20 +38,22 @@ export const PAID_PLANS: Record<PaidPlanId, { name: string; price: number; tagli
   basic: {
     name: "Essential",
     price: 10,
-    tagline: "Grow order value with goals",
-    features: ["Everything in Starter", "All cart designs", "Free shipping & free gift goals", "Announcements & countdown timers", "Up to 3 active campaigns"],
+    tagline: "More cart designs, sticky cart and cart goals",
+    features: ["Everything in Starter", "3 cart designs", "Sticky add-to-cart & floating cart", "Custom CSS", "Free shipping & free gift goals", "Announcements & countdown timers", "Up to 3 active campaigns"],
   },
   grow: {
     name: "Growth",
     price: 20,
-    tagline: "Upsell and sell internationally",
+    tagline: "Upsells, languages and custom code",
     // Factual labels only (App Store 1.1.4): no "most popular" or "best value" claims without data behind them.
     badge: "Live chat included",
     features: [
       "Everything in Essential",
+      "5 cart designs",
       "In-cart upsells & one-click add-ons",
       "Buy X Get Y",
       "Shopify Markets: countries, translations, currencies",
+      "Custom HTML & JavaScript",
       "Up to 10 active campaigns",
       "Live chat support",
     ],
@@ -56,21 +61,18 @@ export const PAID_PLANS: Record<PaidPlanId, { name: string; price: number; tagli
   pro: {
     name: "Premium",
     price: 60,
-    tagline: "Every feature, no limits",
+    tagline: "Every design and feature, no limits",
     badge: "All features",
-    features: ["Everything in Growth", "Volume discounts", "Unlimited active campaigns", "Priority live chat support"],
+    features: ["Everything in Growth", "All 7 cart designs, incl. Liquid glass", "Volume discounts", "Unlimited active campaigns", "Priority live chat support"],
   },
 };
 
 // The free Starter plan (also included in every paid plan).
-export const FREE_PLAN = { name: "Starter", tagline: "The essentials, free forever" };
+export const FREE_PLAN = { name: "Starter", tagline: "A slide cart drawer, free forever" };
 export const FREE_FEATURES = [
   "Slide cart drawer (Minimal design)",
-  "Sticky add-to-cart",
-  "Floating mini cart",
   "Order notes, discount field, terms checkbox",
   "Automatic product recommendations",
-  "Custom CSS / HTML / JS",
 ];
 
 export const PLAN_ORDER: PaidPlanId[] = ["basic", "grow", "pro"];
@@ -81,6 +83,9 @@ export const planName = (id: PlanId) => (id === "trial" ? "Free trial" : id === 
 export function planFor(type: CampaignType): PaidPlanId {
   return PLAN_ORDER.find((p) => PLAN_FEATURES[p].campaignTypes.includes(type)) ?? "pro";
 }
+
+// Lowest plan that includes a design tier ("Starter", "Essential", ...).
+export const designTierPlan = (tier: DesignTier) => (tier === 0 ? FREE_PLAN.name : PAID_PLANS[PLAN_ORDER[tier - 1]].name);
 
 export function paidPlanByName(name: string | undefined | null): PaidPlanId | null {
   return PLAN_ORDER.find((p) => PAID_PLANS[p].name === name) ?? null;

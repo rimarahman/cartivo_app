@@ -61,6 +61,8 @@
 - [ ] Setup guide → "Hide setup guide" চাপুন। Reload করলেও লুকানো থাকবে। Dashboard-এর Help card → "Show setup guide" চাপলে ফিরে আসবে (4.2.2)।
 - [ ] Campaign delete করতে গেলে `s-modal` খুলবে। Cancel করলে কিছু হবে না, "Delete campaign" চাপলে মুছে যাবে (4.1.6)।
 - [ ] Starter বা Essential plan-এ campaign editor-এর Markets আর Translations ঝাপসা দেখাবে, click বা keyboard দিয়ে ব্যবহার করা যাবে না, আর "Growth plan" link দেখাবে (4.3.7)।
+- [ ] Starter-এ Sticky & floating cart পেজ ঝাপসা আর "Essential plan" link, storefront-এ sticky bar আর floating button দেখাবে না। Custom CSS Essential থেকে, Custom HTML/JS আর Languages Growth থেকে: নিচের plan-এ ঝাপসা, server save প্রত্যাখ্যান করে, storefront-এ publish হয় না।
+- [ ] Cart drawer-এর look plan অনুযায়ী: Starter শুধু Minimal, Essential + Ocean/Forest, Growth + Sunset/Midnight, Premium + Aurora/Liquid glass (আর Liquid glass switch)। Plan-এর উপরের look ঝাপসা, lock badge-এ plan-এর নাম, server save প্রত্যাখ্যান করে, storefront-এ Minimal publish হয়।
 - [ ] Essential plan-এ Campaigns → "Create another campaign": Upsell, Add-on, BXGY আর Volume card ঝাপসা, click করলে কিছু খোলে না, "Growth plan" বা "Premium plan" badge আর "See plans" link দেখায় (4.3.7)।
 - [ ] Essential plan-এ browser-এ সরাসরি `/app/campaigns/new?type=volume` খুললে Campaigns পেজে ফিরে যায়।
 - [ ] Trial-এ একটি BXGY campaign বানান, তারপর Essential বেছে নিন। Campaign editor read-only (ঝাপসা, Save disabled), উপরে "Needs the Growth plan" banner। Campaigns তালিকায় Deactivate আর Delete কাজ করে, Draft অবস্থায় Activate disabled।

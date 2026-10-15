@@ -118,11 +118,15 @@ export const DEFAULT_SETTINGS = {
 export type Settings = typeof DEFAULT_SETTINGS;
 export type Design = Settings["design"];
 
+export type DesignTier = 0 | 1 | 2 | 3;
+
 // One-click looks for the cart drawer. Each preset overrides the design colors only.
-export const DESIGN_PRESETS: { id: string; label: string; design: Partial<Design> }[] = [
+// `tier` is the lowest plan that includes the look: 0 Starter, 1 Essential, 2 Growth, 3 Premium.
+export const DESIGN_PRESETS: { id: string; label: string; tier: DesignTier; design: Partial<Design> }[] = [
   {
     id: "aurora",
     label: "Aurora",
+    tier: 3,
     design: {
       glass: false, checkoutStyle: "gradient", gradientFrom: "#4f46e5", gradientTo: "#db2777", checkoutTextColor: "#ffffff", accentColor: "#4f46e5", accentTextColor: "#ffffff",
       backgroundColor: "#ffffff", textColor: "#111827", mutedColor: "#6b7280", borderColor: "#ececf1",
@@ -132,6 +136,7 @@ export const DESIGN_PRESETS: { id: string; label: string; design: Partial<Design
   {
     id: "glass",
     label: "Liquid glass",
+    tier: 3,
     design: {
       glass: true, checkoutStyle: "gradient", gradientFrom: "#0a84ff", gradientTo: "#bf5af2", checkoutTextColor: "#ffffff", accentColor: "#0a84ff", accentTextColor: "#ffffff",
       backgroundColor: "#f5f7ff", textColor: "#0b0b12", mutedColor: "#5b6070", borderColor: "#dfe3f0",
@@ -141,6 +146,7 @@ export const DESIGN_PRESETS: { id: string; label: string; design: Partial<Design
   {
     id: "sunset",
     label: "Sunset",
+    tier: 2,
     design: {
       glass: false, checkoutStyle: "gradient", gradientFrom: "#f97316", gradientTo: "#e11d48", checkoutTextColor: "#ffffff", accentColor: "#ea580c", accentTextColor: "#ffffff",
       backgroundColor: "#fffaf5", textColor: "#1c1917", mutedColor: "#78716c", borderColor: "#f1e7dd",
@@ -150,6 +156,7 @@ export const DESIGN_PRESETS: { id: string; label: string; design: Partial<Design
   {
     id: "ocean",
     label: "Ocean",
+    tier: 1,
     design: {
       glass: false, checkoutStyle: "gradient", gradientFrom: "#0ea5e9", gradientTo: "#4f46e5", checkoutTextColor: "#ffffff", accentColor: "#0284c7", accentTextColor: "#ffffff",
       backgroundColor: "#ffffff", textColor: "#0f172a", mutedColor: "#64748b", borderColor: "#e2e8f0",
@@ -159,6 +166,7 @@ export const DESIGN_PRESETS: { id: string; label: string; design: Partial<Design
   {
     id: "forest",
     label: "Forest",
+    tier: 1,
     design: {
       glass: false, checkoutStyle: "gradient", gradientFrom: "#059669", gradientTo: "#0e7490", checkoutTextColor: "#ffffff", accentColor: "#047857", accentTextColor: "#ffffff",
       backgroundColor: "#ffffff", textColor: "#052e16", mutedColor: "#5b6b62", borderColor: "#e3ece6",
@@ -168,6 +176,7 @@ export const DESIGN_PRESETS: { id: string; label: string; design: Partial<Design
   {
     id: "midnight",
     label: "Midnight",
+    tier: 2,
     design: {
       glass: false, checkoutStyle: "gradient", gradientFrom: "#8b5cf6", gradientTo: "#ec4899", checkoutTextColor: "#ffffff", accentColor: "#a78bfa", accentTextColor: "#0b0b12",
       backgroundColor: "#0f0f17", textColor: "#f4f4f5", mutedColor: "#a1a1aa", borderColor: "#262633",
@@ -177,6 +186,7 @@ export const DESIGN_PRESETS: { id: string; label: string; design: Partial<Design
   {
     id: "minimal",
     label: "Minimal",
+    tier: 0,
     design: {
       glass: false, checkoutStyle: "solid", gradientFrom: "#111111", gradientTo: "#3f3f46", checkoutTextColor: "#ffffff", accentColor: "#111111", accentTextColor: "#ffffff",
       backgroundColor: "#ffffff", textColor: "#111111", mutedColor: "#6b7280", borderColor: "#e5e7eb",
@@ -363,11 +373,15 @@ export function uid(prefix = "t") {
   return prefix + Math.random().toString(36).slice(2, 9);
 }
 
-// Starter includes only the Minimal look; every other one-click look is part of Essential and higher
-// (BFS 4.3.7: locked in the editor, refused on save). A look the merchant fine-tuned ("custom") stays theirs.
+// Each plan unlocks more one-click looks: Starter only Minimal, Premium all of them (BFS 4.3.7: locked in the
+// editor, refused on save). The liquid glass effect is Premium, like the Liquid glass look. A look the merchant
+// fine-tuned ("custom") stays theirs, without glass below Premium.
 export const FREE_DESIGN_PRESET = "minimal";
-export function designForPlan(design: Design, allPresets: boolean): Design {
-  if (allPresets || design.preset === FREE_DESIGN_PRESET || design.preset === "custom") return design;
+export const GLASS_TIER: DesignTier = 3;
+export const presetTier = (id: string): DesignTier => DESIGN_PRESETS.find((p) => p.id === id)?.tier ?? 0;
+export function designForPlan(design: Design, tier: DesignTier): Design {
+  const glass = design.glass && tier >= GLASS_TIER;
+  if (design.preset === "custom" || presetTier(design.preset) <= tier) return { ...design, glass };
   const minimal = DESIGN_PRESETS.find((p) => p.id === FREE_DESIGN_PRESET)!;
   return { ...design, ...minimal.design, preset: FREE_DESIGN_PRESET };
 }

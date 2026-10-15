@@ -8,7 +8,7 @@ import { getMarketsInfo } from "../models/markets.server";
 import { Checkbox, Grid, TextField } from "../components/fields";
 import { useSave } from "../components/useSave";
 import { SaveActions, SaveCard, isDirty } from "../components/SaveActions";
-import { Accordion, SettingsLayout } from "../components/ui";
+import { Accordion, Locked, SettingsLayout } from "../components/ui";
 import { TRANSLATABLE_KEYS, type Settings } from "../lib/defaults";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -23,8 +23,14 @@ function defaultText(settings: Settings, key: string) {
   return String((settings as any)[section]?.[field] ?? "");
 }
 
+const PlanHint = ({ plan }: { plan: "Essential" | "Growth" }) => (
+  <s-text color="subdued">
+    Available on the <s-link href="/app/pricing">{plan} plan</s-link> and higher.
+  </s-text>
+);
+
 export default function AdvancedSettings() {
-  const { settings, locales } = useLoaderData<typeof loader>();
+  const { settings, plan, locales } = useLoaderData<typeof loader>();
   const localeName = (code: string) => locales.find((l) => l.locale === code)?.name || code;
   const [advanced, setAdvanced] = useState(settings.advanced);
   const [translations, setTranslations] = useState<Record<string, Record<string, string>>>(settings.translations || {});
@@ -62,30 +68,45 @@ export default function AdvancedSettings() {
       <SaveCard dirty={dirty} saving={saving} onSave={() => save({ advanced, translations })} onDiscard={discard} />
 
       <Accordion title="Custom CSS" icon="code" description="Style any Cartivo element. All class names start with .ck-">
-        <TextField
-          label="CSS"
-          multiline={8}
-          placeholder=".ck-drawer { font-family: inherit; }"
-          details="All Cartivo elements use class names starting with .ck-"
-          {...a("customCss")}
-        />
+        <s-stack gap="base">
+          {!plan.features.customCss && <PlanHint plan="Essential" />}
+          <Locked locked={!plan.features.customCss}>
+            <TextField
+              label="CSS"
+              multiline={8}
+              placeholder=".ck-drawer { font-family: inherit; }"
+              details="All Cartivo elements use class names starting with .ck-"
+              {...a("customCss")}
+            />
+          </Locked>
+        </s-stack>
       </Accordion>
 
       <Accordion title="Custom HTML" icon="text-block" description="Add your own content above the items or above the checkout button">
-        <Grid>
-          <TextField label="HTML above cart items" multiline={5} {...a("customHtmlTop")} />
-          <TextField label="HTML above checkout button" multiline={5} {...a("customHtmlBottom")} />
-        </Grid>
+        <s-stack gap="base">
+          {!plan.features.customCode && <PlanHint plan="Growth" />}
+          <Locked locked={!plan.features.customCode}>
+            <Grid>
+              <TextField label="HTML above cart items" multiline={5} {...a("customHtmlTop")} />
+              <TextField label="HTML above checkout button" multiline={5} {...a("customHtmlBottom")} />
+            </Grid>
+          </Locked>
+        </s-stack>
       </Accordion>
 
       <Accordion title="Custom JavaScript" icon="code-add" description="Run code with the Cartivo API and events">
-        <TextField
-          label="JavaScript"
-          multiline={8}
-          placeholder={"Cartivo.on('cart:updated', (cart) => console.log(cart));"}
-          details="Runs after Cartivo loads. Available API: Cartivo.open(), Cartivo.close(), Cartivo.refresh(), Cartivo.on(event, fn). Events: open, close, cart:updated, item:added."
-          {...a("customJs")}
-        />
+        <s-stack gap="base">
+          {!plan.features.customCode && <PlanHint plan="Growth" />}
+          <Locked locked={!plan.features.customCode}>
+            <TextField
+              label="JavaScript"
+              multiline={8}
+              placeholder={"Cartivo.on('cart:updated', (cart) => console.log(cart));"}
+              details="Runs after Cartivo loads. Available API: Cartivo.open(), Cartivo.close(), Cartivo.refresh(), Cartivo.on(event, fn). Events: open, close, cart:updated, item:added."
+              {...a("customJs")}
+            />
+          </Locked>
+        </s-stack>
       </Accordion>
 
       <Accordion title="Theme compatibility" icon="theme" description="Cart icon and count selectors, paths to skip, Google Analytics">
@@ -124,6 +145,9 @@ export default function AdvancedSettings() {
             Texts are shown in your default settings unless a translation exists for the shopper's language
             (e.g. fr, de, es, pt-br).
           </s-paragraph>
+          {!plan.features.markets && <PlanHint plan="Growth" />}
+          <Locked locked={!plan.features.markets} stacked>
+          <s-stack gap="base">
           {missingLocales.length > 0 && (
             <s-stack direction="inline" gap="small-200" alignItems="center">
               <s-text color="subdued">Your store languages:</s-text>
@@ -189,6 +213,8 @@ export default function AdvancedSettings() {
               </s-button>
             </s-stack>
           )}
+          </s-stack>
+          </Locked>
         </s-stack>
       </Accordion>
       </SettingsLayout>

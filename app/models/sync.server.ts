@@ -220,8 +220,21 @@ async function ensureDiscount(admin: Admin, shop: string, config: any) {
 
 export async function syncShop(admin: Admin, shop: string, plan: SyncPlan) {
   const stored = await getSettings(shop);
-  // A look the plan doesn't include is published as Minimal (Starter), like plan-gated campaigns.
-  const settings = { ...stored, design: designForPlan(stored.design, plan.features.designPresets) };
+  // A look above the plan is published as Minimal (glass only on Premium), like plan-gated campaigns;
+  // translations need Markets (Growth and higher), otherwise the default texts show in every language;
+  // custom CSS needs Essential and higher, custom HTML/JS Growth and higher.
+  const advanced = { ...stored.advanced };
+  if (!plan.features.customCss) advanced.customCss = "";
+  if (!plan.features.customCode) Object.assign(advanced, { customHtmlTop: "", customHtmlBottom: "", customJs: "" });
+  const settings = {
+    ...stored,
+    design: designForPlan(stored.design, plan.features.designTier),
+    translations: plan.features.markets ? stored.translations : {},
+    advanced,
+    // Sticky add-to-cart and the floating cart need Essential and higher.
+    sticky: { ...stored.sticky, enabled: stored.sticky.enabled && plan.features.stickyCart },
+    floating: { ...stored.floating, enabled: stored.floating.enabled && plan.features.stickyCart },
+  };
   const campaigns = planCampaigns(await listCampaigns(shop), plan);
 
   const { currentAppInstallation, shop: shopInfo } = await gql(

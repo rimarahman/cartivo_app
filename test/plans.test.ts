@@ -45,28 +45,42 @@ test("trial and Premium unlock every type", () => {
   }
 });
 
-test("only Starter (and 'no plan selected') lock the design looks", () => {
-  for (const id of ["free", "choose"] as const) assert.equal(PLAN_FEATURES[id].designPresets, false, id);
-  for (const id of ["trial", "basic", "grow", "pro"] as const) assert.equal(PLAN_FEATURES[id].designPresets, true, id);
+// The plan cards say "3 cart designs", "5 cart designs" and "All 7 cart designs".
+test("each plan unlocks more design looks: Starter 1, Essential 3, Growth 5, Premium and trial all", () => {
+  const count = (id: keyof typeof PLAN_FEATURES) => DESIGN_PRESETS.filter((p) => p.tier <= PLAN_FEATURES[id].designTier).length;
+  assert.equal(count("free"), 1);
+  assert.equal(count("choose"), 1);
+  assert.equal(count("basic"), 3);
+  assert.equal(count("grow"), 5);
+  assert.equal(count("pro"), 7);
+  assert.equal(DESIGN_PRESETS.length, 7);
+  assert.equal(count("trial"), DESIGN_PRESETS.length);
 });
 
-test("Starter: a locked look is published as Minimal", () => {
+test("a look above the plan is published as Minimal", () => {
   const aurora = { ...DEFAULT_SETTINGS.design, preset: "aurora" };
-  const out = designForPlan(aurora, false);
   const minimal = DESIGN_PRESETS.find((p) => p.id === "minimal")!.design;
-  assert.equal(out.preset, "minimal");
-  assert.equal(out.accentColor, minimal.accentColor);
-  assert.equal(out.checkoutStyle, minimal.checkoutStyle);
+  for (const tier of [0, 1, 2] as const) {
+    const out = designForPlan(aurora, tier);
+    assert.equal(out.preset, "minimal");
+    assert.equal(out.accentColor, minimal.accentColor);
+    assert.equal(out.checkoutStyle, minimal.checkoutStyle);
+  }
+  assert.equal(designForPlan({ ...DEFAULT_SETTINGS.design, preset: "sunset" }, 1).preset, "minimal");
 });
 
-test("Starter keeps Minimal and fine-tuned ('custom') designs", () => {
-  const custom = { ...DEFAULT_SETTINGS.design, preset: "custom", accentColor: "#123456" };
-  assert.deepEqual(designForPlan(custom, false), custom);
-  const minimal = { ...DEFAULT_SETTINGS.design, preset: "minimal" };
-  assert.deepEqual(designForPlan(minimal, false), minimal);
+test("a look within the plan is kept", () => {
+  const ocean = { ...DEFAULT_SETTINGS.design, preset: "ocean", glass: false };
+  assert.deepEqual(designForPlan(ocean, 1), ocean);
+  const sunset = { ...DEFAULT_SETTINGS.design, preset: "sunset", glass: false };
+  assert.deepEqual(designForPlan(sunset, 2), sunset);
+  const glass = { ...DEFAULT_SETTINGS.design, preset: "glass", glass: true };
+  assert.deepEqual(designForPlan(glass, 3), glass);
 });
 
-test("paid plans and the trial keep every look", () => {
-  const sunset = { ...DEFAULT_SETTINGS.design, preset: "sunset" };
-  assert.deepEqual(designForPlan(sunset, true), sunset);
+test("fine-tuned ('custom') designs are kept, without liquid glass below Premium", () => {
+  const custom = { ...DEFAULT_SETTINGS.design, preset: "custom", accentColor: "#123456", glass: true };
+  assert.deepEqual(designForPlan(custom, 0), { ...custom, glass: false });
+  assert.deepEqual(designForPlan(custom, 2), { ...custom, glass: false });
+  assert.deepEqual(designForPlan(custom, 3), custom);
 });

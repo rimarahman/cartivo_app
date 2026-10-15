@@ -16,6 +16,14 @@ type Admin = { graphql: (query: string, options?: any) => Promise<Response> };
 // production, so a leftover variable can never switch billing off for real merchants.
 export const billingDisabled = () => process.env.NODE_ENV !== "production" && process.env.BILLING_DISABLED === "true";
 
+// Set DEV_PLAN=free|basic|grow|pro in .env to run the app as that plan while developing, without a Shopify
+// charge (e.g. to check what Essential merchants see). Like BILLING_DISABLED, it has no effect in production.
+const DEV_PLANS: PlanId[] = ["free", "basic", "grow", "pro"];
+export const devPlan = (): PlanId | null => {
+  const id = process.env.DEV_PLAN as PlanId;
+  return process.env.NODE_ENV !== "production" && DEV_PLANS.includes(id) ? id : null;
+};
+
 // Test charges (no money moves) are used in development and, in production, only on Shopify development
 // stores (shop.plan.partnerDevelopment), e.g. Partner test stores and App Review's stores. Every other store
 // gets real charges; there is deliberately no environment switch that could make them free.
@@ -95,6 +103,8 @@ export async function getPlan(billing: any, shop: string, admin: Admin): Promise
   const trial = trialState(row.startedAt);
   const trialExtra = trial.active ? { trialEndsAt: trial.endsAt.toISOString(), trialDaysLeft: trial.daysLeft } : {};
   if (billingDisabled()) return info("pro", trialExtra);
+  const dev = devPlan();
+  if (dev) return info(dev);
 
   const { appSubscriptions } = await billing.check({ plans: PLAN_NAMES, isTest: await isTestBilling(admin, shop) });
   return resolvePlan(appSubscriptions || [], trial, trialExtra, !!row.freeChosenAt);
@@ -118,6 +128,8 @@ export async function getPlanFromAdmin(admin: Admin, shop: string): Promise<Plan
   const trial = trialState(row.startedAt);
   const trialExtra = trial.active ? { trialEndsAt: trial.endsAt.toISOString(), trialDaysLeft: trial.daysLeft } : {};
   if (billingDisabled()) return info("pro", trialExtra);
+  const dev = devPlan();
+  if (dev) return info(dev);
   const json: any = await (await admin.graphql(`#graphql
     query { currentAppInstallation { activeSubscriptions { id name status test } } }`)).json();
   const test = await isTestBilling(admin, shop);

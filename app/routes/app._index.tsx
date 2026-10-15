@@ -59,7 +59,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     campaignCount: campaigns.length,
     // Settings are stored the first time the merchant saves any settings page.
     customized: Boolean(settingsRow && settingsRow.data !== "{}"),
-    stickyOrFloating: settings.sticky.enabled || settings.floating.enabled,
+    stickyOrFloating: plan.features.stickyCart && (settings.sticky.enabled || settings.floating.enabled),
     setupDismissed: Boolean(settingsRow?.setupDismissedAt),
     counts,
   };
@@ -132,9 +132,15 @@ export default function Dashboard() {
       title: "Turn on the sticky add-to-cart and floating cart",
       text: "A buy button that follows shoppers on product pages, and a cart button on every page.",
       action: (
-        <s-button href="/app/sticky" variant="tertiary">
-          {data.stickyOrFloating ? "Adjust" : "Turn on"}
-        </s-button>
+        data.plan.features.stickyCart ? (
+          <s-button href="/app/sticky" variant="tertiary">
+            {data.stickyOrFloating ? "Adjust" : "Turn on"}
+          </s-button>
+        ) : (
+          <s-button href="/app/pricing" variant="tertiary">
+            See plans
+          </s-button>
+        )
       ),
     },
   ];
@@ -249,7 +255,7 @@ export default function Dashboard() {
             {data.plan.id === "trial"
               ? "Every feature is unlocked. When the trial ends you pick a plan: Starter (free), Essential, Growth or Premium."
               : data.plan.id === "free" || data.plan.id === "choose"
-                ? "Cart drawer, sticky add-to-cart and floating cart. Campaigns start at $10/month."
+                ? "Cart drawer with the Minimal look. Sticky add-to-cart, floating cart and campaigns start at $10/month."
                 : PAID_PLANS[data.plan.id].tagline + "."}
           </s-text>
           {data.plan.id !== "pro" && (
