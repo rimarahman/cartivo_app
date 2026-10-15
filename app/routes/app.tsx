@@ -37,7 +37,7 @@ export default function App() {
   return (
     <AppProvider apiKey={apiKey}>
       <s-app-nav>
-        <s-link href="/app">Dashboard</s-link>
+        <s-link href="/app" rel="home">Dashboard</s-link>
         <s-link href="/app/drawer">Cart drawer</s-link>
         <s-link href="/app/campaigns">Campaigns</s-link>
         <s-link href="/app/sticky">Sticky & floating cart</s-link>
