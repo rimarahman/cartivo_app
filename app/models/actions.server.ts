@@ -1,5 +1,5 @@
 import { authenticate } from "../shopify.server";
-import { getSettings, saveSettings } from "./store.server";
+import { getSettings, parsePayload, saveSettings } from "./store.server";
 import { getPlan } from "./billing.server";
 import { trySync } from "./sync.server";
 import { DESIGN_PRESETS, GLASS_TIER, designForPlan, presetTier, type Settings } from "../lib/defaults";
@@ -28,9 +28,14 @@ export async function settingsLoader(request: Request) {
 export async function settingsAction(request: Request, sections: (keyof Settings)[]) {
   const { admin, session, billing } = await authenticate.admin(request);
   const form = await request.formData();
-  const payload = JSON.parse(String(form.get("payload") || "{}"));
+  const payload = parsePayload(form.get("payload"));
+  if (!payload) return { error: "Your changes couldn't be read. Reload the page and try again." };
   const partial: any = {};
   for (const key of sections) if (payload[key] !== undefined) partial[key] = payload[key];
+  // Every settings section is an object; anything else would break the admin pages and the published config.
+  if (Object.values(partial).some((v) => !v || typeof v !== "object" || Array.isArray(v))) {
+    return { error: "Your changes couldn't be read. Reload the page and try again." };
+  }
   const plan = await getPlan(billing, session.shop, admin);
   // Plan-gated looks can't be saved (BFS 4.3.7); the editor locks them too.
   const preset = partial.design?.preset;

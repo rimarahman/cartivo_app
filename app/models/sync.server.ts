@@ -288,6 +288,8 @@ export async function trySync(admin: Admin, shop: string, plan: SyncPlan) {
     return { ok: true as const, error: null };
   } catch (e: any) {
     console.error("Cartivo sync failed", e);
-    return { ok: false as const, error: String(e?.message || e) };
+    // The Admin API client throws a Response for HTTP errors; "[object Response]" would tell the merchant nothing.
+    const error = e instanceof Response ? `Shopify answered ${e.status}${e.statusText ? ` ${e.statusText}` : ""}` : String(e?.message || e);
+    return { ok: false as const, error };
   }
 }

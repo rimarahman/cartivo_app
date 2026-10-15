@@ -75,6 +75,34 @@ export async function getCampaign(shop: string, id: string) {
   return row ? toRecord(row) : null;
 }
 
+const isObject = (v: unknown): v is Record<string, any> => !!v && typeof v === "object" && !Array.isArray(v);
+
+// The `payload` form field the admin pages post: a JSON object, or null when it's missing or malformed.
+export function parsePayload(raw: FormDataEntryValue | null): Record<string, any> | null {
+  try {
+    const value = JSON.parse(String(raw || "{}"));
+    return isObject(value) ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+export const MAX_CAMPAIGN_NAME = 255;
+
+// Checks what the editor can't guarantee (direct posts, hand-typed dates). Returns a message for the merchant.
+export function campaignInputError(input: Record<string, any>): string | null {
+  if (!isObject(input.config)) return "The campaign settings couldn't be read. Reload the page and try again.";
+  if (typeof input.name === "string" && input.name.length > MAX_CAMPAIGN_NAME) {
+    return `Keep the campaign name under ${MAX_CAMPAIGN_NAME} characters.`;
+  }
+  const date = (v: unknown) => (v ? new Date(String(v)) : null);
+  const starts = date(input.startsAt);
+  const ends = date(input.endsAt);
+  if ((starts && isNaN(+starts)) || (ends && isNaN(+ends))) return "Enter a valid start and end date.";
+  if (starts && ends && ends <= starts) return "The end date must be after the start date, or the campaign never runs.";
+  return null;
+}
+
 export async function saveCampaign(
   shop: string,
   id: string | null,
@@ -90,10 +118,11 @@ export async function saveCampaign(
     startsAt: input.startsAt ? new Date(input.startsAt) : null,
     endsAt: input.endsAt ? new Date(input.endsAt) : null,
   };
-  const row = id
-    ? await db.campaign.update({ where: { id }, data })
-    : await db.campaign.create({ data });
-  return toRecord(row);
+  if (!id) return toRecord(await db.campaign.create({ data }));
+  // Scoped to the shop: an id from another shop (they're public in storefront page source) updates nothing.
+  const { count } = await db.campaign.updateMany({ where: { id, shop }, data });
+  if (!count) return null;
+  return getCampaign(shop, id);
 }
 
 export async function deleteCampaign(shop: string, id: string) {

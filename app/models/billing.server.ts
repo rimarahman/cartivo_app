@@ -1,14 +1,15 @@
 import db from "../db.server";
 import {
   PAID_PLANS,
-  PLAN_FEATURES,
-  TRIAL_DAYS,
-  paidPlanByName,
-  planName,
+  planInfo as info,
+  resolvePlan,
+  trialState,
   type PaidPlanId,
   type PlanId,
   type PlanInfo,
 } from "../lib/plans";
+
+export { trialState };
 
 type Admin = { graphql: (query: string, options?: any) => Promise<Response> };
 
@@ -48,7 +49,6 @@ export async function isTestBilling(admin: Admin, shop: string) {
   }
 }
 
-const DAY = 864e5;
 const PLAN_NAMES = Object.values(PAID_PLANS).map((p) => p.name);
 
 // The 7-day all-features trial starts the first time the shop opens the app. The row survives
@@ -77,26 +77,6 @@ export async function chooseFree(shop: string) {
   });
 }
 
-export function trialState(startedAt: Date, now = Date.now()) {
-  const endsAt = new Date(+startedAt + TRIAL_DAYS * DAY);
-  const left = Math.max(0, Math.ceil((+endsAt - now) / DAY));
-  return { endsAt, daysLeft: left, active: +endsAt > now };
-}
-
-function info(id: PlanId, extra: Partial<PlanInfo> = {}): PlanInfo {
-  const f = PLAN_FEATURES[id];
-  return {
-    id,
-    name: planName(id),
-    trialEndsAt: null,
-    trialDaysLeft: 0,
-    subscriptionId: null,
-    ...extra,
-    // Copy the array: callers must never be able to mutate the shared plan table.
-    features: { ...f, campaignTypes: [...f.campaignTypes], maxActiveCampaigns: Number.isFinite(f.maxActiveCampaigns) ? f.maxActiveCampaigns : null },
-  };
-}
-
 // Current plan: an active Shopify subscription wins, then the app trial, then Free if picked, else "choose".
 export async function getPlan(billing: any, shop: string, admin: Admin): Promise<PlanInfo> {
   const row = await trialRow(shop);
@@ -108,18 +88,6 @@ export async function getPlan(billing: any, shop: string, admin: Admin): Promise
 
   const { appSubscriptions } = await billing.check({ plans: PLAN_NAMES, isTest: await isTestBilling(admin, shop) });
   return resolvePlan(appSubscriptions || [], trial, trialExtra, !!row.freeChosenAt);
-}
-
-function resolvePlan(
-  subs: { id: string; name: string; status: string }[],
-  trial: ReturnType<typeof trialState>,
-  trialExtra: Partial<PlanInfo>,
-  freeChosen: boolean,
-) {
-  const sub = subs.find((s) => s.status === "ACTIVE" && paidPlanByName(s.name));
-  if (sub) return info(paidPlanByName(sub.name)!, { subscriptionId: sub.id, ...trialExtra });
-  if (trial.active) return info("trial", trialExtra);
-  return info(freeChosen ? "free" : "choose");
 }
 
 // Same as getPlan, for webhooks (no billing helper there): reads the subscriptions with the Admin API.

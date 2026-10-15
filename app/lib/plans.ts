@@ -102,3 +102,39 @@ export type PlanInfo = {
 };
 
 export const canUse = (plan: PlanInfo, type: CampaignType) => plan.features.campaignTypes.includes(type);
+
+// Plan resolution (used by app/models/billing.server.ts; pure so it can be unit tested).
+const DAY = 864e5;
+
+export function trialState(startedAt: Date, now = Date.now()) {
+  const endsAt = new Date(+startedAt + TRIAL_DAYS * DAY);
+  const left = Math.max(0, Math.ceil((+endsAt - now) / DAY));
+  return { endsAt, daysLeft: left, active: +endsAt > now };
+}
+
+export function planInfo(id: PlanId, extra: Partial<PlanInfo> = {}): PlanInfo {
+  const f = PLAN_FEATURES[id];
+  return {
+    id,
+    name: planName(id),
+    trialEndsAt: null,
+    trialDaysLeft: 0,
+    subscriptionId: null,
+    ...extra,
+    // Copy the array: callers must never be able to mutate the shared plan table.
+    features: { ...f, campaignTypes: [...f.campaignTypes], maxActiveCampaigns: Number.isFinite(f.maxActiveCampaigns) ? f.maxActiveCampaigns : null },
+  };
+}
+
+// Current plan: an active Shopify subscription wins, then the app trial, then Free if picked, else "choose".
+export function resolvePlan(
+  subs: { id: string; name: string; status: string }[],
+  trial: ReturnType<typeof trialState>,
+  trialExtra: Partial<PlanInfo>,
+  freeChosen: boolean,
+) {
+  const sub = subs.find((s) => s.status === "ACTIVE" && paidPlanByName(s.name));
+  if (sub) return planInfo(paidPlanByName(sub.name)!, { subscriptionId: sub.id, ...trialExtra });
+  if (trial.active) return planInfo("trial", trialExtra);
+  return planInfo(freeChosen ? "free" : "choose");
+}

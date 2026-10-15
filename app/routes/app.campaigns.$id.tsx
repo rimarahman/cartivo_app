@@ -3,7 +3,7 @@ import type { ActionFunctionArgs, HeadersFunction, LoaderFunctionArgs } from "re
 import { redirect, useLoaderData, useNavigate } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
-import { getCampaign, saveCampaign } from "../models/store.server";
+import { campaignInputError, getCampaign, parsePayload, saveCampaign } from "../models/store.server";
 import { getPlan } from "../models/billing.server";
 import { canUse, planFor, planName } from "../lib/plans";
 import { trySync } from "../models/sync.server";
@@ -36,7 +36,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   if (params.id === "new") {
     const type = (new URL(request.url).searchParams.get("type") || "rewards") as CampaignType;
     // Types outside the plan can't be created (BFS 4.3.7); the Campaigns page shows which plan unlocks them.
-    if (!CAMPAIGN_TYPES[type] || !canUse(plan, type)) throw redirect("/app/campaigns");
+    if (!Object.hasOwn(CAMPAIGN_TYPES, type) || !canUse(plan, type)) throw redirect("/app/campaigns");
     return {
       plan,
       markets,
@@ -60,9 +60,12 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   const { admin, session, billing } = await authenticate.admin(request);
   const form = await request.formData();
-  const payload = JSON.parse(String(form.get("payload") || "{}"));
+  const payload = parsePayload(form.get("payload"));
+  if (!payload) return { error: "The campaign couldn't be read. Reload the page and try again." };
   const type = payload.type as CampaignType;
-  if (!CAMPAIGN_TYPES[type]) return { error: "Unknown campaign type" };
+  if (!Object.hasOwn(CAMPAIGN_TYPES, type)) return { error: "Unknown campaign type" };
+  const invalid = campaignInputError(payload);
+  if (invalid) return { error: invalid };
   const plan = await getPlan(billing, session.shop, admin);
   // Plan-gated types are read-only (BFS 4.3.7): the editor disables saving, and the server refuses it too.
   if (!canUse(plan, type)) {
@@ -70,7 +73,8 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       error: `${CAMPAIGN_TYPES[type].label} campaigns are part of the ${planName(planFor(type))} plan. Choose that plan or higher to edit this campaign.`,
     };
   }
-  const saved = await saveCampaign(session.shop, params.id === "new" ? null : params.id!, payload);
+  const saved = await saveCampaign(session.shop, params.id === "new" ? null : params.id!, payload as Parameters<typeof saveCampaign>[2]);
+  if (!saved) return { error: "This campaign doesn't exist anymore." };
   const sync = await trySync(admin, session.shop, plan);
   return { saved: true, syncError: sync.error, id: saved.id };
 };
