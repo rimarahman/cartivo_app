@@ -1,0 +1,39 @@
+{
+  "at": "2026-10-15T19:27:58.826Z",
+  "store": "cartivo-app-test.myshopify.com",
+  "scriptSrc": "https://cdn.shopify.com/extensions/01a140e9-fd16-751d-aec1-d9603c4ee297/dev-b1a585d7-53c8-470a-87de-24f87d660c1d/assets/cartkit.js",
+  "goal": {
+    "threshold": 60,
+    "gifts": [
+      67671221698692,
+      67671221731460,
+      67671221764228
+    ],
+    "picked": 67671221698692
+  },
+  "added": {
+    "product": "The Collection Snowboard: Liquid",
+    "price": "749.95",
+    "qty": 1
+  },
+  "notFree": [],
+  "total": 74995,
+  "currency": "USD",
+  "lines": [
+    {
+      "title": "Selling Plans Ski Wax",
+      "variant": 67671221698692,
+      "qty": 1,
+      "price": 0,
+      "was": 2495,
+      "cartivo": "gift"
+    },
+    {
+      "title": "The Collection Snowboard: Liquid",
+      "variant": 67671222747268,
+      "qty": 1,
+      "price": 74995,
+      "was": 74995
+    }
+  ]
+}

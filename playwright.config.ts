@@ -45,7 +45,8 @@ export default defineConfig({
           name: "live",
           testMatch: "live/**/*.spec.ts",
           retries: 0,
-          use: { ...devices["Desktop Chrome"], channel: "chrome", baseURL: `https://${process.env.CARTIVO_LIVE_STORE}`, screenshot: "on" as const, trace: "on" as const, video: "off" as const },
+          timeout: 120_000, // real store and checkout pages are slower than the harness
+          use: { ...devices["Desktop Chrome"], channel: "chrome", baseURL: `https://${process.env.CARTIVO_LIVE_STORE}`, screenshot: "off" as const, trace: "off" as const, video: "off" as const },
         }]
       : []),
   ],
