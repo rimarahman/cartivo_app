@@ -35,7 +35,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const [plan, markets] = await Promise.all([getPlan(billing, session.shop, admin), getMarketsInfo(admin)]);
   if (params.id === "new") {
     const type = (new URL(request.url).searchParams.get("type") || "rewards") as CampaignType;
-    if (!CAMPAIGN_TYPES[type]) throw redirect("/app/campaigns");
+    // Types outside the plan can't be created (BFS 4.3.7); the Campaigns page shows which plan unlocks them.
+    if (!CAMPAIGN_TYPES[type] || !canUse(plan, type)) throw redirect("/app/campaigns");
     return {
       plan,
       markets,
@@ -60,9 +61,16 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const { admin, session, billing } = await authenticate.admin(request);
   const form = await request.formData();
   const payload = JSON.parse(String(form.get("payload") || "{}"));
-  if (!CAMPAIGN_TYPES[payload.type as CampaignType]) return { error: "Unknown campaign type" };
-  const saved = await saveCampaign(session.shop, params.id === "new" ? null : params.id!, payload);
+  const type = payload.type as CampaignType;
+  if (!CAMPAIGN_TYPES[type]) return { error: "Unknown campaign type" };
   const plan = await getPlan(billing, session.shop, admin);
+  // Plan-gated types are read-only (BFS 4.3.7): the editor disables saving, and the server refuses it too.
+  if (!canUse(plan, type)) {
+    return {
+      error: `${CAMPAIGN_TYPES[type].label} campaigns are part of the ${planName(planFor(type))} plan. Choose that plan or higher to edit this campaign.`,
+    };
+  }
+  const saved = await saveCampaign(session.shop, params.id === "new" ? null : params.id!, payload);
   const sync = await trySync(admin, session.shop, plan);
   return { saved: true, syncError: sync.error, id: saved.id };
 };
@@ -436,6 +444,7 @@ export default function CampaignEditor() {
   }
   // updatedAt changes on every save, so it is not an edit.
   const dirty = isDirty({ ...campaign, updatedAt: null }, { ...initial, updatedAt: null });
+  const canSave = !needed && (dirty || !initial.id);
 
   const Editor = EDITORS[campaign.type as CampaignType];
   const setConfig = (patch: any) => setCampaign((c) => ({ ...c, config: { ...c.config, ...patch } }));
@@ -447,7 +456,7 @@ export default function CampaignEditor() {
       </s-link>
       <SaveActions
         dirty={dirty}
-        canSave={dirty || !initial.id}
+        canSave={canSave}
         saving={saving}
         onSave={() => save(campaign)}
         onDiscard={() => setCampaign(initial)}
@@ -455,7 +464,7 @@ export default function CampaignEditor() {
       <div className="ckx-campaign-save">
         <SaveCard
           dirty={dirty}
-          canSave={dirty || !initial.id}
+          canSave={canSave}
           saving={saving}
           onSave={() => save(campaign)}
           onDiscard={() => setCampaign(initial)}
@@ -465,10 +474,19 @@ export default function CampaignEditor() {
 
       {needed && (
         <s-banner tone="info" heading={`Needs the ${needed} plan`}>
-          You can build and save this campaign now. It goes live on your store once you{" "}
-          <s-link href="/app/pricing">choose the {needed} plan</s-link> or higher.
+          <s-paragraph>
+            {CAMPAIGN_TYPES[campaign.type as CampaignType].label} campaigns aren&apos;t part of your {plan.name} plan, so this
+            campaign can&apos;t be edited and doesn&apos;t show on your store. You can still deactivate or delete it on the
+            Campaigns page.
+          </s-paragraph>
+          <s-button slot="secondary-actions" href="/app/pricing">
+            See plans
+          </s-button>
         </s-banner>
       )}
+
+      {/* Plan-gated campaign: greyed out and not interactive, saving disabled (BFS 4.3.7). */}
+      <Locked locked={!!needed} stacked>
 
       <s-section heading="Campaign">
         <Grid>
@@ -531,6 +549,7 @@ export default function CampaignEditor() {
           <DateTimeField label="End (optional)" value={campaign.endsAt} onChange={(endsAt) => setCampaign((c) => ({ ...c, endsAt }))} />
         </Grid>
       </s-section>
+      </Locked>
     </s-page>
   );
 }

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useFetcher, useLoaderData } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
-import { deleteCampaign, listCampaigns, setCampaignStatus } from "../models/store.server";
+import { deleteCampaign, getCampaign, listCampaigns, setCampaignStatus } from "../models/store.server";
 import { getPlan } from "../models/billing.server";
 import { planCampaigns, trySync } from "../models/sync.server";
 import { canUse, planFor, planName, type PlanInfo } from "../lib/plans";
@@ -24,10 +24,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const id = String(form.get("id"));
   const intent = form.get("intent");
-  if (intent === "delete") await deleteCampaign(session.shop, id);
-  if (intent === "activate") await setCampaignStatus(session.shop, id, "active");
-  if (intent === "deactivate") await setCampaignStatus(session.shop, id, "draft");
   const plan = await getPlan(billing, session.shop, admin);
+  if (intent === "delete") await deleteCampaign(session.shop, id);
+  if (intent === "activate") {
+    // Plan-gated types can't be switched on (BFS 4.3.7); deactivating and deleting always work.
+    const campaign = await getCampaign(session.shop, id);
+    if (campaign && !canUse(plan, campaign.type)) {
+      return { error: `${CAMPAIGN_TYPES[campaign.type].label} campaigns are part of the ${planName(planFor(campaign.type))} plan.` };
+    }
+    await setCampaignStatus(session.shop, id, "active");
+  }
+  if (intent === "deactivate") await setCampaignStatus(session.shop, id, "draft");
   const sync = await trySync(admin, session.shop, plan);
   return { saved: true, syncError: sync.error };
 };
@@ -54,17 +61,23 @@ export default function Campaigns() {
 
   return (
     <s-page heading="Campaigns">
-      <s-button slot="primary-action" variant="primary" href="/app/campaigns/new?type=rewards">
-        Create campaign
-      </s-button>
+      {plan.features.campaignTypes.length > 0 ? (
+        <s-button slot="primary-action" variant="primary" href={`/app/campaigns/new?type=${plan.features.campaignTypes[0]}`}>
+          Create campaign
+        </s-button>
+      ) : (
+        <s-button slot="primary-action" variant="primary" disabled>
+          Create campaign
+        </s-button>
+      )}
 
       {error && <ErrorBanner message={error} onDismiss={() => setDismissed(fetcher.data)} />}
 
       {plan.id === "free" && (
         <s-banner tone="info" heading="Campaigns are part of the paid plans">
           <s-paragraph>
-            You can build campaigns on Starter; they show on your store once you <s-link href="/app/pricing">choose a plan</s-link>{" "}
-            (from $10/month).
+            Starter includes the cart drawer, sticky add-to-cart and floating cart. To create campaigns,{" "}
+            <s-link href="/app/pricing">choose a plan</s-link> (from $10/month).
           </s-paragraph>
         </s-banner>
       )}
@@ -123,6 +136,7 @@ export default function Campaigns() {
                       <s-button
                         variant="tertiary"
                         onClick={() => act(c.id, c.status === "active" ? "deactivate" : "activate")}
+                        {...(c.status !== "active" && !canUse(plan, c.type) ? { disabled: true } : {})}
                       >
                         {c.status === "active" ? "Deactivate" : "Activate"}
                       </s-button>
@@ -175,8 +189,10 @@ export default function Campaigns() {
 export const headers: HeadersFunction = (headersArgs) => boundary.headers(headersArgs);
 
 function StatusBadge({ status, live, type, plan }: { status: string; live: boolean; type: string; plan: PlanInfo }) {
-  if (status !== "active") return <s-badge tone="neutral">Draft</s-badge>;
-  if (live) return <s-badge tone="success">Live</s-badge>;
   const t = type as Parameters<typeof canUse>[1];
+  if (status !== "active") {
+    return canUse(plan, t) ? <s-badge tone="neutral">Draft</s-badge> : <s-badge icon="lock">{`Draft · Needs ${planName(planFor(t))}`}</s-badge>;
+  }
+  if (live) return <s-badge tone="success">Live</s-badge>;
   return <s-badge tone="warning">{canUse(plan, t) ? "Over plan limit" : `Needs ${planName(planFor(t))}`}</s-badge>;
 }

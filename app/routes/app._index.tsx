@@ -9,7 +9,7 @@ import { authenticate } from "../shopify.server";
 import db from "../db.server";
 import { getSettings, listCampaigns } from "../models/store.server";
 import { getPlan } from "../models/billing.server";
-import { PAID_PLANS } from "../lib/plans";
+import { PAID_PLANS, canUse } from "../lib/plans";
 import { METAFIELD_NAMESPACE, trySync } from "../models/sync.server";
 import { CampaignTypeGrid, StatCard } from "../components/ui";
 import { EMBED_HANDLE, useEmbedStatus } from "../components/useEmbedStatus";
@@ -122,7 +122,7 @@ export default function Dashboard() {
       title: "Create a free shipping or free gift goal",
       text: "A progress bar in the cart that shows shoppers how close they are to a reward.",
       action: (
-        <s-button href="/app/campaigns/new?type=rewards" variant="tertiary">
+        <s-button href={canUse(data.plan, "rewards") ? "/app/campaigns/new?type=rewards" : "/app/campaigns"} variant="tertiary">
           Create goal
         </s-button>
       ),
@@ -150,17 +150,8 @@ export default function Dashboard() {
 
       {errorBanner}
 
-      {/* At most one banner on the page (BFS 4.3.4); the app embed status lives in the card below. */}
-      {data.plan.id === "trial" && (
-        <s-banner tone="info" heading={`Free trial: ${data.plan.trialDaysLeft} day${data.plan.trialDaysLeft === 1 ? "" : "s"} left`}>
-          <s-paragraph>
-            Every feature is unlocked. When the trial ends you&apos;ll pick a plan: Starter (free), Essential, Growth or Premium.
-          </s-paragraph>
-          <s-button slot="secondary-actions" href="/app/pricing">
-            Compare plans
-          </s-button>
-        </s-banner>
-      )}
+      {/* No trial or plan banner (BFS 4.3.4/4.3.6): the trial days left are in the Plan card, and the app embed
+          status in the Status card. */}
 
       <s-section heading="Status">
         <s-stack gap="base">
@@ -200,7 +191,7 @@ export default function Dashboard() {
             <s-stack direction="inline" gap="small-200" alignItems="center" justifyContent="space-between">
               <s-text color="subdued">
                 {allDone
-                  ? "Everything is set up. You can hide this guide and bring it back from Help."
+                  ? "Everything is set up. You can hide this guide and bring it back from the Help card."
                   : `${doneCount} of ${steps.length} steps done`}
               </s-text>
               <s-button variant="tertiary" onClick={() => setSetup("hide-setup")}>
@@ -279,7 +270,7 @@ export default function Dashboard() {
               Show setup guide
             </s-button>
           )}
-          <s-text color="subdued">Questions? Use the Help button in the bottom corner of any page.</s-text>
+          <s-link href="/app/help">FAQ, live chat and email support</s-link>
         </s-stack>
       </s-section>
     </s-page>

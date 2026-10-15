@@ -1,7 +1,7 @@
-// Live chat with the Cartivo team inside the Help panel. Polls /app/chat: every few seconds while the chat
-// is on screen, slowly otherwise (for the unread badge on the Help button).
+// Live chat with the Cartivo team on the Help page. Polls /app/chat every few seconds while the page is open.
 import { useEffect, useRef, useState } from "react";
-import { Link, useFetcher } from "react-router";
+import { useFetcher } from "react-router";
+import { TextField } from "./fields";
 import type { ChatActionData, ChatLoaderData } from "../routes/app.chat";
 import type { ChatMessageView } from "../models/chat.server";
 
@@ -83,7 +83,8 @@ function merge(current: ChatMessageView[], incoming: ChatMessageView[]) {
 
 const time = (iso: string) => new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 
-export function LiveChat({ chat, onEmail, onNavigate }: { chat: ReturnType<typeof useLiveChat>; onEmail?: () => void; onNavigate?: () => void }) {
+// Merchant side of the chat, on the Help page. Polaris components only; the bubbles are s-box cards.
+export function LiveChat({ chat }: { chat: ReturnType<typeof useLiveChat> }) {
   const [text, setText] = useState("");
   const listRef = useRef<HTMLDivElement>(null);
   const count = chat.messages.length + chat.pending.length;
@@ -96,71 +97,69 @@ export function LiveChat({ chat, onEmail, onNavigate }: { chat: ReturnType<typeo
     if (chat.submit(text)) setText("");
   };
 
+  // Plan-gated: no chat controls, just what unlocks it (BFS 4.3.7).
   if (!chat.allowed) {
     return (
-      <div className="ckx-chat-locked">
-        <span className="ckx-chat-locked-icon" aria-hidden="true">💬</span>
-        <strong>Live chat is part of Growth and Premium</strong>
-        <p>Chat with the Cartivo team in real time. Email support stays free on every plan.</p>
-        <Link to="/app/pricing" className="ckx-chat-locked-cta" onClick={onNavigate}>
-          See plans
-        </Link>
-        {onEmail && (
-          <button type="button" className="ckx-inbox-link" onClick={onEmail}>
-            Email us instead
-          </button>
-        )}
-      </div>
+      <s-stack gap="base">
+        <s-stack direction="inline" gap="small-200" alignItems="center">
+          <s-badge icon="lock">Growth plan</s-badge>
+          <s-text color="subdued">Live chat is part of the Growth and Premium plans. Email support is included in every plan.</s-text>
+        </s-stack>
+        <s-stack direction="inline">
+          <s-button href="/app/pricing">See plans</s-button>
+        </s-stack>
+      </s-stack>
     );
   }
 
   return (
-    <div className="ckx-chat">
-      <div className={`ckx-chat-status${chat.online ? " ckx-online" : ""}`}>
-        {chat.online ? "Online · we usually reply in a few minutes" : "Away · leave a message and we'll reply here soon"}
+    <s-stack gap="base">
+      <s-stack direction="inline" gap="small-200" alignItems="center">
+        <s-badge tone={chat.online ? "success" : "neutral"}>{chat.online ? "Online" : "Away"}</s-badge>
+        <s-text color="subdued">
+          {chat.online ? "We usually reply in a few minutes." : "Leave a message and we'll reply here soon."}
+        </s-text>
+      </s-stack>
+      <div className="ckx-chat-scroll" ref={listRef} aria-live="polite">
+        <s-stack gap="small-200">
+          <Bubble mine={false} body="Hi! Ask us anything about Cartivo: setup, your theme, campaigns or billing." />
+          {chat.messages.map((m) => (
+            <Bubble
+              key={m.id}
+              mine={m.sender === "merchant"}
+              body={m.body}
+              meta={`${m.sender === "agent" ? "Cartivo team · " : ""}${time(m.createdAt)}`}
+            />
+          ))}
+          {chat.pending.map((m) => (
+            <Bubble key={m.id} mine body={m.body} meta={m.failed ? chat.error || "Not sent" : "Sending…"} failed={m.failed} />
+          ))}
+          {!chat.loaded && <s-spinner size="base" accessibilityLabel="Loading conversation" />}
+        </s-stack>
       </div>
-      <div className="ckx-chat-list" ref={listRef} aria-live="polite">
-        <div className="ckx-chat-msg ckx-them">
-          <div className="ckx-chat-bubble">Hi! 👋 Ask us anything about Cartivo: setup, your theme, campaigns or billing.</div>
-        </div>
-        {chat.messages.map((m) => (
-          <div key={m.id} className={`ckx-chat-msg ckx-${m.sender === "merchant" ? "me" : "them"}`}>
-            <div className="ckx-chat-bubble">{m.body}</div>
-            <span className="ckx-chat-time">
-              {m.sender === "agent" ? "Cartivo team · " : ""}
-              {time(m.createdAt)}
-            </span>
-          </div>
-        ))}
-        {chat.pending.map((m) => (
-          <div key={m.id} className={`ckx-chat-msg ckx-me${m.failed ? " ckx-failed" : " ckx-pending"}`}>
-            <div className="ckx-chat-bubble">{m.body}</div>
-            <span className="ckx-chat-time">{m.failed ? chat.error || "Not sent" : "Sending…"}</span>
-          </div>
-        ))}
-        {!chat.loaded && <div className="ckx-chat-loading">Loading conversation…</div>}
-      </div>
-      <div className="ckx-chat-compose">
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              send();
-            }
-          }}
-          placeholder="Write a message…"
-          rows={1}
-          maxLength={2000}
-          aria-label="Message"
-        />
-        <button type="button" onClick={send} disabled={!text.trim() || chat.sending} aria-label="Send">
-          <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
-            <path d="M3 10l14-7-5 14-2-6-7-1z" fill="currentColor" />
-          </svg>
-        </button>
-      </div>
+      <TextField label="Message" multiline={2} maxLength={2000} value={text} onChange={setText} />
+      <s-stack direction="inline">
+        <s-button variant="primary" onClick={send} {...(!text.trim() || chat.sending ? { disabled: true } : {})}>
+          Send
+        </s-button>
+      </s-stack>
+    </s-stack>
+  );
+}
+
+function Bubble({ mine, body, meta, failed }: { mine: boolean; body: string; meta?: string; failed?: boolean }) {
+  return (
+    <div className={`ckx-chat-row${mine ? " ckx-me" : ""}`}>
+      <s-box padding="small-200" borderRadius="base" borderWidth="base" background={mine ? "subdued" : "base"} maxInlineSize="80%">
+        <s-stack gap="small-300">
+          <s-text>{body}</s-text>
+          {meta && (
+            <s-text color="subdued" {...(failed ? { tone: "critical" } : {})}>
+              {meta}
+            </s-text>
+          )}
+        </s-stack>
+      </s-box>
     </div>
   );
 }

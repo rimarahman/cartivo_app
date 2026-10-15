@@ -1,9 +1,11 @@
 import type { ActionFunctionArgs, HeadersFunction, LoaderFunctionArgs } from "react-router";
-import { Form, redirect, useLoaderData, useNavigation, useSubmit } from "react-router";
+import { useState } from "react";
+import { Form, redirect, useActionData, useLoaderData, useNavigation, useSubmit } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
 import { billingDisabled, chooseFree, getPlan, isTestBilling, paidPlanName } from "../models/billing.server";
 import { trySync } from "../models/sync.server";
+import { ErrorBanner } from "../components/ErrorBanner";
 import { FREE_FEATURES, FREE_PLAN, PAID_PLANS, PLAN_ORDER, TRIAL_DAYS, type PaidPlanId } from "../lib/plans";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -23,16 +25,31 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     if (!PAID_PLANS[id]) return { error: "Unknown plan" };
     const shopHandle = session.shop.replace(".myshopify.com", "");
     // Paid plans have no trial: billing starts when the merchant approves the charge.
-    await billing.request({
-      plan: paidPlanName(id) as any,
-      isTest: await isTestBilling(admin, session.shop),
-      returnUrl: `https://admin.shopify.com/store/${shopHandle}/apps/${process.env.SHOPIFY_API_KEY}/app/pricing?upgraded=1`,
-    });
+    try {
+      await billing.request({
+        plan: paidPlanName(id) as any,
+        isTest: await isTestBilling(admin, session.shop),
+        returnUrl: `https://admin.shopify.com/store/${shopHandle}/apps/${process.env.SHOPIFY_API_KEY}/app/pricing?upgraded=1`,
+      });
+    } catch (e) {
+      // Success is a thrown redirect to the charge approval page; anything else is a billing error.
+      if (e instanceof Response) throw e;
+      console.error("Billing request failed", e);
+      return { error: "Shopify couldn't start the subscription. Please try again, or contact us from the Help page if it keeps happening." };
+    }
   }
   if (intent === "free") {
     // Picking Starter (free): after the trial, or switching down from a paid plan (cancels the subscription).
     const plan = await getPlan(billing, session.shop, admin);
-    if (plan.subscriptionId) await billing.cancel({ subscriptionId: plan.subscriptionId, isTest: await isTestBilling(admin, session.shop), prorate: true });
+    if (plan.subscriptionId) {
+      try {
+        await billing.cancel({ subscriptionId: plan.subscriptionId, isTest: await isTestBilling(admin, session.shop), prorate: true });
+      } catch (e) {
+        if (e instanceof Response) throw e;
+        console.error("Billing cancel failed", e);
+        return { error: `Shopify couldn't cancel your ${plan.name} subscription, so your plan is unchanged. Please try again.` };
+      }
+    }
     await chooseFree(session.shop);
     await trySync(admin, session.shop, await getPlan(billing, session.shop, admin));
     return redirect("/app");
@@ -42,6 +59,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function Pricing() {
   const { plan, billingDisabled } = useLoaderData<typeof loader>();
+  const result = useActionData<typeof action>();
+  // Billing errors stay until dismissed (BFS 4.2.4); a new result brings the banner back.
+  const [dismissed, setDismissed] = useState<unknown>(null);
+  const error = result && result !== dismissed ? result.error : null;
   const nav = useNavigation();
   const submit = useSubmit();
   const busy = (value: string) => nav.state !== "idle" && (nav.formData?.get("plan") ?? nav.formData?.get("intent")) === value;
@@ -118,6 +139,7 @@ export default function Pricing() {
 
   return (
     <s-page heading="Plans">
+      {error && <ErrorBanner message={error} onDismiss={() => setDismissed(result)} />}
       {billingDisabled && (
         <s-banner tone="info">Billing is disabled (BILLING_DISABLED=true), so every feature is unlocked.</s-banner>
       )}

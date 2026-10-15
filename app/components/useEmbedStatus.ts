@@ -6,7 +6,7 @@ export const EMBED_HANDLE = "cartkit-embed";
 // Whether the Cartivo app embed is on in the live theme, from App Bridge's app.extensions() (the API the
 // Built for Shopify homepage requirement 4.2.3 points to; it reads the published theme, so no theme-file
 // access or read_themes scope is needed). null while loading or when it can't be determined.
-// `when` = false skips the lookup (e.g. while the Help panel is closed).
+// `when` = false skips the lookup.
 export function useEmbedStatus(when = true) {
   const shopify = useAppBridge();
   const [enabled, setEnabled] = useState<boolean | null>(null);

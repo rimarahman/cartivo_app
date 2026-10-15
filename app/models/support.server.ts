@@ -1,4 +1,4 @@
-// Support requests from the Help panel: validation, storage, diagnostics and team notification.
+// Support requests from the Help page: validation, storage, diagnostics and team notification.
 import db from "../db.server";
 import { SUPPORT_CATEGORIES, type SupportCategory } from "../lib/support";
 
@@ -63,7 +63,7 @@ export async function shopEmail(admin: Admin) {
   }
 }
 
-// Never throws: the Help panel loads on every admin page and must not take the page down with it.
+// Never throws: a failure here must not take the Help page down with it.
 export async function listTickets(shop: string) {
   try {
     return await db.supportTicket.findMany({

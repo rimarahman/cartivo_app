@@ -1,4 +1,4 @@
-// Live chat: one thread per shop between the merchant (Help panel) and the support team (/support/inbox).
+// Live chat: one thread per shop between the merchant (Help page) and the support team (/support/inbox).
 import { createCookie } from "react-router";
 import { timingSafeEqual } from "node:crypto";
 import db from "../db.server";

@@ -1,4 +1,4 @@
-// Resource route for the live chat in the Help panel (components/SupportWidget). Live chat is part of the
+// Resource route for the live chat on the Help page (routes/app.help). Live chat is part of the
 // Growth and Premium plans (and the trial); other plans get `allowed: false` and can't post.
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { authenticate } from "../shopify.server";
