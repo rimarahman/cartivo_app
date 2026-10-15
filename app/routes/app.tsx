@@ -17,10 +17,10 @@ export const links: LinksFunction = () => [
 const OPEN_WITHOUT_PLAN = ["/app/pricing", "/app/support", "/app/chat"];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { session, billing } = await authenticate.admin(request);
+  const { admin, session, billing } = await authenticate.admin(request);
   // Trial over and no plan picked yet: every page leads to the Plans page.
   const url = new URL(request.url);
-  if (!OPEN_WITHOUT_PLAN.some((p) => url.pathname.startsWith(p)) && (await getPlan(billing, session.shop)).id === "choose") {
+  if (!OPEN_WITHOUT_PLAN.some((p) => url.pathname.startsWith(p)) && (await getPlan(billing, session.shop, admin)).id === "choose") {
     throw redirect(`/app/pricing${url.search}`);
   }
 

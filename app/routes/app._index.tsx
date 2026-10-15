@@ -35,7 +35,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const since = new Date(Date.now() - 30 * 864e5);
   const [campaigns, plan, events, published, settingsRow, settings] = await Promise.all([
     listCampaigns(session.shop),
-    getPlan(billing, session.shop),
+    getPlan(billing, session.shop, admin),
     db.event.groupBy({
       by: ["type"],
       where: { shop: session.shop, createdAt: { gte: since } },
@@ -80,7 +80,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return { ok: true };
   }
   // "Republish" button: pushes the current configuration to the storefront again.
-  const plan = await getPlan(billing, session.shop);
+  const plan = await getPlan(billing, session.shop, admin);
   const sync = await trySync(admin, session.shop, plan);
   return { saved: sync.ok, syncError: sync.error };
 };

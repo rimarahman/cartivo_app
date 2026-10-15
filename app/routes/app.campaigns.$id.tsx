@@ -32,7 +32,7 @@ import { getMarketsInfo } from "../models/markets.server";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const { admin, session, billing } = await authenticate.admin(request);
-  const [plan, markets] = await Promise.all([getPlan(billing, session.shop), getMarketsInfo(admin)]);
+  const [plan, markets] = await Promise.all([getPlan(billing, session.shop, admin), getMarketsInfo(admin)]);
   if (params.id === "new") {
     const type = (new URL(request.url).searchParams.get("type") || "rewards") as CampaignType;
     if (!CAMPAIGN_TYPES[type]) throw redirect("/app/campaigns");
@@ -62,7 +62,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const payload = JSON.parse(String(form.get("payload") || "{}"));
   if (!CAMPAIGN_TYPES[payload.type as CampaignType]) return { error: "Unknown campaign type" };
   const saved = await saveCampaign(session.shop, params.id === "new" ? null : params.id!, payload);
-  const plan = await getPlan(billing, session.shop);
+  const plan = await getPlan(billing, session.shop, admin);
   const sync = await trySync(admin, session.shop, plan);
   return { saved: true, syncError: sync.error, id: saved.id };
 };

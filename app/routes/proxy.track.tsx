@@ -35,6 +35,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       value: Number.isFinite(Number(e.value)) ? Number(e.value) : null,
     }));
   if (rows.length) await db.event.createMany({ data: rows });
+  // Analytics shows at most 90 days, so older events are trimmed now and then (about 1 request in 200 per
+  // shop) to keep the table from growing without limit. Best-effort: never fails the request.
+  if (Math.random() < 0.005) {
+    db.event
+      .deleteMany({ where: { shop: session.shop, createdAt: { lt: new Date(Date.now() - 120 * 864e5) } } })
+      .catch((e) => console.error("Event cleanup failed", e));
+  }
   return new Response(null, { status: 204 });
 };
 

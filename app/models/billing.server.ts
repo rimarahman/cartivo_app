@@ -10,9 +10,32 @@ import {
   type PlanInfo,
 } from "../lib/plans";
 
-// Set BILLING_DISABLED=true in .env to unlock every feature while developing.
-export const billingDisabled = () => process.env.BILLING_DISABLED === "true";
-export const isTestBilling = () => process.env.NODE_ENV !== "production" || process.env.BILLING_TEST === "true";
+type Admin = { graphql: (query: string, options?: any) => Promise<Response> };
+
+// Set BILLING_DISABLED=true in .env to unlock every feature while developing. It has no effect in
+// production, so a leftover variable can never switch billing off for real merchants.
+export const billingDisabled = () => process.env.NODE_ENV !== "production" && process.env.BILLING_DISABLED === "true";
+
+// Test charges (no money moves) are used in development and, in production, only on Shopify development
+// stores (shop.plan.partnerDevelopment), e.g. Partner test stores and App Review's stores. Every other store
+// gets real charges; there is deliberately no environment switch that could make them free.
+const devStores = new Map<string, boolean>();
+export async function isTestBilling(admin: Admin, shop: string) {
+  if (process.env.NODE_ENV !== "production") return true;
+  const known = devStores.get(shop);
+  if (known !== undefined) return known;
+  try {
+    const json: any = await (await admin.graphql(`#graphql
+      query { shop { plan { partnerDevelopment } } }`)).json();
+    const dev = json.data?.shop?.plan?.partnerDevelopment === true;
+    devStores.set(shop, dev);
+    return dev;
+  } catch (e) {
+    // Unknown: treat as a real store (and don't cache, so the next request asks again).
+    console.error("Couldn't read the shop plan", e);
+    return false;
+  }
+}
 
 const DAY = 864e5;
 const PLAN_NAMES = Object.values(PAID_PLANS).map((p) => p.name);
@@ -64,13 +87,13 @@ function info(id: PlanId, extra: Partial<PlanInfo> = {}): PlanInfo {
 }
 
 // Current plan: an active Shopify subscription wins, then the app trial, then Free if picked, else "choose".
-export async function getPlan(billing: any, shop: string): Promise<PlanInfo> {
+export async function getPlan(billing: any, shop: string, admin: Admin): Promise<PlanInfo> {
   const row = await trialRow(shop);
   const trial = trialState(row.startedAt);
   const trialExtra = trial.active ? { trialEndsAt: trial.endsAt.toISOString(), trialDaysLeft: trial.daysLeft } : {};
   if (billingDisabled()) return info("pro", trialExtra);
 
-  const { appSubscriptions } = await billing.check({ plans: PLAN_NAMES, isTest: isTestBilling() });
+  const { appSubscriptions } = await billing.check({ plans: PLAN_NAMES, isTest: await isTestBilling(admin, shop) });
   return resolvePlan(appSubscriptions || [], trial, trialExtra, !!row.freeChosenAt);
 }
 
@@ -87,14 +110,15 @@ function resolvePlan(
 }
 
 // Same as getPlan, for webhooks (no billing helper there): reads the subscriptions with the Admin API.
-export async function getPlanFromAdmin(admin: { graphql: (q: string) => Promise<Response> }, shop: string): Promise<PlanInfo> {
+export async function getPlanFromAdmin(admin: Admin, shop: string): Promise<PlanInfo> {
   const row = await trialRow(shop);
   const trial = trialState(row.startedAt);
   const trialExtra = trial.active ? { trialEndsAt: trial.endsAt.toISOString(), trialDaysLeft: trial.daysLeft } : {};
   if (billingDisabled()) return info("pro", trialExtra);
   const json: any = await (await admin.graphql(`#graphql
     query { currentAppInstallation { activeSubscriptions { id name status test } } }`)).json();
-  const subs = (json.data?.currentAppInstallation?.activeSubscriptions || []).filter((s: any) => isTestBilling() || !s.test);
+  const test = await isTestBilling(admin, shop);
+  const subs = (json.data?.currentAppInstallation?.activeSubscriptions || []).filter((s: any) => test || !s.test);
   return resolvePlan(subs, trial, trialExtra, !!row.freeChosenAt);
 }
 

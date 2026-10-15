@@ -13,8 +13,8 @@ import { ErrorBanner } from "../components/ErrorBanner";
 import { saveErrorMessage } from "../components/useSave";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { session, billing } = await authenticate.admin(request);
-  const [campaigns, plan] = await Promise.all([listCampaigns(session.shop), getPlan(billing, session.shop)]);
+  const { admin, session, billing } = await authenticate.admin(request);
+  const [campaigns, plan] = await Promise.all([listCampaigns(session.shop), getPlan(billing, session.shop, admin)]);
   const live = planCampaigns(campaigns, plan).map((c) => c.id);
   return { campaigns, plan, live };
 };
@@ -27,7 +27,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (intent === "delete") await deleteCampaign(session.shop, id);
   if (intent === "activate") await setCampaignStatus(session.shop, id, "active");
   if (intent === "deactivate") await setCampaignStatus(session.shop, id, "draft");
-  const plan = await getPlan(billing, session.shop);
+  const plan = await getPlan(billing, session.shop, admin);
   const sync = await trySync(admin, session.shop, plan);
   return { saved: true, syncError: sync.error };
 };

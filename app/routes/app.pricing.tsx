@@ -8,7 +8,7 @@ import { FREE_FEATURES, FREE_PLAN, PAID_PLANS, PLAN_ORDER, TRIAL_DAYS, type Paid
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { admin, session, billing } = await authenticate.admin(request);
-  const plan = await getPlan(billing, session.shop);
+  const plan = await getPlan(billing, session.shop, admin);
   // Returning from the billing confirmation page: publish the new plan's campaigns right away.
   if (new URL(request.url).searchParams.get("upgraded")) await trySync(admin, session.shop, plan);
   return { plan, billingDisabled: billingDisabled() };
@@ -25,16 +25,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     // Paid plans have no trial: billing starts when the merchant approves the charge.
     await billing.request({
       plan: paidPlanName(id) as any,
-      isTest: isTestBilling(),
+      isTest: await isTestBilling(admin, session.shop),
       returnUrl: `https://admin.shopify.com/store/${shopHandle}/apps/${process.env.SHOPIFY_API_KEY}/app/pricing?upgraded=1`,
     });
   }
   if (intent === "free") {
     // Picking Starter (free): after the trial, or switching down from a paid plan (cancels the subscription).
-    const plan = await getPlan(billing, session.shop);
-    if (plan.subscriptionId) await billing.cancel({ subscriptionId: plan.subscriptionId, isTest: isTestBilling(), prorate: true });
+    const plan = await getPlan(billing, session.shop, admin);
+    if (plan.subscriptionId) await billing.cancel({ subscriptionId: plan.subscriptionId, isTest: await isTestBilling(admin, session.shop), prorate: true });
     await chooseFree(session.shop);
-    await trySync(admin, session.shop, await getPlan(billing, session.shop));
+    await trySync(admin, session.shop, await getPlan(billing, session.shop, admin));
     return redirect("/app");
   }
   return null;

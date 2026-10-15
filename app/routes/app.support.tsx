@@ -16,7 +16,7 @@ import {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { admin, session, billing } = await authenticate.admin(request);
-  const [tickets, email, plan] = await Promise.all([listTickets(session.shop), shopEmail(admin), getPlan(billing, session.shop)]);
+  const [tickets, email, plan] = await Promise.all([listTickets(session.shop), shopEmail(admin), getPlan(billing, session.shop, admin)]);
   return { tickets, email, priority: plan.features.prioritySupport, contact: supportContact(), categories: SUPPORT_CATEGORIES };
 };
 
@@ -38,7 +38,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<SupportAc
   let diagnostics: Record<string, unknown> | null = null;
   if (form.get("diagnostics") === "true") {
     const [plan, settings, campaigns] = await Promise.all([
-      getPlan(billing, session.shop),
+      getPlan(billing, session.shop, admin),
       getSettings(session.shop),
       listCampaigns(session.shop),
     ]);

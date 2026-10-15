@@ -5,8 +5,8 @@ import { trySync } from "./sync.server";
 import type { Settings } from "../lib/defaults";
 
 export async function settingsLoader(request: Request) {
-  const { session, billing } = await authenticate.admin(request);
-  const [settings, plan] = await Promise.all([getSettings(session.shop), getPlan(billing, session.shop)]);
+  const { admin, session, billing } = await authenticate.admin(request);
+  const [settings, plan] = await Promise.all([getSettings(session.shop), getPlan(billing, session.shop, admin)]);
   return { settings, plan };
 }
 
@@ -18,7 +18,7 @@ export async function settingsAction(request: Request, sections: (keyof Settings
   const partial: any = {};
   for (const key of sections) if (payload[key] !== undefined) partial[key] = payload[key];
   await saveSettings(session.shop, partial);
-  const plan = await getPlan(billing, session.shop);
+  const plan = await getPlan(billing, session.shop, admin);
   const sync = await trySync(admin, session.shop, plan);
   return { saved: true, syncError: sync.error };
 }
