@@ -6,7 +6,6 @@ import { AppProvider } from "@shopify/shopify-app-react-router/react";
 import { authenticate } from "../shopify.server";
 import { getPlan } from "../models/billing.server";
 import adminStyles from "../styles/admin.css?url";
-import { SupportWidget } from "../components/SupportWidget";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: "/storefront.css" },
@@ -14,13 +13,13 @@ export const links: LinksFunction = () => [
 ];
 
 // Open while the merchant still has to pick a plan (the Plans page itself, and getting help).
-const OPEN_WITHOUT_PLAN = ["/app/pricing", "/app/support", "/app/chat"];
+const OPEN_WITHOUT_PLAN = ["/app/pricing", "/app/help", "/app/chat"];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { session, billing } = await authenticate.admin(request);
+  const { admin, session, billing } = await authenticate.admin(request);
   // Trial over and no plan picked yet: every page leads to the Plans page.
   const url = new URL(request.url);
-  if (!OPEN_WITHOUT_PLAN.some((p) => url.pathname.startsWith(p)) && (await getPlan(billing, session.shop)).id === "choose") {
+  if (!OPEN_WITHOUT_PLAN.some((p) => url.pathname.startsWith(p)) && (await getPlan(billing, session.shop, admin)).id === "choose") {
     throw redirect(`/app/pricing${url.search}`);
   }
 
@@ -46,9 +45,9 @@ export default function App() {
         <s-link href="/app/advanced">Custom code & languages</s-link>
         <s-link href="/app/analytics">Analytics</s-link>
         <s-link href="/app/pricing">Plans</s-link>
+        <s-link href="/app/help">Help</s-link>
       </s-app-nav>
       <Outlet />
-      <SupportWidget />
     </AppProvider>
   );
 }

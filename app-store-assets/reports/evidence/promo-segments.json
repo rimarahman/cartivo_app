@@ -1,0 +1,79 @@
+{
+ "total": 52.4,
+ "clipSecs": 12.5,
+ "screencastShare": 0.2385496183206107,
+ "segments": [
+  {
+   "kind": "card",
+   "source": "intro",
+   "seconds": 4,
+   "caption": ""
+  },
+  {
+   "kind": "card",
+   "source": "benefits",
+   "seconds": 4.5,
+   "caption": ""
+  },
+  {
+   "kind": "still",
+   "source": "01-cart-drawer-offers.png",
+   "seconds": 5,
+   "caption": ""
+  },
+  {
+   "kind": "sfclip",
+   "source": "review recording @ 0.8s",
+   "seconds": 6.5,
+   "caption": "Add to cart: a free board is added and the shopper picks a gift"
+  },
+  {
+   "kind": "still",
+   "source": "02-free-gift-goal.png",
+   "seconds": 5,
+   "caption": ""
+  },
+  {
+   "kind": "still",
+   "source": "03-buy-x-get-y.png",
+   "seconds": 5,
+   "caption": ""
+  },
+  {
+   "kind": "still",
+   "source": "04-in-cart-upsell.png",
+   "seconds": 5,
+   "caption": ""
+  },
+  {
+   "kind": "still",
+   "source": "05-drawer-design.png",
+   "seconds": 4.5,
+   "caption": ""
+  },
+  {
+   "kind": "clip",
+   "source": "review recording @ 24.8s",
+   "seconds": 6,
+   "caption": "Pick a look, including Liquid glass, and preview it live"
+  },
+  {
+   "kind": "still",
+   "source": "07-campaigns.png",
+   "seconds": 4.5,
+   "caption": ""
+  },
+  {
+   "kind": "still",
+   "source": "08-mobile.png",
+   "seconds": 4.5,
+   "caption": ""
+  },
+  {
+   "kind": "card",
+   "source": "outro",
+   "seconds": 4.5,
+   "caption": ""
+  }
+ ]
+}

@@ -17,7 +17,7 @@ export function cartLinesDiscountsGenerateRun(input) {
 
   if (hasClass(input, "PRODUCT")) {
     const candidates = [];
-    // A cart line may only receive one CartKit product discount.
+    // A cart line may only receive one Cartivo product discount.
     const used = new Set();
 
     // 1. Free gifts. Attribute value is "<campaignId>:<tierId>".

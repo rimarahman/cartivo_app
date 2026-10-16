@@ -1,4 +1,4 @@
-// Live chat: one thread per shop between the merchant (Help panel) and the support team (/support/inbox).
+// Live chat: one thread per shop between the merchant (Help page) and the support team (/support/inbox).
 import { createCookie } from "react-router";
 import { timingSafeEqual } from "node:crypto";
 import db from "../db.server";
@@ -139,7 +139,7 @@ export const signOutCookie = () => inboxCookie().serialize("", { maxAge: 0 });
 async function notifyTeam(shop: string, text: string) {
   const url = process.env.SUPPORT_WEBHOOK_URL;
   if (!url) return;
-  const msg = `New CartKit live chat from ${shop}:\n${text.slice(0, 500)}\nReply in the support inbox (/support/inbox).`;
+  const msg = `New Cartivo live chat from ${shop}:\n${text.slice(0, 500)}\nReply in the support inbox (/support/inbox).`;
   try {
     await fetch(url, {
       method: "POST",

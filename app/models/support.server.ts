@@ -1,4 +1,4 @@
-// Support requests from the Help panel: validation, storage, diagnostics and team notification.
+// Support requests from the Help page: validation, storage, diagnostics and team notification.
 import db from "../db.server";
 import { SUPPORT_CATEGORIES, type SupportCategory } from "../lib/support";
 
@@ -31,17 +31,15 @@ export function validateTicket(input: TicketInput) {
 // Store and theme details that save a round of back-and-forth. Every query fails gracefully.
 export async function collectDiagnostics(admin: Admin, extra: Record<string, unknown>) {
   let shop: any = null;
-  let theme: any = null;
   try {
+    // No theme details: the app doesn't request read_themes (embed status comes from App Bridge instead).
     const json: any = await (
       await admin.graphql(`#graphql
         query {
           shop { name myshopifyDomain primaryDomain { host } currencyCode plan { displayName } }
-          themes(first: 1, roles: [MAIN]) { nodes { name } }
         }`)
     ).json();
     shop = json.data?.shop ?? null;
-    theme = json.data?.themes?.nodes?.[0] ?? null;
   } catch {
     // diagnostics are best-effort
   }
@@ -50,7 +48,6 @@ export async function collectDiagnostics(admin: Admin, extra: Record<string, unk
     domain: shop?.primaryDomain?.host ?? null,
     shopifyPlan: shop?.plan?.displayName ?? null,
     currency: shop?.currencyCode ?? null,
-    theme: theme?.name ?? null,
     ...extra,
   };
 }
@@ -66,7 +63,7 @@ export async function shopEmail(admin: Admin) {
   }
 }
 
-// Never throws: the Help panel loads on every admin page and must not take the page down with it.
+// Never throws: a failure here must not take the Help page down with it.
 export async function listTickets(shop: string) {
   try {
     return await db.supportTicket.findMany({
@@ -115,7 +112,7 @@ async function notifyTeam(t: { id: string; shop: string; email: string; category
   if (!url) return;
   const topic = SUPPORT_CATEGORIES[t.category as SupportCategory] ?? t.category;
   const text = [
-    `New CartKit support request #${t.id}`,
+    `New Cartivo support request #${t.id}`,
     `Store: ${t.shop}`,
     `Reply to: ${t.email}`,
     `Topic: ${topic}`,

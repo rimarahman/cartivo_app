@@ -17,11 +17,12 @@
     "prisma": "prisma",
     "graphql-codegen": "graphql-codegen",
     "vite": "vite",
-    "typecheck": "react-router typegen && tsc --noEmit"
+    "typecheck": "react-router typegen && tsc --noEmit",
+    "test": "node --test test/ && npm test --workspace extensions/cartkit-discounts"
   },
   "type": "module",
   "engines": {
-    "node": ">=22.12"
+    "node": ">=22.18"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
@@ -40,6 +41,8 @@
     "vite-tsconfig-paths": "^6.0.4"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.56.1",
     "@shopify/api-codegen-preset": "^2.0.0",
     "@shopify/polaris-types": "1.0.1",
     "@types/eslint": "^9.6.1",

@@ -1,0 +1,2832 @@
+{
+  "config": {
+    "configFile": "D:\\shopify\\corner-cart-app\\playwright.config.ts",
+    "rootDir": "D:/shopify/corner-cart-app/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "firefox-desktop",
+        "name": "firefox-desktop",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "webkit-desktop",
+        "name": "webkit-desktop",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "mobile-chrome",
+        "name": "mobile-chrome",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "mobile-safari",
+        "name": "mobile-safari",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "tablet",
+        "name": "tablet",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "server",
+        "name": "server",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "server/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "storefront\\cart.spec.ts",
+      "file": "storefront/cart.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cart drawer",
+          "file": "storefront/cart.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "SF-01 variant selection adds the chosen variant @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3029,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:09.593Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-78d53e78907171bd5635",
+              "file": "storefront/cart.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "SF-02 increase, decrease and remove update the real cart and the subtotal @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 6016,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:09.597Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-ff92e37df1fc0ead0da1",
+              "file": "storefront/cart.spec.ts",
+              "line": 16,
+              "column": 3
+            },
+            {
+              "title": "SF-03 sold-out variant shows Shopify's error and adds nothing @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3356,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:09.596Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-507d51ad32b50a09c967",
+              "file": "storefront/cart.spec.ts",
+              "line": 34,
+              "column": 3
+            },
+            {
+              "title": "SF-04 cart survives refresh and navigation; header count matches @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 7150,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:09.660Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-828b5ff8601f934ae2c5",
+              "file": "storefront/cart.spec.ts",
+              "line": 47,
+              "column": 3
+            },
+            {
+              "title": "SF-05 cart link opens the drawer instead of the cart page @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1958,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:13.157Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-503ec56c5522865f4640",
+              "file": "storefront/cart.spec.ts",
+              "line": 65,
+              "column": 3
+            },
+            {
+              "title": "SF-06 valid discount code applies; invalid one shows an error and is removed @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 4970,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:13.579Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-6a2914b300760d3c05d7",
+              "file": "storefront/cart.spec.ts",
+              "line": 74,
+              "column": 3
+            },
+            {
+              "title": "SF-07 order note is saved to the cart @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2736,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:15.188Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-b08904e97387acd90fa1",
+              "file": "storefront/cart.spec.ts",
+              "line": 95,
+              "column": 3
+            },
+            {
+              "title": "SF-08 terms checkbox blocks checkout until ticked @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4605,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:16.251Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-2dd2fc46fd24ccb68cfe",
+              "file": "storefront/cart.spec.ts",
+              "line": 107,
+              "column": 3
+            },
+            {
+              "title": "SF-09 checkout continues to /checkout @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3780,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:18.067Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-df21423378c0921adfc0",
+              "file": "storefront/cart.spec.ts",
+              "line": 120,
+              "column": 3
+            },
+            {
+              "title": "SF-10 failed add-to-cart (server error) shows an error and changes nothing @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2576,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:18.087Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-dfc2fa31551f6d3954a8",
+              "file": "storefront/cart.spec.ts",
+              "line": 129,
+              "column": 3
+            },
+            {
+              "title": "SF-11 failed quantity change keeps the real cart and the drawer in sync @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3825,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:18.713Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-4483125c93ab649d2733",
+              "file": "storefront/cart.spec.ts",
+              "line": 145,
+              "column": 3
+            },
+            {
+              "title": "SF-12 gift that can't be added (failed request) isn't retried in a loop @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3118,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:20.737Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-318381e3d81537e42bca",
+              "file": "storefront/cart.spec.ts",
+              "line": 160,
+              "column": 3
+            },
+            {
+              "title": "SF-13 slow network: drawer shows busy state and ends consistent @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 6750,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:21.095Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-cebfa0fc417f8d35093a",
+              "file": "storefront/cart.spec.ts",
+              "line": 177,
+              "column": 3
+            },
+            {
+              "title": "SF-14 large cart (40 lines) renders with correct totals @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2056,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:21.894Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-f3199e818ded46daaa6a",
+              "file": "storefront/cart.spec.ts",
+              "line": 201,
+              "column": 3
+            },
+            {
+              "title": "SF-01 variant selection adds the chosen variant @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3032,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:47.990Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-ec14a84bb174358168bc",
+              "file": "storefront/cart.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "SF-02 increase, decrease and remove update the real cart and the subtotal @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3775,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:48.683Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-1bafd384956a814b53ef",
+              "file": "storefront/cart.spec.ts",
+              "line": 16,
+              "column": 3
+            },
+            {
+              "title": "SF-03 sold-out variant shows Shopify's error and adds nothing @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2075,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:48.731Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-1f4e36f82e49e51deaf8",
+              "file": "storefront/cart.spec.ts",
+              "line": 34,
+              "column": 3
+            },
+            {
+              "title": "SF-04 cart survives refresh and navigation; header count matches @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3959,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:49:01.032Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-650f1fd53d2dff15b75b",
+              "file": "storefront/cart.spec.ts",
+              "line": 47,
+              "column": 3
+            },
+            {
+              "title": "SF-05 cart link opens the drawer instead of the cart page @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1542,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:51.464Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-fca098ffa6ff775ead33",
+              "file": "storefront/cart.spec.ts",
+              "line": 65,
+              "column": 3
+            },
+            {
+              "title": "SF-06 valid discount code applies; invalid one shows an error and is removed @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2806,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:51.480Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-8e3275473aabac349c00",
+              "file": "storefront/cart.spec.ts",
+              "line": 74,
+              "column": 3
+            },
+            {
+              "title": "SF-07 order note is saved to the cart @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2249,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:53.032Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-bf3e622625522b20b043",
+              "file": "storefront/cart.spec.ts",
+              "line": 95,
+              "column": 3
+            },
+            {
+              "title": "SF-08 terms checkbox blocks checkout until ticked @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2962,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:53.165Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-bbe4207c261347f79156",
+              "file": "storefront/cart.spec.ts",
+              "line": 107,
+              "column": 3
+            },
+            {
+              "title": "SF-09 checkout continues to /checkout @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2136,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:54.311Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-7f6ea67d308fcf9edd76",
+              "file": "storefront/cart.spec.ts",
+              "line": 120,
+              "column": 3
+            },
+            {
+              "title": "SF-10 failed add-to-cart (server error) shows an error and changes nothing @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1689,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:55.313Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-df6935ddae0f00d33c8b",
+              "file": "storefront/cart.spec.ts",
+              "line": 129,
+              "column": 3
+            },
+            {
+              "title": "SF-11 failed quantity change keeps the real cart and the drawer in sync @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2077,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:56.150Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-056965b9aa1a3a7e0045",
+              "file": "storefront/cart.spec.ts",
+              "line": 145,
+              "column": 3
+            },
+            {
+              "title": "SF-12 gift that can't be added (failed request) isn't retried in a loop @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2679,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:56.467Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-02718d536930b03468d3",
+              "file": "storefront/cart.spec.ts",
+              "line": 160,
+              "column": 3
+            },
+            {
+              "title": "SF-13 slow network: drawer shows busy state and ends consistent @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 4908,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:57.030Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-4ec3e575c75c705aeb64",
+              "file": "storefront/cart.spec.ts",
+              "line": 177,
+              "column": 3
+            },
+            {
+              "title": "SF-14 large cart (40 lines) renders with correct totals @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1646,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:58.252Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-740d00c551e7ddfe9260",
+              "file": "storefront/cart.spec.ts",
+              "line": 201,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Campaigns on the storefront",
+          "file": "storefront/cart.spec.ts",
+          "line": 221,
+          "column": 6,
+          "specs": [
+            {
+              "title": "CMP-01 reward tiers: progress message, free shipping, gift and order discount @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 4508,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:22.635Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-659fddba962d86197cae",
+              "file": "storefront/cart.spec.ts",
+              "line": 222,
+              "column": 3
+            },
+            {
+              "title": "CMP-02 gift picker: nothing added until the shopper picks; one gift only @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3113,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:23.952Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-2c737550d5e4e0c698dd",
+              "file": "storefront/cart.spec.ts",
+              "line": 242,
+              "column": 3
+            },
+            {
+              "title": "CMP-03 BXGY same product (buy 2 get 1): free unit discounted by the function, nothing auto-added @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2866,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:24.130Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-a5c0f83129b27cd99688",
+              "file": "storefront/cart.spec.ts",
+              "line": 259,
+              "column": 3
+            },
+            {
+              "title": "CMP-04 volume discount tiers price correctly and show the next-tier hint @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3782,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:27.084Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-e12991db8730bff964ff",
+              "file": "storefront/cart.spec.ts",
+              "line": 270,
+              "column": 3
+            },
+            {
+              "title": "CMP-05 several campaigns at once: no duplicate gifts, no negative total @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4116,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:27.118Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-008150b87fa15e085e8e",
+              "file": "storefront/cart.spec.ts",
+              "line": 284,
+              "column": 3
+            },
+            {
+              "title": "CMP-06 per-visitor (evergreen) countdown is never shown @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3243,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:27.193Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-bc7fa583d286f51392e9",
+              "file": "storefront/cart.spec.ts",
+              "line": 306,
+              "column": 3
+            },
+            {
+              "title": "CMP-07 a running countdown shows the time left @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2815,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:27.932Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-eec753cbccd981dfaa4b",
+              "file": "storefront/cart.spec.ts",
+              "line": 314,
+              "column": 3
+            },
+            {
+              "title": "CMP-08 an ended offer says \"Offer ended\", never 00:00:00 @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 4084,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:30.515Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-1624a121748efb11ddb6",
+              "file": "storefront/cart.spec.ts",
+              "line": 323,
+              "column": 3
+            },
+            {
+              "title": "CMP-09 \"Hide when the timer reaches zero\" still hides an ended timer @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2710,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:30.800Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-05f1b1781e8fcf5a8c23",
+              "file": "storefront/cart.spec.ts",
+              "line": 336,
+              "column": 3
+            },
+            {
+              "title": "CMP-01 reward tiers: progress message, free shipping, gift and order discount @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2574,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:59.165Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-aaf057c7e8f3774af05b",
+              "file": "storefront/cart.spec.ts",
+              "line": 222,
+              "column": 3
+            },
+            {
+              "title": "CMP-02 gift picker: nothing added until the shopper picks; one gift only @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2281,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:59.917Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-60a89c5f78a7d22b4807",
+              "file": "storefront/cart.spec.ts",
+              "line": 242,
+              "column": 3
+            },
+            {
+              "title": "CMP-03 BXGY same product (buy 2 get 1): free unit discounted by the function, nothing auto-added @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2022,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:49:01.789Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-f63abe3a03631f3cb317",
+              "file": "storefront/cart.spec.ts",
+              "line": 259,
+              "column": 3
+            },
+            {
+              "title": "CMP-04 volume discount tiers price correctly and show the next-tier hint @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3615,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:49:01.973Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-c0b110cd1119c40b92cf",
+              "file": "storefront/cart.spec.ts",
+              "line": 270,
+              "column": 3
+            },
+            {
+              "title": "CMP-05 several campaigns at once: no duplicate gifts, no negative total @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3733,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:49:02.216Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-1b64c57014351b6b488b",
+              "file": "storefront/cart.spec.ts",
+              "line": 284,
+              "column": 3
+            },
+            {
+              "title": "CMP-06 per-visitor (evergreen) countdown is never shown @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2145,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:49:03.904Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-8e436edfdb6a6f3a92a3",
+              "file": "storefront/cart.spec.ts",
+              "line": 306,
+              "column": 3
+            },
+            {
+              "title": "CMP-07 a running countdown shows the time left @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2244,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:49:05.613Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-6e3df28a51d519ec8cc9",
+              "file": "storefront/cart.spec.ts",
+              "line": 314,
+              "column": 3
+            },
+            {
+              "title": "CMP-08 an ended offer says \"Offer ended\", never 00:00:00 @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3746,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:49:06.011Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-6362dc4cb9077b467f27",
+              "file": "storefront/cart.spec.ts",
+              "line": 323,
+              "column": 3
+            },
+            {
+              "title": "CMP-09 \"Hide when the timer reaches zero\" still hides an ended timer @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2007,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:49:06.086Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-03b1cc6a0fcec8208b96",
+              "file": "storefront/cart.spec.ts",
+              "line": 336,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Storefront security",
+          "file": "storefront/cart.spec.ts",
+          "line": 347,
+          "column": 6,
+          "specs": [
+            {
+              "title": "SEC-SF-01 product, variant, property, note and code values are escaped @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3291,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:30.930Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-8579f2996fa332339efd",
+              "file": "storefront/cart.spec.ts",
+              "line": 348,
+              "column": 3
+            },
+            {
+              "title": "SEC-SF-01 product, variant, property, note and code values are escaped @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3065,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:49:06.106Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-4e4d424c9a7faa7e8414",
+              "file": "storefront/cart.spec.ts",
+              "line": 348,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Accessibility & keyboard",
+          "file": "storefront/cart.spec.ts",
+          "line": 375,
+          "column": 6,
+          "specs": [
+            {
+              "title": "A11Y-01 drawer is a labelled modal dialog; focus moves in; Escape closes @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2444,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:31.264Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-a6942bbddfb43c9e897b",
+              "file": "storefront/cart.spec.ts",
+              "line": 376,
+              "column": 3
+            },
+            {
+              "title": "A11Y-02 all drawer buttons have accessible names @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3298,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:33.570Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-e64913a3bc598cefab1c",
+              "file": "storefront/cart.spec.ts",
+              "line": 389,
+              "column": 3
+            },
+            {
+              "title": "A11Y-03 Tab keeps focus inside the open modal drawer @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4032,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:48:33.822Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-9743df0035162a2a06db",
+              "file": "storefront/cart.spec.ts",
+              "line": 400,
+              "column": 3
+            },
+            {
+              "title": "A11Y-01 drawer is a labelled modal dialog; focus moves in; Escape closes @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2139,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:49:07.882Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-bdfe24650aa85346a1d3",
+              "file": "storefront/cart.spec.ts",
+              "line": 376,
+              "column": 3
+            },
+            {
+              "title": "A11Y-02 all drawer buttons have accessible names @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1967,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:49:08.115Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-b843558aa28772c92943",
+              "file": "storefront/cart.spec.ts",
+              "line": 389,
+              "column": 3
+            },
+            {
+              "title": "A11Y-03 Tab keeps focus inside the open modal drawer @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4545,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-16T04:49:09.202Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-58342d289048d457b7a9",
+              "file": "storefront/cart.spec.ts",
+              "line": 400,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "storefront\\quality.spec.ts",
+      "file": "storefront/quality.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "A11Y-04 axe: no serious or critical violations in the open drawer @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 6653,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:48:34.648Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "axe-violations.json",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJpZCI6ICJhcmlhLWFsbG93ZWQtcm9sZSIsCiAgICAiaW1wYWN0IjogIm1pbm9yIiwKICAgICJub2RlcyI6IDEsCiAgICAiaGVscCI6ICJBUklBIHJvbGUgc2hvdWxkIGJlIGFwcHJvcHJpYXRlIGZvciB0aGUgZWxlbWVudCIsCiAgICAidGFyZ2V0cyI6IFsKICAgICAgImFzaWRlIOKAlCBBUklBIHJvbGUgZGlhbG9nIGlzIG5vdCBhbGxvd2VkIGZvciBnaXZlbiBlbGVtZW50IgogICAgXQogIH0sCiAgewogICAgImlkIjogImxhbmRtYXJrLW5vLWR1cGxpY2F0ZS1iYW5uZXIiLAogICAgImltcGFjdCI6ICJtb2RlcmF0ZSIsCiAgICAibm9kZXMiOiAxLAogICAgImhlbHAiOiAiRG9jdW1lbnQgc2hvdWxkIG5vdCBoYXZlIG1vcmUgdGhhbiBvbmUgYmFubmVyIGxhbmRtYXJrIiwKICAgICJ0YXJnZXRzIjogWwogICAgICAiLmNrLWhlYWRlciDigJQgRG9jdW1lbnQgaGFzIG1vcmUgdGhhbiBvbmUgYmFubmVyIGxhbmRtYXJrIgogICAgXQogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-6a26a34524bdcb1f7ccb",
+          "file": "storefront/quality.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"aurora\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 5664,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:48:35.064Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-01ce028c697a402c1bd5",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"glass\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3658,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:48:37.604Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-a8ca126a19c6d3e60a8a",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"sunset\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3123,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:48:38.516Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-2609861daa0477528cbd",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"ocean\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 4561,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:48:40.768Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-3f9a5078dbbf91a9b4de",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"forest\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4214,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:48:41.331Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-412ffebda3dcb4368783",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"midnight\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 4082,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:48:41.386Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-80ae0e6d532e413d1ce0",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"minimal\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3510,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:48:41.717Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-035e3c2518a1fd878478",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "PERF-01 drawer interaction timings and layout shift @p2",
+          "ok": true,
+          "tags": [
+            "p2"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2516,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "PERF chromium-desktop {\"addToDrawerOpenMs\":129,\"qtyChangeIncludingGiftMs\":1212,\"cumulativeLayoutShift\":0}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:48:45.248Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "timings.json",
+                      "contentType": "application/json",
+                      "body": "ewogICJhZGRUb0RyYXdlck9wZW5NcyI6IDEyOSwKICAicXR5Q2hhbmdlSW5jbHVkaW5nR2lmdE1zIjogMTIxMiwKICAiY3VtdWxhdGl2ZUxheW91dFNoaWZ0IjogMAp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-611cfa05af9c317d4028",
+          "file": "storefront/quality.spec.ts",
+          "line": 55,
+          "column": 1
+        },
+        {
+          "title": "A11Y-04 axe: no serious or critical violations in the open drawer @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 3978,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:49:10.148Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "axe-violations.json",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJpZCI6ICJhcmlhLWFsbG93ZWQtcm9sZSIsCiAgICAiaW1wYWN0IjogIm1pbm9yIiwKICAgICJub2RlcyI6IDEsCiAgICAiaGVscCI6ICJBUklBIHJvbGUgc2hvdWxkIGJlIGFwcHJvcHJpYXRlIGZvciB0aGUgZWxlbWVudCIsCiAgICAidGFyZ2V0cyI6IFsKICAgICAgImFzaWRlIOKAlCBBUklBIHJvbGUgZGlhbG9nIGlzIG5vdCBhbGxvd2VkIGZvciBnaXZlbiBlbGVtZW50IgogICAgXQogIH0sCiAgewogICAgImlkIjogImxhbmRtYXJrLW5vLWR1cGxpY2F0ZS1iYW5uZXIiLAogICAgImltcGFjdCI6ICJtb2RlcmF0ZSIsCiAgICAibm9kZXMiOiAxLAogICAgImhlbHAiOiAiRG9jdW1lbnQgc2hvdWxkIG5vdCBoYXZlIG1vcmUgdGhhbiBvbmUgYmFubmVyIGxhbmRtYXJrIiwKICAgICJ0YXJnZXRzIjogWwogICAgICAiLmNrLWhlYWRlciDigJQgRG9jdW1lbnQgaGFzIG1vcmUgdGhhbiBvbmUgYmFubmVyIGxhbmRtYXJrIgogICAgXQogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-448d2f2d9cc1d3d5ed74",
+          "file": "storefront/quality.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"aurora\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 3753,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:49:10.253Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-4fd8e382ad52a8c761dc",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"glass\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3680,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:49:10.301Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-50090e7c22ef6cd2c7c1",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"sunset\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3387,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:49:14.036Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-692f3cc24d6a44ad93fb",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"ocean\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3571,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:49:13.999Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-0292ddb8e4a07b12bf33",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"forest\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 3813,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:49:14.027Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-89fa4bc75498453ad284",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"midnight\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 4399,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:49:14.150Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-b93233be0c73268a6648",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "A11Y-05 axe: no colour-contrast violations in the \"minimal\" look @p1",
+          "ok": true,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2785,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:49:17.458Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-824984158449eea21832",
+          "file": "storefront/quality.spec.ts",
+          "line": 37,
+          "column": 3
+        },
+        {
+          "title": "PERF-01 drawer interaction timings and layout shift @p2",
+          "ok": true,
+          "tags": [
+            "p2"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2111,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "PERF mobile-chrome {\"addToDrawerOpenMs\":166,\"qtyChangeIncludingGiftMs\":614,\"cumulativeLayoutShift\":0}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T04:49:17.585Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "timings.json",
+                      "contentType": "application/json",
+                      "body": "ewogICJhZGRUb0RyYXdlck9wZW5NcyI6IDE2NiwKICAicXR5Q2hhbmdlSW5jbHVkaW5nR2lmdE1zIjogNjE0LAogICJjdW11bGF0aXZlTGF5b3V0U2hpZnQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-142affee565056ebccf2",
+          "file": "storefront/quality.spec.ts",
+          "line": 55,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-16T04:48:06.608Z",
+    "duration": 74575.89,
+    "expected": 72,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

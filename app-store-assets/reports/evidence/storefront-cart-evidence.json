@@ -1,0 +1,274 @@
+[
+  {
+    "name": "sf-desktop-0-product",
+    "step": "Oxygen product page (no cart yet)",
+    "at": "2026-10-16T06:18:45.270Z",
+    "total": 0,
+    "currency": "USD",
+    "lines": []
+  },
+  {
+    "name": "sf-desktop-a-progress",
+    "step": "Ski wax added; progress bar shows the distance to the free gift",
+    "at": "2026-10-16T06:18:55.233Z",
+    "total": 24.95,
+    "currency": "USD",
+    "lines": [
+      {
+        "title": "Selling Plans Ski Wax",
+        "variant": "Selling Plans Ski Wax",
+        "qty": 1,
+        "price": 24.95,
+        "was": 24.95
+      }
+    ]
+  },
+  {
+    "name": "sf-desktop-b-bxgy",
+    "step": "Oxygen added; BXGY board auto-added at $0",
+    "at": "2026-10-16T06:19:03.636Z",
+    "total": 1025,
+    "currency": "USD",
+    "lines": [
+      {
+        "title": "The Complete Snowboard",
+        "variant": "Ice",
+        "qty": 1,
+        "price": 0,
+        "was": 699.95,
+        "cartivo": "bxgy"
+      },
+      {
+        "title": "The Collection Snowboard: Oxygen",
+        "variant": null,
+        "qty": 1,
+        "price": 1025,
+        "was": 1025
+      }
+    ]
+  },
+  {
+    "name": "sf-desktop-c-gift-picker",
+    "step": "Free gift goal reached; gift picker",
+    "at": "2026-10-16T06:19:05.530Z",
+    "total": 1025,
+    "currency": "USD",
+    "lines": [
+      {
+        "title": "The Complete Snowboard",
+        "variant": "Ice",
+        "qty": 1,
+        "price": 0,
+        "was": 699.95,
+        "cartivo": "bxgy"
+      },
+      {
+        "title": "The Collection Snowboard: Oxygen",
+        "variant": null,
+        "qty": 1,
+        "price": 1025,
+        "was": 1025
+      }
+    ]
+  },
+  {
+    "name": "sf-desktop-d-gift-added",
+    "step": "Gift added at $0",
+    "at": "2026-10-16T06:19:11.148Z",
+    "total": 1025,
+    "currency": "USD",
+    "lines": [
+      {
+        "title": "Selling Plans Ski Wax",
+        "variant": "Selling Plans Ski Wax",
+        "qty": 1,
+        "price": 0,
+        "was": 24.95,
+        "cartivo": "gift"
+      },
+      {
+        "title": "The Complete Snowboard",
+        "variant": "Ice",
+        "qty": 1,
+        "price": 0,
+        "was": 699.95,
+        "cartivo": "bxgy"
+      },
+      {
+        "title": "The Collection Snowboard: Oxygen",
+        "variant": null,
+        "qty": 1,
+        "price": 1025,
+        "was": 1025
+      }
+    ]
+  },
+  {
+    "name": "sf-desktop-e-upsell",
+    "step": "Upsell recommendation (Frequently bought together)",
+    "at": "2026-10-16T06:19:13.144Z",
+    "total": 1025,
+    "currency": "USD",
+    "lines": [
+      {
+        "title": "Selling Plans Ski Wax",
+        "variant": "Selling Plans Ski Wax",
+        "qty": 1,
+        "price": 0,
+        "was": 24.95,
+        "cartivo": "gift"
+      },
+      {
+        "title": "The Complete Snowboard",
+        "variant": "Ice",
+        "qty": 1,
+        "price": 0,
+        "was": 699.95,
+        "cartivo": "bxgy"
+      },
+      {
+        "title": "The Collection Snowboard: Oxygen",
+        "variant": null,
+        "qty": 1,
+        "price": 1025,
+        "was": 1025
+      }
+    ]
+  },
+  {
+    "name": "sf-mobile-0-product",
+    "step": "Oxygen product page on mobile",
+    "at": "2026-10-16T06:19:18.575Z",
+    "total": 0,
+    "currency": "USD",
+    "lines": []
+  },
+  {
+    "name": "sf-mobile-a-progress",
+    "step": "Ski wax added; progress bar shows the distance to the free gift",
+    "at": "2026-10-16T06:19:25.027Z",
+    "total": 24.95,
+    "currency": "USD",
+    "lines": [
+      {
+        "title": "Selling Plans Ski Wax",
+        "variant": "Selling Plans Ski Wax",
+        "qty": 1,
+        "price": 24.95,
+        "was": 24.95
+      }
+    ]
+  },
+  {
+    "name": "sf-mobile-b-bxgy",
+    "step": "Oxygen added; BXGY board auto-added at $0",
+    "at": "2026-10-16T06:19:32.444Z",
+    "total": 1025,
+    "currency": "USD",
+    "lines": [
+      {
+        "title": "The Complete Snowboard",
+        "variant": "Ice",
+        "qty": 1,
+        "price": 0,
+        "was": 699.95,
+        "cartivo": "bxgy"
+      },
+      {
+        "title": "The Collection Snowboard: Oxygen",
+        "variant": null,
+        "qty": 1,
+        "price": 1025,
+        "was": 1025
+      }
+    ]
+  },
+  {
+    "name": "sf-mobile-c-gift-picker",
+    "step": "Free gift goal reached; gift picker",
+    "at": "2026-10-16T06:19:34.068Z",
+    "total": 1025,
+    "currency": "USD",
+    "lines": [
+      {
+        "title": "The Complete Snowboard",
+        "variant": "Ice",
+        "qty": 1,
+        "price": 0,
+        "was": 699.95,
+        "cartivo": "bxgy"
+      },
+      {
+        "title": "The Collection Snowboard: Oxygen",
+        "variant": null,
+        "qty": 1,
+        "price": 1025,
+        "was": 1025
+      }
+    ]
+  },
+  {
+    "name": "sf-mobile-d-gift-added",
+    "step": "Gift added at $0",
+    "at": "2026-10-16T06:19:39.313Z",
+    "total": 1025,
+    "currency": "USD",
+    "lines": [
+      {
+        "title": "Selling Plans Ski Wax",
+        "variant": "Selling Plans Ski Wax",
+        "qty": 1,
+        "price": 0,
+        "was": 24.95,
+        "cartivo": "gift"
+      },
+      {
+        "title": "The Complete Snowboard",
+        "variant": "Ice",
+        "qty": 1,
+        "price": 0,
+        "was": 699.95,
+        "cartivo": "bxgy"
+      },
+      {
+        "title": "The Collection Snowboard: Oxygen",
+        "variant": null,
+        "qty": 1,
+        "price": 1025,
+        "was": 1025
+      }
+    ]
+  },
+  {
+    "name": "sf-mobile-e-upsell",
+    "step": "Upsell recommendation (Frequently bought together)",
+    "at": "2026-10-16T06:19:40.921Z",
+    "total": 1025,
+    "currency": "USD",
+    "lines": [
+      {
+        "title": "Selling Plans Ski Wax",
+        "variant": "Selling Plans Ski Wax",
+        "qty": 1,
+        "price": 0,
+        "was": 24.95,
+        "cartivo": "gift"
+      },
+      {
+        "title": "The Complete Snowboard",
+        "variant": "Ice",
+        "qty": 1,
+        "price": 0,
+        "was": 699.95,
+        "cartivo": "bxgy"
+      },
+      {
+        "title": "The Collection Snowboard: Oxygen",
+        "variant": null,
+        "qty": 1,
+        "price": 1025,
+        "was": 1025
+      }
+    ]
+  }
+]

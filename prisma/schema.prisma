@@ -39,6 +39,8 @@ model ShopSettings {
   shop       String   @id
   data       String
   discountId String?
+  // When the merchant hid the completed setup guide on the Dashboard
+  setupDismissedAt DateTime?
   updatedAt  DateTime @updatedAt
 }
 

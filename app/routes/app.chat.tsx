@@ -1,4 +1,4 @@
-// Resource route for the live chat in the Help panel (components/SupportWidget). Live chat is part of the
+// Resource route for the live chat on the Help page (routes/app.help). Live chat is part of the
 // Growth and Premium plans (and the trial); other plans get `allowed: false` and can't post.
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { authenticate } from "../shopify.server";
@@ -12,10 +12,10 @@ const LOCKED: ChatLoaderData = { allowed: false, messages: [], unread: 0, online
 
 // ?since=<iso> returns only newer messages; ?read=1 marks support replies as read (chat is on screen).
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<ChatLoaderData> => {
-  const { session, billing } = await authenticate.admin(request);
+  const { admin, session, billing } = await authenticate.admin(request);
   const url = new URL(request.url);
   try {
-    const plan = await getPlan(billing, session.shop);
+    const plan = await getPlan(billing, session.shop, admin);
     if (!plan.features.liveChat) return LOCKED;
     if (url.searchParams.get("read") === "1") await markRead(session.shop, "merchant");
     const [messages, unread, online] = await Promise.all([
@@ -31,10 +31,10 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<ChatLoade
 };
 
 export const action = async ({ request }: ActionFunctionArgs): Promise<ChatActionData> => {
-  const { session, billing } = await authenticate.admin(request);
+  const { admin, session, billing } = await authenticate.admin(request);
   const form = await request.formData();
   try {
-    const plan = await getPlan(billing, session.shop);
+    const plan = await getPlan(billing, session.shop, admin);
     if (!plan.features.liveChat) return { error: "Live chat is part of the Growth and Premium plans." };
     return await postMessage(session.shop, "merchant", form.get("body"));
   } catch (e) {

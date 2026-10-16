@@ -5,7 +5,7 @@ import { boundary } from "@shopify/shopify-app-react-router/server";
 import { settingsAction, settingsLoader } from "../models/actions.server";
 import { Checkbox, ColorField, Grid, NumberField, Select, TextField } from "../components/fields";
 import { StickyPreview } from "../components/Preview";
-import { Accordion, SettingsLayout, SideCard } from "../components/ui";
+import { Accordion, Locked, SettingsLayout, SideCard } from "../components/ui";
 import { useSave } from "../components/useSave";
 import { SaveActions, SaveCard, isDirty } from "../components/SaveActions";
 import type { Settings } from "../lib/defaults";
@@ -14,10 +14,11 @@ export const loader = ({ request }: LoaderFunctionArgs) => settingsLoader(reques
 export const action = ({ request }: ActionFunctionArgs) => settingsAction(request, ["sticky", "floating"]);
 
 export default function StickySettings() {
-  const { settings } = useLoaderData<typeof loader>();
+  const { settings, plan } = useLoaderData<typeof loader>();
+  const locked = !plan.features.stickyCart;
   const [sticky, setSticky] = useState(settings.sticky);
   const [floating, setFloating] = useState(settings.floating);
-  const { save, saving } = useSave<Partial<Settings>>();
+  const { save, saving, errorBanner } = useSave<Partial<Settings>>();
   const dirty = isDirty({ sticky, floating }, { sticky: settings.sticky, floating: settings.floating });
   const discard = () => {
     setSticky(settings.sticky);
@@ -36,12 +37,14 @@ export default function StickySettings() {
   return (
     <s-page heading="Sticky add-to-cart & floating cart" inlineSize="large">
       <SaveActions dirty={dirty} saving={saving} onSave={() => save({ sticky, floating })} onDiscard={discard} />
+      {errorBanner}
 
       <SettingsLayout
         side={
           <>
             <SaveCard dirty={dirty} saving={saving} onSave={() => save({ sticky, floating })} onDiscard={discard} />
             <SideCard title="Status">
+              <Locked locked={locked} stacked>
               <Select
                 label="Sticky add-to-cart"
                 options={[
@@ -60,6 +63,7 @@ export default function StickySettings() {
                 value={floating.enabled ? "active" : "inactive"}
                 onChange={(v) => setFloating((x) => ({ ...x, enabled: v === "active" }))}
               />
+              </Locked>
             </SideCard>
             <SideCard title="Preview" action={<s-badge tone="info">Live</s-badge>}>
               <StickyPreview sticky={sticky} floating={floating} glass={settings.design.glass} />
@@ -67,6 +71,13 @@ export default function StickySettings() {
           </>
         }
       >
+      {locked && (
+        <s-banner tone="info">
+          Sticky add-to-cart and the floating cart are part of the <s-link href="/app/pricing">Essential plan</s-link> and
+          higher.
+        </s-banner>
+      )}
+      <Locked locked={locked} stacked>
       <Accordion
         title="Sticky add-to-cart bar"
         icon="layout-footer"
@@ -137,6 +148,7 @@ export default function StickySettings() {
             <ColorField label="Count text" {...f("badgeTextColor")} />
           </Grid>
       </Accordion>
+      </Locked>
       </SettingsLayout>
     </s-page>
   );

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  /* Brand colours from app/styles/admin.css (--ckx-brand-from / --ckx-brand-to). System fonts only. */
+  :root { --from: #4f46e5; --to: #db2777; --ink: #1f1d3a; --muted: #4b4870; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1600px; height: 900px; overflow: hidden; }
+  body {
+    font-family: "Segoe UI", Inter, -apple-system, system-ui, sans-serif; color: var(--ink); position: relative;
+    background:
+      radial-gradient(900px 600px at 105% -10%, rgba(219, 39, 119, .14), transparent 60%),
+      radial-gradient(900px 700px at -10% 110%, rgba(79, 70, 229, .16), transparent 60%),
+      #f6f5fc;
+  }
+  .brand { position: absolute; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 22px; letter-spacing: -.01em; }
+  .brand svg { width: 34px; height: 34px; display: block; }
+  h1 { font-weight: 750; letter-spacing: -.025em; line-height: 1.12; }
+  p.sub { color: var(--muted); line-height: 1.45; }
+  .shot { position: absolute; overflow: hidden; border-radius: 14px; background: #fff; box-shadow: 0 30px 70px -32px rgba(31, 29, 58, .45), 0 0 0 1px rgba(31, 29, 58, .09); }
+  .shot img { position: absolute; max-width: none; }
+  .shot.phone { border-radius: 30px; box-shadow: 0 0 0 9px #1f1d3a, 0 40px 80px -30px rgba(31, 29, 58, .6); }
+
+  /* left: caption column, shots to the right */
+  .left .brand { left: 72px; top: 64px; }
+  .left .cap { position: absolute; left: 72px; top: 0; bottom: 0; width: 440px; display: flex; flex-direction: column; justify-content: center; gap: 22px; }
+  .left h1 { font-size: 46px; }
+  .left p.sub { font-size: 23px; }
+
+  /* top: caption row, shots below */
+  .top .brand { right: 72px; top: 50px; }
+  .top .cap { position: absolute; left: 72px; right: 300px; top: 42px; display: flex; flex-direction: column; gap: 8px; }
+  .top h1 { font-size: 40px; }
+  .top p.sub { font-size: 21px; }
+</style>
+</head>
+<body class="{{LAYOUT}}">
+  <div class="brand">{{MARK}}Cartivo</div>
+  <div class="cap"><h1>{{TITLE}}</h1><p class="sub">{{SUB}}</p></div>
+  {{SHOTS}}
+</body>
+</html>

@@ -19,23 +19,52 @@ function SIcon(props: { type: NonNullable<JSX.IntrinsicElements["s-icon"]["type"
   return <s-icon type={props.type} tone={props.tone} />;
 }
 
-// Without a plan the grid shows no plan badges; with one, types the plan doesn't include show the plan they need.
+// Plan-gated controls: greyed out and not interactive (inert), so they look and behave disabled (BFS 4.3.7).
+// The caller shows which plan unlocks them next to it.
+// `stacked` keeps the page's spacing when it wraps several s-sections.
+export function Locked({ locked, stacked, children }: { locked: boolean; stacked?: boolean; children: ReactNode }) {
+  if (!locked) return <>{children}</>;
+  return (
+    <div className={`ckx-locked${stacked ? " ckx-locked-stack" : ""}`} aria-disabled="true" {...{ inert: "" }}>
+      {children}
+    </div>
+  );
+}
+
+// Without a plan every type is a link. With one, types the plan doesn't include are greyed out, not
+// clickable, and name the plan that unlocks them, with a link to the Plans page (BFS 4.3.7).
 export function CampaignTypeGrid({ plan }: { plan?: PlanInfo }) {
   return (
     <div className="ckx-grid" style={{ ["--ckx-min" as string]: "210px" }}>
       {(Object.keys(CAMPAIGN_TYPES) as CampaignType[]).map((type) => {
         const info = CAMPAIGN_TYPES[type];
         const meta = CAMPAIGN_META[type];
-        return (
-          <Link key={type} to={`/app/campaigns/new?type=${type}`} className="ckx-type">
+        const body = (
+          <>
             <span className="ckx-type-icon" style={{ background: meta.tint }}>
               <SIcon type={meta.icon} />
             </span>
-            <span className="ckx-type-title">
-              {info.label}
-              {plan && !canUse(plan, type) && <span className="ckx-pro">{planName(planFor(type)).toUpperCase()}</span>}
-            </span>
+            <span className="ckx-type-title">{info.label}</span>
             <span className="ckx-type-desc">{info.description}</span>
+          </>
+        );
+        if (plan && !canUse(plan, type)) {
+          const needed = planName(planFor(type));
+          return (
+            <div key={type} className="ckx-type ckx-type-locked" aria-disabled="true">
+              <div className="ckx-type-dim">{body}</div>
+              <s-stack direction="inline" gap="small-200" alignItems="center">
+                <s-badge icon="lock">{`${needed} plan`}</s-badge>
+                <s-link href="/app/pricing" accessibilityLabel={`See plans that include ${info.label}`}>
+                  See plans
+                </s-link>
+              </s-stack>
+            </div>
+          );
+        }
+        return (
+          <Link key={type} to={`/app/campaigns/new?type=${type}`} className="ckx-type">
+            {body}
             <span className="ckx-type-cta">
               Create <span aria-hidden="true">→</span>
             </span>

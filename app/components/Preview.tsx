@@ -88,6 +88,16 @@ const Icons = {
       <path d="M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7c-2-4-6-3-5 0M12 7c2-4 6-3 5 0" />
     </svg>
   ),
+  check: (
+    <svg {...ICON_PROPS} width="14" height="14" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12.5l4.5 4.5L19 7.5" />
+    </svg>
+  ),
+  next: (
+    <svg {...ICON_PROPS} width="16" height="16" strokeWidth="2">
+      <path d="M9 6l6 6-6 6" />
+    </svg>
+  ),
   lock: (
     <svg {...ICON_PROPS} width="16" height="16" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="5" y="11" width="14" height="10" rx="2" />
@@ -119,6 +129,7 @@ export function DrawerPreview({ settings }: { settings: Partial3 }) {
   ];
   const subtotal = items.reduce((s, i) => s + i.price, 0);
   const savings = items.reduce((s, i) => s + (i.compare ? i.compare - i.price : 0), 0);
+  // Two goals at even steps: free shipping at 50 (reached, half way) and a free gift at 100 (the end).
   const goal = 100;
   const pct = Math.min(100, (subtotal / goal) * 100);
 
@@ -146,18 +157,16 @@ export function DrawerPreview({ settings }: { settings: Partial3 }) {
             <div className="ck-goal-message">
               You&apos;re <strong>{money(goal - subtotal)}</strong> away from <strong>Free gift</strong>
             </div>
-            <div className="ck-progress">
-              <div className="ck-progress-fill" style={{ width: `${pct}%` }} />
-              <span className="ck-milestone ck-done" style={{ left: "50%" }}>
-                {Icons.truck}
-              </span>
-              <span className="ck-milestone" style={{ left: "100%" }}>
-                {Icons.gift}
-              </span>
-            </div>
-            <div className="ck-milestone-labels">
-              <span style={{ left: "50%" }}>Free shipping</span>
-              <span style={{ left: "100%" }}>Free gift</span>
+            <div className="ck-goal-track" style={{ ["--n" as string]: 2 }}>
+              <div className="ck-progress">
+                <span className="ck-progress-fill" style={{ width: `${pct}%` }} />
+                <span className="ck-milestone ck-done" style={{ left: "50%" }} />
+                <span className="ck-milestone" style={{ left: "100%" }} />
+              </div>
+              <div className="ck-milestone-labels">
+                <span className="ck-done">Free shipping</span>
+                <span>Free gift</span>
+              </div>
             </div>
           </div>
           <div className="ck-body">
@@ -167,7 +176,7 @@ export function DrawerPreview({ settings }: { settings: Partial3 }) {
                   <img src={item.image} alt="" />
                 </a>
                 <div className="ck-item-info">
-                  {d.showVendor && <div className="ck-vendor">CartKit Co.</div>}
+                  {d.showVendor && <div className="ck-vendor">Cartivo Co.</div>}
                   <a className="ck-item-title" href="#preview">
                     {item.title}
                   </a>
@@ -219,35 +228,47 @@ export function DrawerPreview({ settings }: { settings: Partial3 }) {
             )}
           </div>
           <footer className="ck-footer">
-            {d.showNote && (
-              <div className="ck-note">
-                <button type="button" className="ck-link" tabIndex={-1}>
-                  {d.noteLabel}
-                </button>
-              </div>
-            )}
-            {d.showDiscountField && (
-              <div className="ck-discount">
-                <div className="ck-discount-row">
-                  <input className="ck-discount-input" placeholder={d.discountPlaceholder} readOnly tabIndex={-1} />
-                  <button type="button" className="ck-btn ck-btn-outline" tabIndex={-1}>
-                    {d.discountApplyText}
+            {(d.showNote || d.showDiscountField) && (
+              <div className="ck-extras">
+                {d.showNote && (
+                  <button type="button" className="ck-toggle ck-note-toggle" tabIndex={-1} aria-expanded="false">
+                    <span>{d.noteLabel}</span>
+                    {Icons.next}
                   </button>
-                </div>
+                )}
+                {d.showDiscountField && (
+                  <button type="button" className="ck-toggle" tabIndex={-1} aria-expanded="false">
+                    <span>{d.discountPlaceholder}</span>
+                    {Icons.next}
+                  </button>
+                )}
               </div>
             )}
             <div className="ck-totals">
-              {d.showSavings && savings > 0 && (
-                <div className="ck-total-row ck-savings">
-                  <span>{d.savingsText}</span>
-                  <span>{money(savings)}</span>
-                </div>
-              )}
-              {d.showSubtotal && (
+              {d.showSubtotal ? (
                 <div className="ck-total-row ck-subtotal">
-                  <span>{d.subtotalText}</span>
+                  <span>
+                    {d.subtotalText}
+                    {d.showSavings && savings > 0 && (
+                      <>
+                        {" "}
+                        <small className="ck-savings">
+                          {d.savingsText} {money(savings)}
+                        </small>
+                      </>
+                    )}
+                  </span>
                   <span>{money(subtotal)}</span>
                 </div>
+              ) : (
+                d.showSavings &&
+                savings > 0 && (
+                  <div className="ck-total-row ck-savings">
+                    <span>
+                      {d.savingsText} {money(savings)}
+                    </span>
+                  </div>
+                )
               )}
               {d.showTaxesText && <div className="ck-taxes">{d.taxesText}</div>}
             </div>

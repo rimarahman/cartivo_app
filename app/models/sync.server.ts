@@ -2,8 +2,9 @@
 // theme app extension) and to the discount Function (metafield on an automatic app discount).
 import db from "../db.server";
 import { getSettings, listCampaigns, type CampaignRecord } from "./store.server";
-import { parseCurrencyAmounts, type ProductRef } from "../lib/defaults";
+import { designForPlan, parseCurrencyAmounts, type ProductRef } from "../lib/defaults";
 import type { PlanInfo } from "../lib/plans";
+import { applyBuyerProtection } from "../lib/storefront-rules";
 
 // The plan facts publishing needs (id/trialEndsAt end trial-only campaigns on time).
 export type SyncPlan = Pick<PlanInfo, "features"> & Partial<Pick<PlanInfo, "id" | "trialEndsAt">>;
@@ -36,7 +37,7 @@ function storefrontRef(ref: ProductRef | null | undefined) {
 const refs = (list: ProductRef[] = []) => list.map(storefrontRef).filter(Boolean);
 
 function storefrontCampaign(c: CampaignRecord) {
-  const cfg = { ...c.config };
+  const cfg = applyBuyerProtection(c.type, c.config);
   switch (c.type) {
     case "rewards":
       cfg.tiers = (cfg.tiers || [])
@@ -177,7 +178,7 @@ async function ensureDiscount(admin: Admin, shop: string, config: any) {
   }
 
   const base = {
-    title: "CartKit rewards",
+    title: "Cartivo rewards",
     discountClasses: ["PRODUCT", "ORDER", "SHIPPING"],
     startsAt: new Date().toISOString(),
     combinesWith: { orderDiscounts: true, productDiscounts: true, shippingDiscounts: true },
@@ -218,7 +219,22 @@ async function ensureDiscount(admin: Admin, shop: string, config: any) {
 }
 
 export async function syncShop(admin: Admin, shop: string, plan: SyncPlan) {
-  const settings = await getSettings(shop);
+  const stored = await getSettings(shop);
+  // A look above the plan is published as Minimal (glass only on Premium), like plan-gated campaigns;
+  // translations need Markets (Growth and higher), otherwise the default texts show in every language;
+  // custom CSS needs Essential and higher, custom HTML/JS Growth and higher.
+  const advanced = { ...stored.advanced };
+  if (!plan.features.customCss) advanced.customCss = "";
+  if (!plan.features.customCode) Object.assign(advanced, { customHtmlTop: "", customHtmlBottom: "", customJs: "" });
+  const settings = {
+    ...stored,
+    design: designForPlan(stored.design, plan.features.designTier),
+    translations: plan.features.markets ? stored.translations : {},
+    advanced,
+    // Sticky add-to-cart and the floating cart need Essential and higher.
+    sticky: { ...stored.sticky, enabled: stored.sticky.enabled && plan.features.stickyCart },
+    floating: { ...stored.floating, enabled: stored.floating.enabled && plan.features.stickyCart },
+  };
   const campaigns = planCampaigns(await listCampaigns(shop), plan);
 
   const { currentAppInstallation, shop: shopInfo } = await gql(
@@ -271,7 +287,9 @@ export async function trySync(admin: Admin, shop: string, plan: SyncPlan) {
     await syncShop(admin, shop, plan);
     return { ok: true as const, error: null };
   } catch (e: any) {
-    console.error("CartKit sync failed", e);
-    return { ok: false as const, error: String(e?.message || e) };
+    console.error("Cartivo sync failed", e);
+    // The Admin API client throws a Response for HTTP errors; "[object Response]" would tell the merchant nothing.
+    const error = e instanceof Response ? `Shopify answered ${e.status}${e.statusText ? ` ${e.statusText}` : ""}` : String(e?.message || e);
+    return { ok: false as const, error };
   }
 }

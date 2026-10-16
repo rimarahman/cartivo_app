@@ -1,0 +1,130 @@
+{
+ "at": "2026-10-16T05:09:19.439Z",
+ "shop": "cartivo-app-test.myshopify.com",
+ "campaigns": [
+  {
+   "id": "cmv9j7med0000c18gpvum40m7",
+   "shop": "cartivo-app-test.myshopify.com",
+   "type": "upsell",
+   "name": "In-cart upsell",
+   "status": "active",
+   "priority": 0,
+   "config": "{\"triggerProducts\":[],\"upsellProducts\":[],\"title\":\"Frequently bought together\"}",
+   "startsAt": null,
+   "endsAt": null,
+   "createdAt": "2026-10-15T12:45:26.438Z",
+   "updatedAt": "2026-10-15T12:45:26.438Z"
+  },
+  {
+   "id": "cmv9j824s0001c18g2l7c9q4s",
+   "shop": "cartivo-app-test.myshopify.com",
+   "type": "upsell",
+   "name": "In-cart upsell",
+   "status": "active",
+   "priority": 0,
+   "config": "{\"triggerProducts\":[],\"upsellProducts\":[],\"title\":\"Frequently bought together\"}",
+   "startsAt": null,
+   "endsAt": null,
+   "createdAt": "2026-10-15T12:45:46.828Z",
+   "updatedAt": "2026-10-15T12:45:46.828Z"
+  },
+  {
+   "id": "cmv9kwrud0000c1l0iv8jmhf7",
+   "shop": "cartivo-app-test.myshopify.com",
+   "type": "rewards",
+   "name": "Cart goals & free gifts",
+   "status": "active",
+   "priority": 0,
+   "config": "{\"basis\":\"subtotal\",\"progressText\":\"You're {{remaining}} away from {{reward}}\",\"completeText\":\"🎉 Congrats! You've unlocked all rewards\",\"giftPickerTitle\":\"Choose your free gift\",\"tiers\":[{\"id\":\"t1\",\"threshold\":50,\"type\":\"free_shipping\",\"value\":100,\"label\":\"Free shipping\",\"gifts\":[]}]}",
+   "startsAt": null,
+   "endsAt": null,
+   "createdAt": "2026-10-15T13:32:59.510Z",
+   "updatedAt": "2026-10-15T13:32:59.510Z"
+  },
+  {
+   "id": "cmv9kx64b0001c1l0c4kka4j9",
+   "shop": "cartivo-app-test.myshopify.com",
+   "type": "rewards",
+   "name": "Cart goals & free gifts",
+   "status": "active",
+   "priority": 0,
+   "config": "{\"basis\":\"subtotal\",\"progressText\":\"You're {{remaining}} away from {{reward}}\",\"completeText\":\"🎉 Congrats! You've unlocked all rewards\",\"giftPickerTitle\":\"Choose your free gift\",\"tiers\":[{\"id\":\"t1\",\"threshold\":50,\"type\":\"free_shipping\",\"value\":100,\"label\":\"Free shipping\",\"gifts\":[]}]}",
+   "startsAt": null,
+   "endsAt": null,
+   "createdAt": "2026-10-15T13:33:18.012Z",
+   "updatedAt": "2026-10-15T13:33:18.012Z"
+  },
+  {
+   "id": "cmv9kxmnl0002c1l0ozahgcoa",
+   "shop": "cartivo-app-test.myshopify.com",
+   "type": "rewards",
+   "name": "Cart goals & free gifts",
+   "status": "active",
+   "priority": 2,
+   "config": "{\"basis\":\"subtotal\",\"progressText\":\"You're {{remaining}} away from {{reward}}\",\"completeText\":\"🎉 Congrats! You've unlocked all rewards\",\"giftPickerTitle\":\"Choose your free gift\",\"tiers\":[{\"id\":\"t1\",\"threshold\":1000,\"type\":\"free_shipping\",\"value\":100,\"label\":\"Free shipping\",\"gifts\":[]},{\"id\":\"tpuuafns\",\"threshold\":60,\"type\":\"free_gift\",\"value\":100,\"label\":\"Free gift\",\"gifts\":[{\"productId\":\"gid://shopify/Product/15420225650820\",\"variantId\":\"gid://shopify/ProductVariant/67671221698692\",\"handle\":\"selling-plans-ski-wax\",\"title\":\"Selling Plans Ski Wax – Selling Plans Ski Wax\",\"image\":\"https://cdn.shopify.com/s/files/1/1034/7849/3316/files/snowboard_wax.jpg?v=1792003904\"},{\"productId\":\"gid://shopify/Product/15420225650820\",\"variantId\":\"gid://shopify/ProductVariant/67671221731460\",\"handle\":\"selling-plans-ski-wax\",\"title\":\"Selling Plans Ski Wax – Special Selling Plans Ski Wax\",\"image\":\"https://cdn.shopify.com/s/files/1/1034/7849/3316/files/snowboard_wax.jpg?v=1792003904\"},{\"productId\":\"gid://shopify/Product/15420225650820\",\"variantId\":\"gid://shopify/ProductVariant/67671221764228\",\"handle\":\"selling-plans-ski-wax\",\"title\":\"Selling Plans Ski Wax – Sample Selling Plans Ski Wax\",\"image\":\"https://cdn.shopify.com/s/files/1/1034/7849/3316/files/snowboard_wax.jpg?v=1792003904\"}]}]}",
+   "startsAt": "2026-10-14T14:08:00.000Z",
+   "endsAt": "2026-10-16T14:09:00.000Z",
+   "createdAt": "2026-10-15T13:33:39.441Z",
+   "updatedAt": "2026-10-15T14:09:59.495Z"
+  },
+  {
+   "id": "cmv9lc6nt0003c1l0ba6l3cr8",
+   "shop": "cartivo-app-test.myshopify.com",
+   "type": "announcement",
+   "name": "Announcement & countdown timer",
+   "status": "active",
+   "priority": 0,
+   "config": "{\"messages\":[\"Free shipping on orders over $50\",\"Free gift on orders over $60\"],\"rotateSeconds\":4,\"backgroundColor\":\"#111111\",\"textColor\":\"#ffffff\",\"timerEnabled\":true,\"timerEnd\":\"2026-10-14T14:11:00.000Z\",\"timerText\":\"Offer ends in {{timer}}\",\"hideWhenExpired\":false}",
+   "startsAt": null,
+   "endsAt": null,
+   "createdAt": "2026-10-15T13:44:58.553Z",
+   "updatedAt": "2026-10-15T14:12:17.045Z"
+  },
+  {
+   "id": "cmv9mraxp0000c1o098mmue5g",
+   "shop": "cartivo-app-test.myshopify.com",
+   "type": "bxgy",
+   "name": "Buy X Get Y",
+   "status": "active",
+   "priority": 0,
+   "config": "{\"buyProducts\":[{\"productId\":\"gid://shopify/Product/15420225454212\",\"variantId\":\"gid://shopify/ProductVariant/67671222321284\",\"handle\":\"the-collection-snowboard-hydrogen\",\"title\":\"The Collection Snowboard: Hydrogen\",\"image\":\"https://cdn.shopify.com/s/files/1/1034/7849/3316/files/Main_0a40b01b-5021-48c1-80d1-aa8ab4876d3d.jpg?v=1792003904\"}],\"buyQuantity\":1,\"getProducts\":[{\"productId\":\"gid://shopify/Product/15420225716356\",\"variantId\":\"gid://shopify/ProductVariant/67671222091908\",\"handle\":\"the-complete-snowboard\",\"title\":\"The Complete Snowboard – Dawn\",\"image\":\"https://cdn.shopify.com/s/files/1/1034/7849/3316/files/Main_589fc064-24a2-4236-9eaf-13b2bd35d21d.jpg?v=1792003904\"}],\"getQuantity\":1,\"percent\":100,\"autoAdd\":true,\"message\":\"Buy {{buyQuantity}}, get {{getQuantity}} {{discount}}!\",\"unlockedMessage\":\"🎁 Your {{discount}} item has been added\"}",
+   "startsAt": null,
+   "endsAt": null,
+   "createdAt": "2026-10-15T14:24:43.549Z",
+   "updatedAt": "2026-10-15T14:30:13.100Z"
+  },
+  {
+   "id": "cmv9msfy50001c1o0yl9t4993",
+   "shop": "cartivo-app-test.myshopify.com",
+   "type": "upsell",
+   "name": "In-cart upsell",
+   "status": "active",
+   "priority": 0,
+   "config": "{\"triggerProducts\":[{\"productId\":\"gid://shopify/Product/15420226011268\",\"variantId\":\"gid://shopify/ProductVariant/67671222747268\",\"handle\":\"the-collection-snowboard-liquid\",\"title\":\"The Collection Snowboard: Liquid\",\"image\":\"https://cdn.shopify.com/s/files/1/1034/7849/3316/files/Main_b13ad453-477c-4ed1-9b43-81f3345adfd6.jpg?v=1792003908\"}],\"upsellProducts\":[{\"productId\":\"gid://shopify/Product/15420225585284\",\"variantId\":\"gid://shopify/ProductVariant/67671221665924\",\"handle\":\"the-compare-at-price-snowboard\",\"title\":\"The Compare at Price Snowboard\",\"image\":\"https://cdn.shopify.com/s/files/1/1034/7849/3316/files/snowboard_sky.jpg?v=1792003904\"}],\"title\":\"Frequently bought together\"}",
+   "startsAt": null,
+   "endsAt": null,
+   "createdAt": "2026-10-15T14:25:36.702Z",
+   "updatedAt": "2026-10-15T14:25:36.702Z"
+  },
+  {
+   "id": "cmv9mt5nj0002c1o0pywd5kno",
+   "shop": "cartivo-app-test.myshopify.com",
+   "type": "addon",
+   "name": "One-click add-on",
+   "status": "active",
+   "priority": 0,
+   "config": "{\"product\":{\"productId\":\"gid://shopify/Product/15420225912964\",\"variantId\":\"gid://shopify/ProductVariant/67671222616196\",\"handle\":\"the-collection-snowboard-oxygen\",\"title\":\"The Collection Snowboard: Oxygen\",\"image\":\"https://cdn.shopify.com/s/files/1/1034/7849/3316/files/Main_d624f226-0a89-4fe1-b333-0d1548b43c06.jpg?v=1792003906\"},\"label\":\"Add gift wrapping for {{price}}\",\"description\":\"\"}",
+   "startsAt": null,
+   "endsAt": null,
+   "createdAt": "2026-10-15T14:26:10.015Z",
+   "updatedAt": "2026-10-15T14:33:59.610Z"
+  }
+ ],
+ "settings": {
+  "shop": "cartivo-app-test.myshopify.com",
+  "data": "{\"drawer\":{\"enabled\":true,\"position\":\"right\",\"width\":420,\"openOnAdd\":true,\"interceptCartLinks\":true,\"title\":\"Your cart\",\"emptyText\":\"Your cart is empty\",\"emptyButtonText\":\"Continue shopping\",\"emptyButtonUrl\":\"/collections/all\",\"checkoutText\":\"Checkout\",\"showSubtotal\":true,\"subtotalText\":\"Subtotal\",\"showSavings\":true,\"savingsText\":\"You save\",\"showCompareAt\":true,\"showVendor\":true,\"showContinueShopping\":true,\"continueShoppingText\":\"Continue shopping\",\"showViewCart\":true,\"viewCartText\":\"View cart\",\"showNote\":true,\"noteLabel\":\"Add order note\",\"notePlaceholder\":\"Special instructions for your order\",\"showDiscountField\":true,\"discountPlaceholder\":\"Discount code\",\"discountApplyText\":\"Apply\",\"discountInvalidText\":\"This code isn't valid for your cart\",\"showTerms\":false,\"termsText\":\"I agree to the <a href=\\\"/policies/terms-of-service\\\">terms and conditions</a>\",\"termsError\":\"Please accept the terms and conditions to continue\",\"taxesText\":\"Taxes and shipping calculated at checkout\",\"showTaxesText\":true},\"design\":{\"preset\":\"forest\",\"checkoutStyle\":\"gradient\",\"glass\":false,\"gradientFrom\":\"#059669\",\"gradientTo\":\"#0e7490\",\"checkoutTextColor\":\"#ffffff\",\"accentColor\":\"#047857\",\"accentTextColor\":\"#ffffff\",\"backgroundColor\":\"#ffffff\",\"textColor\":\"#052e16\",\"mutedColor\":\"#5b6b62\",\"borderColor\":\"#e3ece6\",\"progressColor\":\"#10b981\",\"progressBackground\":\"#e3ece6\",\"badgeColor\":\"#047857\",\"borderRadius\":8,\"fontSize\":14,\"overlayOpacity\":45},\"upsells\":{\"enabled\":true,\"mode\":\"auto\",\"intent\":\"related\",\"title\":\"You may also like\",\"limit\":3,\"layout\":\"carousel\",\"buttonText\":\"Add\"},\"sticky\":{\"enabled\":true,\"showOnDesktop\":true,\"showOnMobile\":true,\"position\":\"bottom\",\"buttonText\":\"Add to cart\",\"soldOutText\":\"Sold out\",\"showImage\":true,\"showPrice\":true,\"showVariantPicker\":true,\"showQuantity\":true,\"backgroundColor\":\"#ffffff\",\"textColor\":\"#111827\",\"buttonColor\":\"#DE2B82\",\"buttonTextColor\":\"#ffffff\"},\"floating\":{\"enabled\":true,\"position\":\"bottom-right\",\"hideWhenEmpty\":false,\"showOnMobile\":true,\"showOnDesktop\":true,\"size\":56,\"backgroundColor\":\"#4f46e5\",\"iconColor\":\"#ffffff\",\"badgeColor\":\"#db2777\",\"badgeTextColor\":\"#ffffff\"},\"advanced\":{\"customCss\":\"\",\"customJs\":\"\",\"customHtmlTop\":\"\",\"customHtmlBottom\":\"\",\"cartIconSelector\":\"\",\"cartCountSelector\":\"\",\"googleAnalytics\":true,\"disableOnPaths\":\"\"},\"translations\":{}}",
+  "discountId": "gid://shopify/DiscountAutomaticNode/1843608617092",
+  "setupDismissedAt": null,
+  "updatedAt": "2026-10-15T14:26:53.039Z"
+ }
+}

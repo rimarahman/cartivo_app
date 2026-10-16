@@ -1,17 +1,20 @@
 import type { ActionFunctionArgs, HeadersFunction, LoaderFunctionArgs } from "react-router";
+import { useState } from "react";
 import { useFetcher, useLoaderData } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
-import { deleteCampaign, listCampaigns, setCampaignStatus } from "../models/store.server";
+import { deleteCampaign, getCampaign, listCampaigns, setCampaignStatus } from "../models/store.server";
 import { getPlan } from "../models/billing.server";
 import { planCampaigns, trySync } from "../models/sync.server";
 import { canUse, planFor, planName, type PlanInfo } from "../lib/plans";
 import { CAMPAIGN_TYPES } from "../lib/defaults";
 import { CAMPAIGN_META, CampaignTypeGrid } from "../components/ui";
+import { ErrorBanner } from "../components/ErrorBanner";
+import { saveErrorMessage } from "../components/useSave";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { session, billing } = await authenticate.admin(request);
-  const [campaigns, plan] = await Promise.all([listCampaigns(session.shop), getPlan(billing, session.shop)]);
+  const { admin, session, billing } = await authenticate.admin(request);
+  const [campaigns, plan] = await Promise.all([listCampaigns(session.shop), getPlan(billing, session.shop, admin)]);
   const live = planCampaigns(campaigns, plan).map((c) => c.id);
   return { campaigns, plan, live };
 };
@@ -21,10 +24,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const id = String(form.get("id"));
   const intent = form.get("intent");
+  const plan = await getPlan(billing, session.shop, admin);
   if (intent === "delete") await deleteCampaign(session.shop, id);
-  if (intent === "activate") await setCampaignStatus(session.shop, id, "active");
+  if (intent === "activate") {
+    // Plan-gated types can't be switched on (BFS 4.3.7); deactivating and deleting always work.
+    const campaign = await getCampaign(session.shop, id);
+    if (campaign && !canUse(plan, campaign.type)) {
+      return { error: `${CAMPAIGN_TYPES[campaign.type].label} campaigns are part of the ${planName(planFor(campaign.type))} plan.` };
+    }
+    await setCampaignStatus(session.shop, id, "active");
+  }
   if (intent === "deactivate") await setCampaignStatus(session.shop, id, "draft");
-  const plan = await getPlan(billing, session.shop);
   const sync = await trySync(admin, session.shop, plan);
   return { saved: true, syncError: sync.error };
 };
@@ -40,24 +50,34 @@ function scheduleText(c: { startsAt: string | null; endsAt: string | null }) {
 export default function Campaigns() {
   const { campaigns, plan, live } = useLoaderData<typeof loader>();
   const blocked = campaigns.filter((c) => c.status === "active" && !live.includes(c.id));
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<typeof action>();
+  // Campaign waiting for confirmation in the delete modal.
+  const [toDelete, setToDelete] = useState<{ id: string; name: string } | null>(null);
+  // Publishing errors stay on the page until dismissed (BFS 4.2.4); a new result brings the banner back.
+  const [dismissed, setDismissed] = useState<unknown>(null);
+  const error = fetcher.state === "idle" && fetcher.data !== dismissed ? saveErrorMessage(fetcher.data) : null;
 
-  const act = (id: string, intent: string) => {
-    if (intent === "delete" && !confirm("Delete this campaign?")) return;
-    fetcher.submit({ id, intent }, { method: "post" });
-  };
+  const act = (id: string, intent: string) => fetcher.submit({ id, intent }, { method: "post" });
 
   return (
     <s-page heading="Campaigns">
-      <s-button slot="primary-action" variant="primary" href="/app/campaigns/new?type=rewards">
-        Create campaign
-      </s-button>
+      {plan.features.campaignTypes.length > 0 ? (
+        <s-button slot="primary-action" variant="primary" href={`/app/campaigns/new?type=${plan.features.campaignTypes[0]}`}>
+          Create campaign
+        </s-button>
+      ) : (
+        <s-button slot="primary-action" variant="primary" disabled>
+          Create campaign
+        </s-button>
+      )}
 
-{plan.id === "free" && (
+      {error && <ErrorBanner message={error} onDismiss={() => setDismissed(fetcher.data)} />}
+
+      {plan.id === "free" && (
         <s-banner tone="info" heading="Campaigns are part of the paid plans">
           <s-paragraph>
-            You can build campaigns on Starter; they show on your store once you <s-link href="/app/pricing">choose a plan</s-link>{" "}
-            (from $10/month).
+            Starter includes the cart drawer. To create campaigns,{" "}
+            <s-link href="/app/pricing">choose a plan</s-link> (from $10/month).
           </s-paragraph>
         </s-banner>
       )}
@@ -116,10 +136,17 @@ export default function Campaigns() {
                       <s-button
                         variant="tertiary"
                         onClick={() => act(c.id, c.status === "active" ? "deactivate" : "activate")}
+                        {...(c.status !== "active" && !canUse(plan, c.type) ? { disabled: true } : {})}
                       >
                         {c.status === "active" ? "Deactivate" : "Activate"}
                       </s-button>
-                      <s-button variant="tertiary" tone="critical" onClick={() => act(c.id, "delete")}>
+                      <s-button
+                        variant="tertiary"
+                        tone="critical"
+                        commandFor="delete-campaign-modal"
+                        command="--show"
+                        onClick={() => setToDelete({ id: c.id, name: c.name })}
+                      >
                         Delete
                       </s-button>
                     </s-stack>
@@ -130,6 +157,25 @@ export default function Campaigns() {
           </s-table>
       </s-section>
       )}
+
+      <s-modal id="delete-campaign-modal" heading="Delete campaign?">
+        <s-paragraph>
+          {toDelete ? `"${toDelete.name}" ` : "This campaign "}is removed from your store and can't be restored.
+        </s-paragraph>
+        <s-button slot="secondary-actions" commandFor="delete-campaign-modal" command="--hide">
+          Cancel
+        </s-button>
+        <s-button
+          slot="primary-action"
+          variant="primary"
+          tone="critical"
+          commandFor="delete-campaign-modal"
+          command="--hide"
+          onClick={() => toDelete && act(toDelete.id, "delete")}
+        >
+          Delete campaign
+        </s-button>
+      </s-modal>
 
       {campaigns.length > 0 && (
         <s-section heading="Create another campaign">
@@ -143,8 +189,10 @@ export default function Campaigns() {
 export const headers: HeadersFunction = (headersArgs) => boundary.headers(headersArgs);
 
 function StatusBadge({ status, live, type, plan }: { status: string; live: boolean; type: string; plan: PlanInfo }) {
-  if (status !== "active") return <s-badge tone="neutral">Draft</s-badge>;
-  if (live) return <s-badge tone="success">Live</s-badge>;
   const t = type as Parameters<typeof canUse>[1];
+  if (status !== "active") {
+    return canUse(plan, t) ? <s-badge tone="neutral">Draft</s-badge> : <s-badge icon="lock">{`Draft · Needs ${planName(planFor(t))}`}</s-badge>;
+  }
+  if (live) return <s-badge tone="success">Live</s-badge>;
   return <s-badge tone="warning">{canUse(plan, t) ? "Over plan limit" : `Needs ${planName(planFor(t))}`}</s-badge>;
 }

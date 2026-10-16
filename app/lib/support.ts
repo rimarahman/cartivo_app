@@ -1,4 +1,4 @@
-// Shared by the Help panel, the support inbox and the server.
+// Shared by the Help page, the support inbox and the server.
 export const SUPPORT_CATEGORIES = {
   setup: "Setup & installation",
   theme: "Theme compatibility",

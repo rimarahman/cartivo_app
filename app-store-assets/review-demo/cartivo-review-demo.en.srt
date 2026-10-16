@@ -1,0 +1,127 @@
+1
+00:00:04,150 --> 00:00:13,054
+Shopify admin → Apps → Cartivo
+
+2
+00:00:13,304 --> 00:00:15,507
+Dashboard: live status of the cart drawer and a setup guide
+
+3
+00:00:15,757 --> 00:00:17,306
+Campaign types you can create
+
+4
+00:00:17,556 --> 00:00:22,655
+Cart drawer: looks, texts and a live preview
+
+5
+00:00:22,905 --> 00:00:42,309
+Style: pick a ready-made look, the preview updates live
+
+6
+00:00:42,559 --> 00:00:50,707
+Keep Liquid glass and save
+
+7
+00:00:50,957 --> 00:01:00,777
+Upsells: use your upsell campaigns first, then Shopify recommendations
+
+8
+00:01:01,027 --> 00:01:09,369
+Sticky add-to-cart bar and floating cart button
+
+9
+00:01:09,619 --> 00:01:15,095
+Campaigns: every offer in one list (older test campaigns are drafts)
+
+10
+00:01:15,345 --> 00:01:23,027
+Create an in-cart upsell
+
+11
+00:01:23,277 --> 00:01:34,337
+When The Collection Snowboard: Oxygen is in the cart…
+
+12
+00:01:34,587 --> 00:01:45,009
+…recommend The Collection Snowboard: Liquid
+
+13
+00:01:45,259 --> 00:01:52,661
+Save the upsell (saved as a draft)
+
+14
+00:01:52,911 --> 00:02:03,869
+Activate the campaign: it goes live on the storefront
+
+15
+00:02:04,119 --> 00:02:11,131
+Create a Buy X Get Y offer
+
+16
+00:02:11,381 --> 00:02:20,837
+Customer buys The Collection Snowboard: Oxygen…
+
+17
+00:02:21,087 --> 00:02:40,751
+…and gets The Complete Snowboard at 100% off, added automatically
+
+18
+00:02:41,001 --> 00:02:52,968
+Create a free gift goal
+
+19
+00:02:53,218 --> 00:02:58,573
+Tier 1: carts of $100 or more get a free gift
+
+20
+00:02:58,823 --> 00:03:17,275
+Gift options: the shopper picks one Ski Wax
+
+21
+00:03:17,525 --> 00:03:23,863
+Three campaigns live: upsell, Buy X Get Y and the free gift goal
+
+22
+00:03:24,113 --> 00:03:26,531
+Storefront: The Collection Snowboard: Oxygen
+
+23
+00:03:26,781 --> 00:03:28,624
+Floating cart button (bottom right) on every page
+
+24
+00:03:28,874 --> 00:03:30,545
+Scroll down: the sticky add-to-cart bar follows the shopper
+
+25
+00:03:30,795 --> 00:03:34,713
+Add to cart from the sticky bar: the Cartivo cart drawer opens
+
+26
+00:03:34,963 --> 00:03:37,051
+Buy X Get Y: The Complete Snowboard was added at $0
+
+27
+00:03:37,301 --> 00:03:42,002
+Goal reached: choose a free gift
+
+28
+00:03:42,252 --> 00:03:44,015
+The gift is in the cart for free
+
+29
+00:03:44,265 --> 00:03:48,664
+Upsell: one click adds the recommended board
+
+30
+00:03:48,914 --> 00:03:52,218
+Close the drawer: the floating button shows the item count
+
+31
+00:03:52,468 --> 00:03:54,905
+Open the cart again from the floating button
+
+32
+00:03:55,155 --> 00:04:03,066
+Shopify's cart page: the free board and the gift are $0

@@ -1,20 +1,54 @@
 import db from "../db.server";
 import {
   PAID_PLANS,
-  PLAN_FEATURES,
-  TRIAL_DAYS,
-  paidPlanByName,
-  planName,
+  planInfo as info,
+  resolvePlan,
+  trialState,
   type PaidPlanId,
   type PlanId,
   type PlanInfo,
 } from "../lib/plans";
 
-// Set BILLING_DISABLED=true in .env to unlock every feature while developing.
-export const billingDisabled = () => process.env.BILLING_DISABLED === "true";
-export const isTestBilling = () => process.env.NODE_ENV !== "production" || process.env.BILLING_TEST === "true";
+export { trialState };
 
-const DAY = 864e5;
+type Admin = { graphql: (query: string, options?: any) => Promise<Response> };
+
+// Set BILLING_DISABLED=true in .env to unlock every feature while developing. It has no effect in
+// production, so a leftover variable can never switch billing off for real merchants.
+export const billingDisabled = () => process.env.NODE_ENV !== "production" && process.env.BILLING_DISABLED === "true";
+
+// Set DEV_PLAN=free|basic|grow|pro in .env to run the app as that plan while developing, without a Shopify
+// charge (e.g. to check what Essential merchants see). Like BILLING_DISABLED, it has no effect in production.
+const DEV_PLANS: PlanId[] = ["free", "basic", "grow", "pro"];
+export const devPlan = (): PlanId | null => {
+  const id = process.env.DEV_PLAN as PlanId;
+  return process.env.NODE_ENV !== "production" && DEV_PLANS.includes(id) ? id : null;
+};
+
+// Test charges (no money moves) are used in development and, in production, only on Shopify development
+// stores (shop.plan.partnerDevelopment), e.g. Partner test stores and App Review's stores. Every other store
+// gets real charges; there is deliberately no environment switch that could make them free.
+// Cached briefly: a development store transferred to a merchant stops being one, and must get real charges.
+const DEV_STORE_TTL = 10 * 60 * 1000;
+const devStores = new Map<string, { dev: boolean; at: number }>();
+export async function isTestBilling(admin: Admin, shop: string) {
+  if (process.env.NODE_ENV !== "production") return true;
+  const known = devStores.get(shop);
+  if (known && Date.now() - known.at < DEV_STORE_TTL) return known.dev;
+  try {
+    const json: any = await (await admin.graphql(`#graphql
+      query { shop { plan { partnerDevelopment } } }`)).json();
+    const dev = json.data?.shop?.plan?.partnerDevelopment === true;
+    devStores.set(shop, { dev, at: Date.now() });
+    return dev;
+  } catch (e) {
+    // Keep the last known answer through a transient API error, so a development store isn't briefly treated
+    // as a real one (and sent to the Plans page). Never seen this shop: treat it as a real store.
+    console.error("Couldn't read the shop plan", e);
+    return known ? known.dev : false;
+  }
+}
+
 const PLAN_NAMES = Object.values(PAID_PLANS).map((p) => p.name);
 
 // The 7-day all-features trial starts the first time the shop opens the app. The row survives
@@ -43,58 +77,31 @@ export async function chooseFree(shop: string) {
   });
 }
 
-export function trialState(startedAt: Date, now = Date.now()) {
-  const endsAt = new Date(+startedAt + TRIAL_DAYS * DAY);
-  const left = Math.max(0, Math.ceil((+endsAt - now) / DAY));
-  return { endsAt, daysLeft: left, active: +endsAt > now };
-}
-
-function info(id: PlanId, extra: Partial<PlanInfo> = {}): PlanInfo {
-  const f = PLAN_FEATURES[id];
-  return {
-    id,
-    name: planName(id),
-    trialEndsAt: null,
-    trialDaysLeft: 0,
-    subscriptionId: null,
-    ...extra,
-    // Copy the array: callers must never be able to mutate the shared plan table.
-    features: { ...f, campaignTypes: [...f.campaignTypes], maxActiveCampaigns: Number.isFinite(f.maxActiveCampaigns) ? f.maxActiveCampaigns : null },
-  };
-}
-
 // Current plan: an active Shopify subscription wins, then the app trial, then Free if picked, else "choose".
-export async function getPlan(billing: any, shop: string): Promise<PlanInfo> {
+export async function getPlan(billing: any, shop: string, admin: Admin): Promise<PlanInfo> {
   const row = await trialRow(shop);
   const trial = trialState(row.startedAt);
   const trialExtra = trial.active ? { trialEndsAt: trial.endsAt.toISOString(), trialDaysLeft: trial.daysLeft } : {};
   if (billingDisabled()) return info("pro", trialExtra);
+  const dev = devPlan();
+  if (dev) return info(dev);
 
-  const { appSubscriptions } = await billing.check({ plans: PLAN_NAMES, isTest: isTestBilling() });
+  const { appSubscriptions } = await billing.check({ plans: PLAN_NAMES, isTest: await isTestBilling(admin, shop) });
   return resolvePlan(appSubscriptions || [], trial, trialExtra, !!row.freeChosenAt);
 }
 
-function resolvePlan(
-  subs: { id: string; name: string; status: string }[],
-  trial: ReturnType<typeof trialState>,
-  trialExtra: Partial<PlanInfo>,
-  freeChosen: boolean,
-) {
-  const sub = subs.find((s) => s.status === "ACTIVE" && paidPlanByName(s.name));
-  if (sub) return info(paidPlanByName(sub.name)!, { subscriptionId: sub.id, ...trialExtra });
-  if (trial.active) return info("trial", trialExtra);
-  return info(freeChosen ? "free" : "choose");
-}
-
 // Same as getPlan, for webhooks (no billing helper there): reads the subscriptions with the Admin API.
-export async function getPlanFromAdmin(admin: { graphql: (q: string) => Promise<Response> }, shop: string): Promise<PlanInfo> {
+export async function getPlanFromAdmin(admin: Admin, shop: string): Promise<PlanInfo> {
   const row = await trialRow(shop);
   const trial = trialState(row.startedAt);
   const trialExtra = trial.active ? { trialEndsAt: trial.endsAt.toISOString(), trialDaysLeft: trial.daysLeft } : {};
   if (billingDisabled()) return info("pro", trialExtra);
+  const dev = devPlan();
+  if (dev) return info(dev);
   const json: any = await (await admin.graphql(`#graphql
     query { currentAppInstallation { activeSubscriptions { id name status test } } }`)).json();
-  const subs = (json.data?.currentAppInstallation?.activeSubscriptions || []).filter((s: any) => isTestBilling() || !s.test);
+  const test = await isTestBilling(admin, shop);
+  const subs = (json.data?.currentAppInstallation?.activeSubscriptions || []).filter((s: any) => test || !s.test);
   return resolvePlan(subs, trial, trialExtra, !!row.freeChosenAt);
 }
 

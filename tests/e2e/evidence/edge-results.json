@@ -1,0 +1,4126 @@
+{
+  "config": {
+    "configFile": "D:\\shopify\\corner-cart-app\\playwright.config.ts",
+    "rootDir": "D:/shopify/corner-cart-app/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ],
+      [
+        "line"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "firefox-desktop",
+        "name": "firefox-desktop",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "webkit-desktop",
+        "name": "webkit-desktop",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "mobile-chrome",
+        "name": "mobile-chrome",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "mobile-safari",
+        "name": "mobile-safari",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "tablet",
+        "name": "tablet",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "storefront/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/shopify/corner-cart-app/tests/e2e/.results-edge",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "server",
+        "name": "server",
+        "testDir": "D:/shopify/corner-cart-app/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "server/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "storefront\\cart.spec.ts",
+      "file": "storefront/cart.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cart drawer",
+          "file": "storefront/cart.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "SF-01 variant selection adds the chosen variant @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4059,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:26.969Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-78d53e78907171bd5635",
+              "file": "storefront/cart.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "SF-02 increase, decrease and remove update the real cart and the subtotal @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3743,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:26.946Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-ff92e37df1fc0ead0da1",
+              "file": "storefront/cart.spec.ts",
+              "line": 16,
+              "column": 3
+            },
+            {
+              "title": "SF-03 sold-out variant shows Shopify's error and adds nothing @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3552,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:26.970Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-507d51ad32b50a09c967",
+              "file": "storefront/cart.spec.ts",
+              "line": 34,
+              "column": 3
+            },
+            {
+              "title": "SF-04 cart survives refresh and navigation; header count matches @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3261,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:26.945Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-828b5ff8601f934ae2c5",
+              "file": "storefront/cart.spec.ts",
+              "line": 47,
+              "column": 3
+            },
+            {
+              "title": "SF-05 cart link opens the drawer instead of the cart page @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1155,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:30.823Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-503ec56c5522865f4640",
+              "file": "storefront/cart.spec.ts",
+              "line": 65,
+              "column": 3
+            },
+            {
+              "title": "SF-06 valid discount code applies; invalid one shows an error and is removed @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3484,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:31.198Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-6a2914b300760d3c05d7",
+              "file": "storefront/cart.spec.ts",
+              "line": 74,
+              "column": 3
+            },
+            {
+              "title": "SF-07 order note is saved to the cart @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3079,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:31.447Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-b08904e97387acd90fa1",
+              "file": "storefront/cart.spec.ts",
+              "line": 95,
+              "column": 3
+            },
+            {
+              "title": "SF-08 terms checkbox blocks checkout until ticked @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3932,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:31.748Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-2dd2fc46fd24ccb68cfe",
+              "file": "storefront/cart.spec.ts",
+              "line": 107,
+              "column": 3
+            },
+            {
+              "title": "SF-09 checkout continues to /checkout @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2188,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:32.011Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-df21423378c0921adfc0",
+              "file": "storefront/cart.spec.ts",
+              "line": 120,
+              "column": 3
+            },
+            {
+              "title": "SF-10 failed add-to-cart (server error) shows an error and changes nothing @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1410,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:34.226Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-dfc2fa31551f6d3954a8",
+              "file": "storefront/cart.spec.ts",
+              "line": 129,
+              "column": 3
+            },
+            {
+              "title": "SF-11 failed quantity change keeps the real cart and the drawer in sync @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2607,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:34.560Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-4483125c93ab649d2733",
+              "file": "storefront/cart.spec.ts",
+              "line": 145,
+              "column": 3
+            },
+            {
+              "title": "SF-12 gift that can't be added (failed request) isn't retried in a loop @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2768,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:34.706Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-318381e3d81537e42bca",
+              "file": "storefront/cart.spec.ts",
+              "line": 160,
+              "column": 3
+            },
+            {
+              "title": "SF-13 slow network: drawer shows busy state and ends consistent @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 6940,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:35.658Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-cebfa0fc417f8d35093a",
+              "file": "storefront/cart.spec.ts",
+              "line": 177,
+              "column": 3
+            },
+            {
+              "title": "SF-14 large cart (40 lines) renders with correct totals @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2381,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:35.702Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-f3199e818ded46daaa6a",
+              "file": "storefront/cart.spec.ts",
+              "line": 201,
+              "column": 3
+            },
+            {
+              "title": "SF-01 variant selection adds the chosen variant @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2868,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:07.373Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-ec14a84bb174358168bc",
+              "file": "storefront/cart.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "SF-02 increase, decrease and remove update the real cart and the subtotal @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2991,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:07.205Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-1bafd384956a814b53ef",
+              "file": "storefront/cart.spec.ts",
+              "line": 16,
+              "column": 3
+            },
+            {
+              "title": "SF-03 sold-out variant shows Shopify's error and adds nothing @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1965,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:07.280Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-1f4e36f82e49e51deaf8",
+              "file": "storefront/cart.spec.ts",
+              "line": 34,
+              "column": 3
+            },
+            {
+              "title": "SF-04 cart survives refresh and navigation; header count matches @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2447,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:09.649Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-650f1fd53d2dff15b75b",
+              "file": "storefront/cart.spec.ts",
+              "line": 47,
+              "column": 3
+            },
+            {
+              "title": "SF-05 cart link opens the drawer instead of the cart page @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1294,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:10.510Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-fca098ffa6ff775ead33",
+              "file": "storefront/cart.spec.ts",
+              "line": 65,
+              "column": 3
+            },
+            {
+              "title": "SF-06 valid discount code applies; invalid one shows an error and is removed @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2614,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:11.434Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-8e3275473aabac349c00",
+              "file": "storefront/cart.spec.ts",
+              "line": 74,
+              "column": 3
+            },
+            {
+              "title": "SF-07 order note is saved to the cart @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1961,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:11.826Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-bf3e622625522b20b043",
+              "file": "storefront/cart.spec.ts",
+              "line": 95,
+              "column": 3
+            },
+            {
+              "title": "SF-08 terms checkbox blocks checkout until ticked @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2307,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:12.121Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-bbe4207c261347f79156",
+              "file": "storefront/cart.spec.ts",
+              "line": 107,
+              "column": 3
+            },
+            {
+              "title": "SF-09 checkout continues to /checkout @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1750,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:13.811Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-7f6ea67d308fcf9edd76",
+              "file": "storefront/cart.spec.ts",
+              "line": 120,
+              "column": 3
+            },
+            {
+              "title": "SF-10 failed add-to-cart (server error) shows an error and changes nothing @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1298,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:14.067Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-df6935ddae0f00d33c8b",
+              "file": "storefront/cart.spec.ts",
+              "line": 129,
+              "column": 3
+            },
+            {
+              "title": "SF-11 failed quantity change keeps the real cart and the drawer in sync @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1874,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:14.458Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-056965b9aa1a3a7e0045",
+              "file": "storefront/cart.spec.ts",
+              "line": 145,
+              "column": 3
+            },
+            {
+              "title": "SF-12 gift that can't be added (failed request) isn't retried in a loop @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2384,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:15.388Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-02718d536930b03468d3",
+              "file": "storefront/cart.spec.ts",
+              "line": 160,
+              "column": 3
+            },
+            {
+              "title": "SF-13 slow network: drawer shows busy state and ends consistent @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5420,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:15.582Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-4ec3e575c75c705aeb64",
+              "file": "storefront/cart.spec.ts",
+              "line": 177,
+              "column": 3
+            },
+            {
+              "title": "SF-14 large cart (40 lines) renders with correct totals @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1198,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:16.355Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-740d00c551e7ddfe9260",
+              "file": "storefront/cart.spec.ts",
+              "line": 201,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Campaigns on the storefront",
+          "file": "storefront/cart.spec.ts",
+          "line": 221,
+          "column": 6,
+          "specs": [
+            {
+              "title": "CMP-01 reward tiers: progress message, free shipping, gift and order discount @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2646,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:37.196Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-659fddba962d86197cae",
+              "file": "storefront/cart.spec.ts",
+              "line": 222,
+              "column": 3
+            },
+            {
+              "title": "CMP-02 gift picker: nothing added until the shopper picks; one gift only @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2330,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:37.493Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-2c737550d5e4e0c698dd",
+              "file": "storefront/cart.spec.ts",
+              "line": 242,
+              "column": 3
+            },
+            {
+              "title": "CMP-03 BXGY same product (buy 2 get 1): free unit discounted by the function, nothing auto-added @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2040,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:38.103Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-a5c0f83129b27cd99688",
+              "file": "storefront/cart.spec.ts",
+              "line": 259,
+              "column": 3
+            },
+            {
+              "title": "CMP-04 volume discount tiers price correctly and show the next-tier hint @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2684,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:39.843Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-e12991db8730bff964ff",
+              "file": "storefront/cart.spec.ts",
+              "line": 270,
+              "column": 3
+            },
+            {
+              "title": "CMP-05 several campaigns at once: no duplicate gifts, no negative total @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3013,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:39.860Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-008150b87fa15e085e8e",
+              "file": "storefront/cart.spec.ts",
+              "line": 284,
+              "column": 3
+            },
+            {
+              "title": "CMP-06 per-visitor (evergreen) countdown is never shown @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2346,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:40.161Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-bc7fa583d286f51392e9",
+              "file": "storefront/cart.spec.ts",
+              "line": 306,
+              "column": 3
+            },
+            {
+              "title": "CMP-01 reward tiers: progress message, free shipping, gift and order discount @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2050,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:17.565Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-aaf057c7e8f3774af05b",
+              "file": "storefront/cart.spec.ts",
+              "line": 222,
+              "column": 3
+            },
+            {
+              "title": "CMP-02 gift picker: nothing added until the shopper picks; one gift only @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1739,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:17.790Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-60a89c5f78a7d22b4807",
+              "file": "storefront/cart.spec.ts",
+              "line": 242,
+              "column": 3
+            },
+            {
+              "title": "CMP-03 BXGY same product (buy 2 get 1): free unit discounted by the function, nothing auto-added @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1185,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:19.544Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-f63abe3a03631f3cb317",
+              "file": "storefront/cart.spec.ts",
+              "line": 259,
+              "column": 3
+            },
+            {
+              "title": "CMP-04 volume discount tiers price correctly and show the next-tier hint @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1908,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:19.629Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-c0b110cd1119c40b92cf",
+              "file": "storefront/cart.spec.ts",
+              "line": 270,
+              "column": 3
+            },
+            {
+              "title": "CMP-05 several campaigns at once: no duplicate gifts, no negative total @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2719,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:20.744Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-1b64c57014351b6b488b",
+              "file": "storefront/cart.spec.ts",
+              "line": 284,
+              "column": 3
+            },
+            {
+              "title": "CMP-06 per-visitor (evergreen) countdown is never shown @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1442,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:21.028Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-8e436edfdb6a6f3a92a3",
+              "file": "storefront/cart.spec.ts",
+              "line": 306,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Storefront security",
+          "file": "storefront/cart.spec.ts",
+          "line": 315,
+          "column": 6,
+          "specs": [
+            {
+              "title": "SEC-SF-01 product, variant, property, note and code values are escaped @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2829,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:42.532Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-8579f2996fa332339efd",
+              "file": "storefront/cart.spec.ts",
+              "line": 316,
+              "column": 3
+            },
+            {
+              "title": "SEC-SF-01 product, variant, property, note and code values are escaped @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2013,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:21.554Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-4e4d424c9a7faa7e8414",
+              "file": "storefront/cart.spec.ts",
+              "line": 316,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Accessibility & keyboard",
+          "file": "storefront/cart.spec.ts",
+          "line": 343,
+          "column": 6,
+          "specs": [
+            {
+              "title": "A11Y-01 drawer is a labelled modal dialog; focus moves in; Escape closes @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2179,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:42.544Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-a6942bbddfb43c9e897b",
+              "file": "storefront/cart.spec.ts",
+              "line": 344,
+              "column": 3
+            },
+            {
+              "title": "A11Y-02 all drawer buttons have accessible names @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2173,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:42.618Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-e64913a3bc598cefab1c",
+              "file": "storefront/cart.spec.ts",
+              "line": 357,
+              "column": 3
+            },
+            {
+              "title": "A11Y-03 Tab keeps focus inside the open modal drawer @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5307,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:42.890Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-9743df0035162a2a06db",
+              "file": "storefront/cart.spec.ts",
+              "line": 368,
+              "column": 3
+            },
+            {
+              "title": "A11Y-01 drawer is a labelled modal dialog; focus moves in; Escape closes @p1",
+              "ok": true,
+              "tags": [
+                "p1"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1482,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:22.489Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-bdfe24650aa85346a1d3",
+              "file": "storefront/cart.spec.ts",
+              "line": 344,
+              "column": 3
+            },
+            {
+              "title": "A11Y-02 all drawer buttons have accessible names @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1633,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:23.487Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-b843558aa28772c92943",
+              "file": "storefront/cart.spec.ts",
+              "line": 357,
+              "column": 3
+            },
+            {
+              "title": "A11Y-03 Tab keeps focus inside the open modal drawer @p2",
+              "ok": true,
+              "tags": [
+                "p2"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2323,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:23.595Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "99d5ff37081edf2686bb-58342d289048d457b7a9",
+              "file": "storefront/cart.spec.ts",
+              "line": 368,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "storefront\\consent.spec.ts",
+      "file": "storefront/consent.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Buyer consent",
+          "file": "storefront/consent.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "CON-01 free gift is auto-added only when unlocked, and is free @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3499,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:44.769Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-1ab764650940ccafb831",
+              "file": "storefront/consent.spec.ts",
+              "line": 6,
+              "column": 3
+            },
+            {
+              "title": "CON-02 gift is removed when the cart drops below the goal @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3109,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:44.841Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-c6976b0763965a80b1b0",
+              "file": "storefront/consent.spec.ts",
+              "line": 21,
+              "column": 3
+            },
+            {
+              "title": "CON-03 a removed gift stays removed after refresh and navigation @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3892,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:45.424Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-aa76c82fc9637f0172af",
+              "file": "storefront/consent.spec.ts",
+              "line": 33,
+              "column": 3
+            },
+            {
+              "title": "CON-04 rapid quantity clicks never duplicate the gift @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2484,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:47.988Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-896aabf9dbea7d93e882",
+              "file": "storefront/consent.spec.ts",
+              "line": 53,
+              "column": 3
+            },
+            {
+              "title": "CON-05 Buy X Get Y (100% off) adds the free item, free @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1449,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:48.243Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-13c875dd54f6435c9a9b",
+              "file": "storefront/consent.spec.ts",
+              "line": 69,
+              "column": 3
+            },
+            {
+              "title": "CON-06 BXGY never adds a paid unit when the shopper already has the get product @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2760,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:48.288Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-526338a51bfa953abb08",
+              "file": "storefront/consent.spec.ts",
+              "line": 79,
+              "column": 3
+            },
+            {
+              "title": "CON-07 BXGY with several get products never adds a paid unit @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3354,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:49.342Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-bb34561f6857870bc77c",
+              "file": "storefront/consent.spec.ts",
+              "line": 92,
+              "column": 3
+            },
+            {
+              "title": "CON-08 partly discounted BXGY item is never auto-added @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2035,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:49.720Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-465889811823836f1484",
+              "file": "storefront/consent.spec.ts",
+              "line": 102,
+              "column": 3
+            },
+            {
+              "title": "CON-09 removed BXGY free item stays removed after reload @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 4310,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:50.500Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-399ec6a0a77d42875aac",
+              "file": "storefront/consent.spec.ts",
+              "line": 111,
+              "column": 3
+            },
+            {
+              "title": "CON-10 increasing the BXGY free line can't add paid units @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2734,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:51.069Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-4633350bf1506c1b5d0f",
+              "file": "storefront/consent.spec.ts",
+              "line": 124,
+              "column": 3
+            },
+            {
+              "title": "CON-11 gift is not left in the cart at full price when the discount isn't active @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1950,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:51.785Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-e7206293ffa87c64989e",
+              "file": "storefront/consent.spec.ts",
+              "line": 138,
+              "column": 3
+            },
+            {
+              "title": "CON-12 gift is not left at full price when a non-combinable code wins @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3574,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:52.715Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-27dd6cbbffe746e5d7d8",
+              "file": "storefront/consent.spec.ts",
+              "line": 149,
+              "column": 3
+            },
+            {
+              "title": "CON-13 paid add-on is never pre-selected, even with an old defaultChecked config @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1429,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:53.762Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-e6e606b8607362ca4e5d",
+              "file": "storefront/consent.spec.ts",
+              "line": 164,
+              "column": 3
+            },
+            {
+              "title": "CON-14 ticking the add-on adds exactly one; unticking removes it and it stays removed @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 4275,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:53.822Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-bc598c3c3f4cf0f0872b",
+              "file": "storefront/consent.spec.ts",
+              "line": 173,
+              "column": 3
+            },
+            {
+              "title": "CON-15 rapid add-on toggling ends in the state the checkbox shows @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3273,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:54.834Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-2e5f8b151f30e07abbf9",
+              "file": "storefront/consent.spec.ts",
+              "line": 190,
+              "column": 3
+            },
+            {
+              "title": "CON-15b double-ticking the add-on while it's being added never adds two @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3499,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:55.210Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-16fb829f432059503e94",
+              "file": "storefront/consent.spec.ts",
+              "line": 216,
+              "column": 3
+            },
+            {
+              "title": "CON-16 add-on is removed when the last real item is removed @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2995,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:56.311Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-00539c2f291eb51b7d29",
+              "file": "storefront/consent.spec.ts",
+              "line": 239,
+              "column": 3
+            },
+            {
+              "title": "CON-21 add-on shows its price even when the merchant's label has no {{price}} @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2065,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:58.120Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-439cb780fed1a36434a7",
+              "file": "storefront/consent.spec.ts",
+              "line": 255,
+              "column": 3
+            },
+            {
+              "title": "CON-22 add-on isn't offered while its price is unknown (slow price lookup) @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1943,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:58.129Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-fc584b2b612e3fafa136",
+              "file": "storefront/consent.spec.ts",
+              "line": 264,
+              "column": 3
+            },
+            {
+              "title": "CON-23 add-on isn't offered when its price can't be loaded @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2416,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:58.727Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-a9eeb147f52d5e5cd8fd",
+              "file": "storefront/consent.spec.ts",
+              "line": 283,
+              "column": 3
+            },
+            {
+              "title": "CON-17 upsells add nothing unless clicked; one click adds one unit @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3534,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:42:59.332Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-6cf5c8bdf79c8688c48b",
+              "file": "storefront/consent.spec.ts",
+              "line": 300,
+              "column": 3
+            },
+            {
+              "title": "CON-18 double-clicking an upsell button adds a single unit @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2793,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:00.094Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-757c6a96b4a6243fb6e3",
+              "file": "storefront/consent.spec.ts",
+              "line": 319,
+              "column": 3
+            },
+            {
+              "title": "CON-19 concurrent theme cart updates don't bypass consent @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2693,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:00.207Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-0fb1c68c6b6be0c54d32",
+              "file": "storefront/consent.spec.ts",
+              "line": 334,
+              "column": 3
+            },
+            {
+              "title": "CON-20 expired and not-yet-started campaigns add nothing @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4156,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:01.169Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-7b217c164a0bfb931272",
+              "file": "storefront/consent.spec.ts",
+              "line": 376,
+              "column": 3
+            },
+            {
+              "title": "CON-01 free gift is auto-added only when unlocked, and is free @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2003,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:24.026Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-2382c18e24c0b2d19a81",
+              "file": "storefront/consent.spec.ts",
+              "line": 6,
+              "column": 3
+            },
+            {
+              "title": "CON-02 gift is removed when the cart drops below the goal @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2150,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:25.167Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-5833212ffc592e552bc3",
+              "file": "storefront/consent.spec.ts",
+              "line": 21,
+              "column": 3
+            },
+            {
+              "title": "CON-03 a removed gift stays removed after refresh and navigation @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2988,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:25.953Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-ec9b83d2361edd11e8cc",
+              "file": "storefront/consent.spec.ts",
+              "line": 33,
+              "column": 3
+            },
+            {
+              "title": "CON-04 rapid quantity clicks never duplicate the gift @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1627,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:26.051Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-632b427c4acd1ac2dbca",
+              "file": "storefront/consent.spec.ts",
+              "line": 53,
+              "column": 3
+            },
+            {
+              "title": "CON-05 Buy X Get Y (100% off) adds the free item, free @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1456,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:27.353Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-1baba74114f776d7b889",
+              "file": "storefront/consent.spec.ts",
+              "line": 69,
+              "column": 3
+            },
+            {
+              "title": "CON-06 BXGY never adds a paid unit when the shopper already has the get product @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1935,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:27.698Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-c23341cf779aceda0961",
+              "file": "storefront/consent.spec.ts",
+              "line": 79,
+              "column": 3
+            },
+            {
+              "title": "CON-07 BXGY with several get products never adds a paid unit @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2232,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:28.831Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-7ebc88a5373f107368e4",
+              "file": "storefront/consent.spec.ts",
+              "line": 92,
+              "column": 3
+            },
+            {
+              "title": "CON-08 partly discounted BXGY item is never auto-added @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1455,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:28.957Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-bce531d0e8e0cab74abd",
+              "file": "storefront/consent.spec.ts",
+              "line": 102,
+              "column": 3
+            },
+            {
+              "title": "CON-09 removed BXGY free item stays removed after reload @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2368,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:29.651Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-3e85041471ce130c9512",
+              "file": "storefront/consent.spec.ts",
+              "line": 111,
+              "column": 3
+            },
+            {
+              "title": "CON-10 increasing the BXGY free line can't add paid units @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1918,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:30.433Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-94ccd72eeaa60e4c5db4",
+              "file": "storefront/consent.spec.ts",
+              "line": 124,
+              "column": 3
+            },
+            {
+              "title": "CON-11 gift is not left in the cart at full price when the discount isn't active @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1510,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:31.080Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-58651e678315e521b1b5",
+              "file": "storefront/consent.spec.ts",
+              "line": 138,
+              "column": 3
+            },
+            {
+              "title": "CON-12 gift is not left at full price when a non-combinable code wins @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2468,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:32.034Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-fe510730f9487c2258ae",
+              "file": "storefront/consent.spec.ts",
+              "line": 149,
+              "column": 3
+            },
+            {
+              "title": "CON-13 paid add-on is never pre-selected, even with an old defaultChecked config @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1239,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:32.369Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-9884077a02bcac9a822b",
+              "file": "storefront/consent.spec.ts",
+              "line": 164,
+              "column": 3
+            },
+            {
+              "title": "CON-14 ticking the add-on adds exactly one; unticking removes it and it stays removed @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2595,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:32.605Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-e98222c2ba650fdd9237",
+              "file": "storefront/consent.spec.ts",
+              "line": 173,
+              "column": 3
+            },
+            {
+              "title": "CON-15 rapid add-on toggling ends in the state the checkbox shows @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2274,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:33.629Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-566d685c5dcf3105ebb4",
+              "file": "storefront/consent.spec.ts",
+              "line": 190,
+              "column": 3
+            },
+            {
+              "title": "CON-15b double-ticking the add-on while it's being added never adds two @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2135,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:34.523Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-95b026f505081867513f",
+              "file": "storefront/consent.spec.ts",
+              "line": 216,
+              "column": 3
+            },
+            {
+              "title": "CON-16 add-on is removed when the last real item is removed @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1951,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:35.216Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-0afa7278f401c4706695",
+              "file": "storefront/consent.spec.ts",
+              "line": 239,
+              "column": 3
+            },
+            {
+              "title": "CON-21 add-on shows its price even when the merchant's label has no {{price}} @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1431,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:35.917Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-6989541941c3d642c58a",
+              "file": "storefront/consent.spec.ts",
+              "line": 255,
+              "column": 3
+            },
+            {
+              "title": "CON-22 add-on isn't offered while its price is unknown (slow price lookup) @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1464,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:36.673Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-c9b31a9e55533b706b2f",
+              "file": "storefront/consent.spec.ts",
+              "line": 264,
+              "column": 3
+            },
+            {
+              "title": "CON-23 add-on isn't offered when its price can't be loaded @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2064,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:37.180Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-87b8da345c9ad5041191",
+              "file": "storefront/consent.spec.ts",
+              "line": 283,
+              "column": 3
+            },
+            {
+              "title": "CON-17 upsells add nothing unless clicked; one click adds one unit @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1973,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:37.363Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-bc31609db8e79d41f42a",
+              "file": "storefront/consent.spec.ts",
+              "line": 300,
+              "column": 3
+            },
+            {
+              "title": "CON-18 double-clicking an upsell button adds a single unit @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2318,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:38.152Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-205a4a07fd7136a707eb",
+              "file": "storefront/consent.spec.ts",
+              "line": 319,
+              "column": 3
+            },
+            {
+              "title": "CON-19 concurrent theme cart updates don't bypass consent @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2739,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:39.261Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-53c4c62391fad5baf08b",
+              "file": "storefront/consent.spec.ts",
+              "line": 334,
+              "column": 3
+            },
+            {
+              "title": "CON-20 expired and not-yet-started campaigns add nothing @p0",
+              "ok": true,
+              "tags": [
+                "p0"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2403,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-15T18:43:39.352Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6d53173447ac51146569-ab77c233d2dabcef9d5b",
+              "file": "storefront/consent.spec.ts",
+              "line": 376,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "storefront\\quality.spec.ts",
+      "file": "storefront/quality.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "A11Y-04 axe: no serious or critical violations in the open drawer @p1",
+          "ok": false,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 3760,
+                  "error": {
+                    "message": "Error: [{\"id\":\"color-contrast\",\"impact\":\"serious\",\"nodes\":3,\"help\":\"Elements must meet minimum color contrast ratio thresholds\",\"targets\":[\"div[data-key=\\\"2001:119\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \"]}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": 3,\u001b[39m\n\u001b[31m+     \"targets\": Array [\u001b[39m\n\u001b[31m+       \"div[data-key=\\\"2001:119\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: [{\"id\":\"color-contrast\",\"impact\":\"serious\",\"nodes\":3,\"help\":\"Elements must meet minimum color contrast ratio thresholds\",\"targets\":[\"div[data-key=\\\"2001:119\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \"]}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": 3,\u001b[39m\n\u001b[31m+     \"targets\": Array [\u001b[39m\n\u001b[31m+       \"div[data-key=\\\"2001:119\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:13:46",
+                    "location": {
+                      "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                      "column": 46,
+                      "line": 13
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 11 |\u001b[39m   \u001b[36mawait\u001b[39m info\u001b[33m.\u001b[39mattach(\u001b[32m\"axe-violations.json\"\u001b[39m\u001b[33m,\u001b[39m { body\u001b[33m:\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mstringify(summary\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m \u001b[35m2\u001b[39m)\u001b[33m,\u001b[39m contentType\u001b[33m:\u001b[39m \u001b[32m\"application/json\"\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m   \u001b[36mconst\u001b[39m blocking \u001b[33m=\u001b[39m summary\u001b[33m.\u001b[39mfilter((v) \u001b[33m=>\u001b[39m v\u001b[33m.\u001b[39mimpact \u001b[33m===\u001b[39m \u001b[32m\"serious\"\u001b[39m \u001b[33m||\u001b[39m v\u001b[33m.\u001b[39mimpact \u001b[33m===\u001b[39m \u001b[32m\"critical\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 13 |\u001b[39m   expect(blocking\u001b[33m,\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mstringify(blocking))\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 14 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m\n \u001b[90m 16 |\u001b[39m test(\u001b[32m\"PERF-01 drawer interaction timings and layout shift @p2\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ shop\u001b[33m,\u001b[39m page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                        "column": 46,
+                        "line": 13
+                      },
+                      "message": "Error: [{\"id\":\"color-contrast\",\"impact\":\"serious\",\"nodes\":3,\"help\":\"Elements must meet minimum color contrast ratio thresholds\",\"targets\":[\"div[data-key=\\\"2001:119\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \"]}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": 3,\u001b[39m\n\u001b[31m+     \"targets\": Array [\u001b[39m\n\u001b[31m+       \"div[data-key=\\\"2001:119\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  11 |   await info.attach(\"axe-violations.json\", { body: JSON.stringify(summary, null, 2), contentType: \"application/json\" });\n  12 |   const blocking = summary.filter((v) => v.impact === \"serious\" || v.impact === \"critical\");\n> 13 |   expect(blocking, JSON.stringify(blocking)).toEqual([]);\n     |                                              ^\n  14 | });\n  15 |\n  16 | test(\"PERF-01 drawer interaction timings and layout shift @p2\", async ({ shop, page }, info) => {\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:13:46"
+                    },
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T18:43:03.037Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "axe-violations.json",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJpZCI6ICJhcmlhLWFsbG93ZWQtcm9sZSIsCiAgICAiaW1wYWN0IjogIm1pbm9yIiwKICAgICJub2RlcyI6IDEsCiAgICAiaGVscCI6ICJBUklBIHJvbGUgc2hvdWxkIGJlIGFwcHJvcHJpYXRlIGZvciB0aGUgZWxlbWVudCIsCiAgICAidGFyZ2V0cyI6IFsKICAgICAgImFzaWRlIOKAlCBBUklBIHJvbGUgZGlhbG9nIGlzIG5vdCBhbGxvd2VkIGZvciBnaXZlbiBlbGVtZW50IgogICAgXQogIH0sCiAgewogICAgImlkIjogImNvbG9yLWNvbnRyYXN0IiwKICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAibm9kZXMiOiAzLAogICAgImhlbHAiOiAiRWxlbWVudHMgbXVzdCBtZWV0IG1pbmltdW0gY29sb3IgY29udHJhc3QgcmF0aW8gdGhyZXNob2xkcyIsCiAgICAidGFyZ2V0cyI6IFsKICAgICAgImRpdltkYXRhLWtleT1cIjIwMDE6MTE5XCJdID4gLmNrLWl0ZW0taW5mbyA+IC5jay1iYWRnZSDigJQgRWxlbWVudCBoYXMgaW5zdWZmaWNpZW50IGNvbG9yIGNvbnRyYXN0IG9mIDIuODggKGZvcmVncm91bmQgY29sb3I6ICMxNmEzNGEsIGJhY2tncm91bmQgY29sb3I6ICNlM2Y0ZTksIGZvbnQgc2l6ZTogOC4wcHQgKDEwLjY0cHgpLCBmb250IHdlaWdodDogYm9sZCkuIEV4cGVjdGVkICIsCiAgICAgICIuY2stcHJvbW8g4oCUIEVsZW1lbnQgaGFzIGluc3VmZmljaWVudCBjb2xvciBjb250cmFzdCBvZiAyLjg4IChmb3JlZ3JvdW5kIGNvbG9yOiAjMTZhMzRhLCBiYWNrZ3JvdW5kIGNvbG9yOiAjZTNmNGU5LCBmb250IHNpemU6IDkuN3B0ICgxMi44OHB4KSwgZm9udCB3ZWlnaHQ6IGJvbGQpLiBFeHBlY3RlZCAiLAogICAgICAic21hbGwg4oCUIEVsZW1lbnQgaGFzIGluc3VmZmljaWVudCBjb2xvciBjb250cmFzdCBvZiAzLjEgKGZvcmVncm91bmQgY29sb3I6ICMxNmEzNGEsIGJhY2tncm91bmQgY29sb3I6ICNmOGY4ZjksIGZvbnQgc2l6ZTogNy43cHQgKDEwLjMwNHB4KSwgZm9udCB3ZWlnaHQ6IGJvbGQpLiBFeHBlY3RlZCAiCiAgICBdCiAgfSwKICB7CiAgICAiaWQiOiAibGFuZG1hcmstbm8tZHVwbGljYXRlLWJhbm5lciIsCiAgICAiaW1wYWN0IjogIm1vZGVyYXRlIiwKICAgICJub2RlcyI6IDEsCiAgICAiaGVscCI6ICJEb2N1bWVudCBzaG91bGQgbm90IGhhdmUgbW9yZSB0aGFuIG9uZSBiYW5uZXIgbGFuZG1hcmsiLAogICAgInRhcmdldHMiOiBbCiAgICAgICIuY2staGVhZGVyIOKAlCBEb2N1bWVudCBoYXMgbW9yZSB0aGFuIG9uZSBiYW5uZXIgbGFuZG1hcmsiCiAgICBdCiAgfQpd"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-04-c7280-tions-in-the-open-drawer-p1-chromium-desktop\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-04-c7280-tions-in-the-open-drawer-p1-chromium-desktop\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                    "column": 46,
+                    "line": 13
+                  }
+                },
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 4230,
+                  "error": {
+                    "message": "Error: [{\"id\":\"color-contrast\",\"impact\":\"serious\",\"nodes\":3,\"help\":\"Elements must meet minimum color contrast ratio thresholds\",\"targets\":[\"div[data-key=\\\"2001:234\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \"]}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": 3,\u001b[39m\n\u001b[31m+     \"targets\": Array [\u001b[39m\n\u001b[31m+       \"div[data-key=\\\"2001:234\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: [{\"id\":\"color-contrast\",\"impact\":\"serious\",\"nodes\":3,\"help\":\"Elements must meet minimum color contrast ratio thresholds\",\"targets\":[\"div[data-key=\\\"2001:234\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \"]}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": 3,\u001b[39m\n\u001b[31m+     \"targets\": Array [\u001b[39m\n\u001b[31m+       \"div[data-key=\\\"2001:234\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:13:46",
+                    "location": {
+                      "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                      "column": 46,
+                      "line": 13
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 11 |\u001b[39m   \u001b[36mawait\u001b[39m info\u001b[33m.\u001b[39mattach(\u001b[32m\"axe-violations.json\"\u001b[39m\u001b[33m,\u001b[39m { body\u001b[33m:\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mstringify(summary\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m \u001b[35m2\u001b[39m)\u001b[33m,\u001b[39m contentType\u001b[33m:\u001b[39m \u001b[32m\"application/json\"\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m   \u001b[36mconst\u001b[39m blocking \u001b[33m=\u001b[39m summary\u001b[33m.\u001b[39mfilter((v) \u001b[33m=>\u001b[39m v\u001b[33m.\u001b[39mimpact \u001b[33m===\u001b[39m \u001b[32m\"serious\"\u001b[39m \u001b[33m||\u001b[39m v\u001b[33m.\u001b[39mimpact \u001b[33m===\u001b[39m \u001b[32m\"critical\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 13 |\u001b[39m   expect(blocking\u001b[33m,\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mstringify(blocking))\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 14 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m\n \u001b[90m 16 |\u001b[39m test(\u001b[32m\"PERF-01 drawer interaction timings and layout shift @p2\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ shop\u001b[33m,\u001b[39m page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                        "column": 46,
+                        "line": 13
+                      },
+                      "message": "Error: [{\"id\":\"color-contrast\",\"impact\":\"serious\",\"nodes\":3,\"help\":\"Elements must meet minimum color contrast ratio thresholds\",\"targets\":[\"div[data-key=\\\"2001:234\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \"]}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": 3,\u001b[39m\n\u001b[31m+     \"targets\": Array [\u001b[39m\n\u001b[31m+       \"div[data-key=\\\"2001:234\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  11 |   await info.attach(\"axe-violations.json\", { body: JSON.stringify(summary, null, 2), contentType: \"application/json\" });\n  12 |   const blocking = summary.filter((v) => v.impact === \"serious\" || v.impact === \"critical\");\n> 13 |   expect(blocking, JSON.stringify(blocking)).toEqual([]);\n     |                                              ^\n  14 | });\n  15 |\n  16 | test(\"PERF-01 drawer interaction timings and layout shift @p2\", async ({ shop, page }, info) => {\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:13:46"
+                    },
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 1,
+                  "startTime": "2026-10-15T18:43:39.784Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "axe-violations.json",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJpZCI6ICJhcmlhLWFsbG93ZWQtcm9sZSIsCiAgICAiaW1wYWN0IjogIm1pbm9yIiwKICAgICJub2RlcyI6IDEsCiAgICAiaGVscCI6ICJBUklBIHJvbGUgc2hvdWxkIGJlIGFwcHJvcHJpYXRlIGZvciB0aGUgZWxlbWVudCIsCiAgICAidGFyZ2V0cyI6IFsKICAgICAgImFzaWRlIOKAlCBBUklBIHJvbGUgZGlhbG9nIGlzIG5vdCBhbGxvd2VkIGZvciBnaXZlbiBlbGVtZW50IgogICAgXQogIH0sCiAgewogICAgImlkIjogImNvbG9yLWNvbnRyYXN0IiwKICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAibm9kZXMiOiAzLAogICAgImhlbHAiOiAiRWxlbWVudHMgbXVzdCBtZWV0IG1pbmltdW0gY29sb3IgY29udHJhc3QgcmF0aW8gdGhyZXNob2xkcyIsCiAgICAidGFyZ2V0cyI6IFsKICAgICAgImRpdltkYXRhLWtleT1cIjIwMDE6MjM0XCJdID4gLmNrLWl0ZW0taW5mbyA+IC5jay1iYWRnZSDigJQgRWxlbWVudCBoYXMgaW5zdWZmaWNpZW50IGNvbG9yIGNvbnRyYXN0IG9mIDIuODggKGZvcmVncm91bmQgY29sb3I6ICMxNmEzNGEsIGJhY2tncm91bmQgY29sb3I6ICNlM2Y0ZTksIGZvbnQgc2l6ZTogOC4wcHQgKDEwLjY0cHgpLCBmb250IHdlaWdodDogYm9sZCkuIEV4cGVjdGVkICIsCiAgICAgICIuY2stcHJvbW8g4oCUIEVsZW1lbnQgaGFzIGluc3VmZmljaWVudCBjb2xvciBjb250cmFzdCBvZiAyLjg4IChmb3JlZ3JvdW5kIGNvbG9yOiAjMTZhMzRhLCBiYWNrZ3JvdW5kIGNvbG9yOiAjZTNmNGU5LCBmb250IHNpemU6IDkuN3B0ICgxMi44OHB4KSwgZm9udCB3ZWlnaHQ6IGJvbGQpLiBFeHBlY3RlZCAiLAogICAgICAic21hbGwg4oCUIEVsZW1lbnQgaGFzIGluc3VmZmljaWVudCBjb2xvciBjb250cmFzdCBvZiAzLjEgKGZvcmVncm91bmQgY29sb3I6ICMxNmEzNGEsIGJhY2tncm91bmQgY29sb3I6ICNmOGY4ZjksIGZvbnQgc2l6ZTogNy43cHQgKDEwLjMwNHB4KSwgZm9udCB3ZWlnaHQ6IGJvbGQpLiBFeHBlY3RlZCAiCiAgICBdCiAgfSwKICB7CiAgICAiaWQiOiAibGFuZG1hcmstbm8tZHVwbGljYXRlLWJhbm5lciIsCiAgICAiaW1wYWN0IjogIm1vZGVyYXRlIiwKICAgICJub2RlcyI6IDEsCiAgICAiaGVscCI6ICJEb2N1bWVudCBzaG91bGQgbm90IGhhdmUgbW9yZSB0aGFuIG9uZSBiYW5uZXIgbGFuZG1hcmsiLAogICAgInRhcmdldHMiOiBbCiAgICAgICIuY2staGVhZGVyIOKAlCBEb2N1bWVudCBoYXMgbW9yZSB0aGFuIG9uZSBiYW5uZXIgbGFuZG1hcmsiCiAgICBdCiAgfQpd"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-04-c7280-tions-in-the-open-drawer-p1-chromium-desktop-retry1\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-04-c7280-tions-in-the-open-drawer-p1-chromium-desktop-retry1\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                    "column": 46,
+                    "line": 13
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-6a26a34524bdcb1f7ccb",
+          "file": "storefront/quality.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "PERF-01 drawer interaction timings and layout shift @p2",
+          "ok": true,
+          "tags": [
+            "p2"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 2091,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "PERF chromium-desktop {\"addToDrawerOpenMs\":155,\"qtyChangeIncludingGiftMs\":663,\"cumulativeLayoutShift\":0}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T18:43:03.097Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "timings.json",
+                      "contentType": "application/json",
+                      "body": "ewogICJhZGRUb0RyYXdlck9wZW5NcyI6IDE1NSwKICAicXR5Q2hhbmdlSW5jbHVkaW5nR2lmdE1zIjogNjYzLAogICJjdW11bGF0aXZlTGF5b3V0U2hpZnQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-611cfa05af9c317d4028",
+          "file": "storefront/quality.spec.ts",
+          "line": 33,
+          "column": 1
+        },
+        {
+          "title": "A11Y-04 axe: no serious or critical violations in the open drawer @p1",
+          "ok": false,
+          "tags": [
+            "p1"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 3675,
+                  "error": {
+                    "message": "Error: [{\"id\":\"color-contrast\",\"impact\":\"serious\",\"nodes\":3,\"help\":\"Elements must meet minimum color contrast ratio thresholds\",\"targets\":[\"div[data-key=\\\"2001:237\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \"]}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": 3,\u001b[39m\n\u001b[31m+     \"targets\": Array [\u001b[39m\n\u001b[31m+       \"div[data-key=\\\"2001:237\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: [{\"id\":\"color-contrast\",\"impact\":\"serious\",\"nodes\":3,\"help\":\"Elements must meet minimum color contrast ratio thresholds\",\"targets\":[\"div[data-key=\\\"2001:237\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \"]}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": 3,\u001b[39m\n\u001b[31m+     \"targets\": Array [\u001b[39m\n\u001b[31m+       \"div[data-key=\\\"2001:237\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:13:46",
+                    "location": {
+                      "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                      "column": 46,
+                      "line": 13
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 11 |\u001b[39m   \u001b[36mawait\u001b[39m info\u001b[33m.\u001b[39mattach(\u001b[32m\"axe-violations.json\"\u001b[39m\u001b[33m,\u001b[39m { body\u001b[33m:\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mstringify(summary\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m \u001b[35m2\u001b[39m)\u001b[33m,\u001b[39m contentType\u001b[33m:\u001b[39m \u001b[32m\"application/json\"\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m   \u001b[36mconst\u001b[39m blocking \u001b[33m=\u001b[39m summary\u001b[33m.\u001b[39mfilter((v) \u001b[33m=>\u001b[39m v\u001b[33m.\u001b[39mimpact \u001b[33m===\u001b[39m \u001b[32m\"serious\"\u001b[39m \u001b[33m||\u001b[39m v\u001b[33m.\u001b[39mimpact \u001b[33m===\u001b[39m \u001b[32m\"critical\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 13 |\u001b[39m   expect(blocking\u001b[33m,\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mstringify(blocking))\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 14 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m\n \u001b[90m 16 |\u001b[39m test(\u001b[32m\"PERF-01 drawer interaction timings and layout shift @p2\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ shop\u001b[33m,\u001b[39m page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                        "column": 46,
+                        "line": 13
+                      },
+                      "message": "Error: [{\"id\":\"color-contrast\",\"impact\":\"serious\",\"nodes\":3,\"help\":\"Elements must meet minimum color contrast ratio thresholds\",\"targets\":[\"div[data-key=\\\"2001:237\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \"]}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": 3,\u001b[39m\n\u001b[31m+     \"targets\": Array [\u001b[39m\n\u001b[31m+       \"div[data-key=\\\"2001:237\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  11 |   await info.attach(\"axe-violations.json\", { body: JSON.stringify(summary, null, 2), contentType: \"application/json\" });\n  12 |   const blocking = summary.filter((v) => v.impact === \"serious\" || v.impact === \"critical\");\n> 13 |   expect(blocking, JSON.stringify(blocking)).toEqual([]);\n     |                                              ^\n  14 | });\n  15 |\n  16 | test(\"PERF-01 drawer interaction timings and layout shift @p2\", async ({ shop, page }, info) => {\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:13:46"
+                    },
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T18:43:40.829Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "axe-violations.json",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJpZCI6ICJhcmlhLWFsbG93ZWQtcm9sZSIsCiAgICAiaW1wYWN0IjogIm1pbm9yIiwKICAgICJub2RlcyI6IDEsCiAgICAiaGVscCI6ICJBUklBIHJvbGUgc2hvdWxkIGJlIGFwcHJvcHJpYXRlIGZvciB0aGUgZWxlbWVudCIsCiAgICAidGFyZ2V0cyI6IFsKICAgICAgImFzaWRlIOKAlCBBUklBIHJvbGUgZGlhbG9nIGlzIG5vdCBhbGxvd2VkIGZvciBnaXZlbiBlbGVtZW50IgogICAgXQogIH0sCiAgewogICAgImlkIjogImNvbG9yLWNvbnRyYXN0IiwKICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAibm9kZXMiOiAzLAogICAgImhlbHAiOiAiRWxlbWVudHMgbXVzdCBtZWV0IG1pbmltdW0gY29sb3IgY29udHJhc3QgcmF0aW8gdGhyZXNob2xkcyIsCiAgICAidGFyZ2V0cyI6IFsKICAgICAgImRpdltkYXRhLWtleT1cIjIwMDE6MjM3XCJdID4gLmNrLWl0ZW0taW5mbyA+IC5jay1iYWRnZSDigJQgRWxlbWVudCBoYXMgaW5zdWZmaWNpZW50IGNvbG9yIGNvbnRyYXN0IG9mIDIuODggKGZvcmVncm91bmQgY29sb3I6ICMxNmEzNGEsIGJhY2tncm91bmQgY29sb3I6ICNlM2Y0ZTksIGZvbnQgc2l6ZTogOC4wcHQgKDEwLjY0cHgpLCBmb250IHdlaWdodDogYm9sZCkuIEV4cGVjdGVkICIsCiAgICAgICIuY2stcHJvbW8g4oCUIEVsZW1lbnQgaGFzIGluc3VmZmljaWVudCBjb2xvciBjb250cmFzdCBvZiAyLjg4IChmb3JlZ3JvdW5kIGNvbG9yOiAjMTZhMzRhLCBiYWNrZ3JvdW5kIGNvbG9yOiAjZTNmNGU5LCBmb250IHNpemU6IDkuN3B0ICgxMi44OHB4KSwgZm9udCB3ZWlnaHQ6IGJvbGQpLiBFeHBlY3RlZCAiLAogICAgICAic21hbGwg4oCUIEVsZW1lbnQgaGFzIGluc3VmZmljaWVudCBjb2xvciBjb250cmFzdCBvZiAzLjEgKGZvcmVncm91bmQgY29sb3I6ICMxNmEzNGEsIGJhY2tncm91bmQgY29sb3I6ICNmOGY4ZjksIGZvbnQgc2l6ZTogNy43cHQgKDEwLjMwNHB4KSwgZm9udCB3ZWlnaHQ6IGJvbGQpLiBFeHBlY3RlZCAiCiAgICBdCiAgfSwKICB7CiAgICAiaWQiOiAibGFuZG1hcmstbm8tZHVwbGljYXRlLWJhbm5lciIsCiAgICAiaW1wYWN0IjogIm1vZGVyYXRlIiwKICAgICJub2RlcyI6IDEsCiAgICAiaGVscCI6ICJEb2N1bWVudCBzaG91bGQgbm90IGhhdmUgbW9yZSB0aGFuIG9uZSBiYW5uZXIgbGFuZG1hcmsiLAogICAgInRhcmdldHMiOiBbCiAgICAgICIuY2staGVhZGVyIOKAlCBEb2N1bWVudCBoYXMgbW9yZSB0aGFuIG9uZSBiYW5uZXIgbGFuZG1hcmsiCiAgICBdCiAgfQpd"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-04-c7280-tions-in-the-open-drawer-p1-mobile-chrome\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-04-c7280-tions-in-the-open-drawer-p1-mobile-chrome\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                    "column": 46,
+                    "line": 13
+                  }
+                },
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 1,
+                  "status": "failed",
+                  "duration": 1925,
+                  "error": {
+                    "message": "Error: [{\"id\":\"color-contrast\",\"impact\":\"serious\",\"nodes\":3,\"help\":\"Elements must meet minimum color contrast ratio thresholds\",\"targets\":[\"div[data-key=\\\"2001:243\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \"]}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": 3,\u001b[39m\n\u001b[31m+     \"targets\": Array [\u001b[39m\n\u001b[31m+       \"div[data-key=\\\"2001:243\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: [{\"id\":\"color-contrast\",\"impact\":\"serious\",\"nodes\":3,\"help\":\"Elements must meet minimum color contrast ratio thresholds\",\"targets\":[\"div[data-key=\\\"2001:243\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \"]}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": 3,\u001b[39m\n\u001b[31m+     \"targets\": Array [\u001b[39m\n\u001b[31m+       \"div[data-key=\\\"2001:243\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:13:46",
+                    "location": {
+                      "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                      "column": 46,
+                      "line": 13
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 11 |\u001b[39m   \u001b[36mawait\u001b[39m info\u001b[33m.\u001b[39mattach(\u001b[32m\"axe-violations.json\"\u001b[39m\u001b[33m,\u001b[39m { body\u001b[33m:\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mstringify(summary\u001b[33m,\u001b[39m \u001b[36mnull\u001b[39m\u001b[33m,\u001b[39m \u001b[35m2\u001b[39m)\u001b[33m,\u001b[39m contentType\u001b[33m:\u001b[39m \u001b[32m\"application/json\"\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m   \u001b[36mconst\u001b[39m blocking \u001b[33m=\u001b[39m summary\u001b[33m.\u001b[39mfilter((v) \u001b[33m=>\u001b[39m v\u001b[33m.\u001b[39mimpact \u001b[33m===\u001b[39m \u001b[32m\"serious\"\u001b[39m \u001b[33m||\u001b[39m v\u001b[33m.\u001b[39mimpact \u001b[33m===\u001b[39m \u001b[32m\"critical\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 13 |\u001b[39m   expect(blocking\u001b[33m,\u001b[39m \u001b[33mJSON\u001b[39m\u001b[33m.\u001b[39mstringify(blocking))\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 14 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m\n \u001b[90m 16 |\u001b[39m test(\u001b[32m\"PERF-01 drawer interaction timings and layout shift @p2\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ shop\u001b[33m,\u001b[39m page }\u001b[33m,\u001b[39m info) \u001b[33m=>\u001b[39m {\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                        "column": 46,
+                        "line": 13
+                      },
+                      "message": "Error: [{\"id\":\"color-contrast\",\"impact\":\"serious\",\"nodes\":3,\"help\":\"Elements must meet minimum color contrast ratio thresholds\",\"targets\":[\"div[data-key=\\\"2001:243\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \"]}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 13\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": 3,\u001b[39m\n\u001b[31m+     \"targets\": Array [\u001b[39m\n\u001b[31m+       \"div[data-key=\\\"2001:243\\\"] > .ck-item-info > .ck-badge — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 8.0pt (10.64px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \".ck-promo — Element has insufficient color contrast of 2.88 (foreground color: #16a34a, background color: #e3f4e9, font size: 9.7pt (12.88px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+       \"small — Element has insufficient color contrast of 3.1 (foreground color: #16a34a, background color: #f8f8f9, font size: 7.7pt (10.304px), font weight: bold). Expected \",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  11 |   await info.attach(\"axe-violations.json\", { body: JSON.stringify(summary, null, 2), contentType: \"application/json\" });\n  12 |   const blocking = summary.filter((v) => v.impact === \"serious\" || v.impact === \"critical\");\n> 13 |   expect(blocking, JSON.stringify(blocking)).toEqual([]);\n     |                                              ^\n  14 | });\n  15 |\n  16 | test(\"PERF-01 drawer interaction timings and layout shift @p2\", async ({ shop, page }, info) => {\n    at D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts:13:46"
+                    },
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 1,
+                  "startTime": "2026-10-15T18:44:15.662Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "axe-violations.json",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJpZCI6ICJhcmlhLWFsbG93ZWQtcm9sZSIsCiAgICAiaW1wYWN0IjogIm1pbm9yIiwKICAgICJub2RlcyI6IDEsCiAgICAiaGVscCI6ICJBUklBIHJvbGUgc2hvdWxkIGJlIGFwcHJvcHJpYXRlIGZvciB0aGUgZWxlbWVudCIsCiAgICAidGFyZ2V0cyI6IFsKICAgICAgImFzaWRlIOKAlCBBUklBIHJvbGUgZGlhbG9nIGlzIG5vdCBhbGxvd2VkIGZvciBnaXZlbiBlbGVtZW50IgogICAgXQogIH0sCiAgewogICAgImlkIjogImNvbG9yLWNvbnRyYXN0IiwKICAgICJpbXBhY3QiOiAic2VyaW91cyIsCiAgICAibm9kZXMiOiAzLAogICAgImhlbHAiOiAiRWxlbWVudHMgbXVzdCBtZWV0IG1pbmltdW0gY29sb3IgY29udHJhc3QgcmF0aW8gdGhyZXNob2xkcyIsCiAgICAidGFyZ2V0cyI6IFsKICAgICAgImRpdltkYXRhLWtleT1cIjIwMDE6MjQzXCJdID4gLmNrLWl0ZW0taW5mbyA+IC5jay1iYWRnZSDigJQgRWxlbWVudCBoYXMgaW5zdWZmaWNpZW50IGNvbG9yIGNvbnRyYXN0IG9mIDIuODggKGZvcmVncm91bmQgY29sb3I6ICMxNmEzNGEsIGJhY2tncm91bmQgY29sb3I6ICNlM2Y0ZTksIGZvbnQgc2l6ZTogOC4wcHQgKDEwLjY0cHgpLCBmb250IHdlaWdodDogYm9sZCkuIEV4cGVjdGVkICIsCiAgICAgICIuY2stcHJvbW8g4oCUIEVsZW1lbnQgaGFzIGluc3VmZmljaWVudCBjb2xvciBjb250cmFzdCBvZiAyLjg4IChmb3JlZ3JvdW5kIGNvbG9yOiAjMTZhMzRhLCBiYWNrZ3JvdW5kIGNvbG9yOiAjZTNmNGU5LCBmb250IHNpemU6IDkuN3B0ICgxMi44OHB4KSwgZm9udCB3ZWlnaHQ6IGJvbGQpLiBFeHBlY3RlZCAiLAogICAgICAic21hbGwg4oCUIEVsZW1lbnQgaGFzIGluc3VmZmljaWVudCBjb2xvciBjb250cmFzdCBvZiAzLjEgKGZvcmVncm91bmQgY29sb3I6ICMxNmEzNGEsIGJhY2tncm91bmQgY29sb3I6ICNmOGY4ZjksIGZvbnQgc2l6ZTogNy43cHQgKDEwLjMwNHB4KSwgZm9udCB3ZWlnaHQ6IGJvbGQpLiBFeHBlY3RlZCAiCiAgICBdCiAgfSwKICB7CiAgICAiaWQiOiAibGFuZG1hcmstbm8tZHVwbGljYXRlLWJhbm5lciIsCiAgICAiaW1wYWN0IjogIm1vZGVyYXRlIiwKICAgICJub2RlcyI6IDEsCiAgICAiaGVscCI6ICJEb2N1bWVudCBzaG91bGQgbm90IGhhdmUgbW9yZSB0aGFuIG9uZSBiYW5uZXIgbGFuZG1hcmsiLAogICAgInRhcmdldHMiOiBbCiAgICAgICIuY2staGVhZGVyIOKAlCBEb2N1bWVudCBoYXMgbW9yZSB0aGFuIG9uZSBiYW5uZXIgbGFuZG1hcmsiCiAgICBdCiAgfQpd"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-04-c7280-tions-in-the-open-drawer-p1-mobile-chrome-retry1\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\shopify\\corner-cart-app\\tests\\e2e\\.results-edge\\storefront-quality-A11Y-04-c7280-tions-in-the-open-drawer-p1-mobile-chrome-retry1\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\shopify\\corner-cart-app\\tests\\e2e\\storefront\\quality.spec.ts",
+                    "column": 46,
+                    "line": 13
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-448d2f2d9cc1d3d5ed74",
+          "file": "storefront/quality.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "PERF-01 drawer interaction timings and layout shift @p2",
+          "ok": true,
+          "tags": [
+            "p2"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 2481,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "PERF mobile-chrome {\"addToDrawerOpenMs\":173,\"qtyChangeIncludingGiftMs\":655,\"cumulativeLayoutShift\":0}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T18:43:41.993Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "timings.json",
+                      "contentType": "application/json",
+                      "body": "ewogICJhZGRUb0RyYXdlck9wZW5NcyI6IDE3MywKICAicXR5Q2hhbmdlSW5jbHVkaW5nR2lmdE1zIjogNjU1LAogICJjdW11bGF0aXZlTGF5b3V0U2hpZnQiOiAwCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570453a751cd4b2050d8-142affee565056ebccf2",
+          "file": "storefront/quality.spec.ts",
+          "line": 33,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "storefront\\smoke.spec.ts",
+      "file": "storefront/smoke.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "SF-SMOKE-01 drawer boots and add-to-cart opens it @smoke",
+          "ok": true,
+          "tags": [
+            "smoke"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 2391,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T18:43:02.939Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d94e40e3ca12a4130580-2eef4dee70345144b51f",
+          "file": "storefront/smoke.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "SF-SMOKE-01 drawer boots and add-to-cart opens it @smoke",
+          "ok": true,
+          "tags": [
+            "smoke"
+          ],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-chrome",
+              "projectName": "mobile-chrome",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 2473,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-15T18:43:42.040Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d94e40e3ca12a4130580-3ef6428b8ede1ceb6c1d",
+          "file": "storefront/smoke.spec.ts",
+          "line": 4,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-15T18:42:25.427Z",
+    "duration": 142948.15999999997,
+    "expected": 100,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

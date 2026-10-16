@@ -5,21 +5,43 @@ import { boundary } from "@shopify/shopify-app-react-router/server";
 import { settingsAction, settingsLoader } from "../models/actions.server";
 import { Checkbox, ColorField, Grid, NumberField, Select, Switch, TextField } from "../components/fields";
 import { DrawerPreview } from "../components/Preview";
-import { Accordion, SettingsLayout, SideCard } from "../components/ui";
+import { Accordion, Locked, SettingsLayout, SideCard } from "../components/ui";
 import { useSave } from "../components/useSave";
 import { SaveActions, SaveCard, isDirty } from "../components/SaveActions";
-import { DESIGN_PRESETS, type Design, type Settings } from "../lib/defaults";
+import { DESIGN_PRESETS, GLASS_TIER, type Design, type DesignTier, type Settings } from "../lib/defaults";
+import { designTierPlan } from "../lib/plans";
 
 export const loader = ({ request }: LoaderFunctionArgs) => settingsLoader(request);
 export const action = ({ request }: ActionFunctionArgs) => settingsAction(request, ["drawer", "design", "upsells"]);
 
-function PresetPicker({ design, onPick }: { design: Design; onPick: (id: string) => void }) {
+// Looks the plan doesn't include are greyed out, not clickable and labeled with the plan (BFS 4.3.7).
+function PresetPicker({ design, onPick, tier }: { design: Design; onPick: (id: string) => void; tier: DesignTier }) {
   return (
     <div className="ckx-presets">
       {DESIGN_PRESETS.map((p) => {
         const d = { ...design, ...p.design };
         const button =
           d.checkoutStyle === "solid" ? d.accentColor : `linear-gradient(100deg, ${d.gradientFrom}, ${d.gradientTo})`;
+        const swatch = (
+          <span className="ckx-preset-swatch" style={{ background: d.backgroundColor }}>
+            <i style={{ width: "55%", background: d.textColor, opacity: 0.85 }} />
+            <i style={{ width: "80%", background: d.progressBackground }}>
+              <i style={{ width: "65%", height: "100%", background: d.progressColor }} />
+            </i>
+            <i style={{ width: "40%", background: d.mutedColor, opacity: 0.5 }} />
+            <b style={{ background: button }} />
+          </span>
+        );
+        if (p.tier > tier) {
+          return (
+            <div key={p.id} className="ckx-preset ckx-preset-locked" aria-disabled="true" title={`${p.label}: ${designTierPlan(p.tier)} plan and higher`}>
+              {swatch}
+              <span className="ckx-preset-name">
+                {p.label} <s-badge icon="lock">{designTierPlan(p.tier)}</s-badge>
+              </span>
+            </div>
+          );
+        }
         return (
           <button
             key={p.id}
@@ -28,14 +50,7 @@ function PresetPicker({ design, onPick }: { design: Design; onPick: (id: string)
             aria-pressed={design.preset === p.id}
             onClick={() => onPick(p.id)}
           >
-            <span className="ckx-preset-swatch" style={{ background: d.backgroundColor }}>
-              <i style={{ width: "55%", background: d.textColor, opacity: 0.85 }} />
-              <i style={{ width: "80%", background: d.progressBackground }}>
-                <i style={{ width: "65%", height: "100%", background: d.progressColor }} />
-              </i>
-              <i style={{ width: "40%", background: d.mutedColor, opacity: 0.5 }} />
-              <b style={{ background: button }} />
-            </span>
+            {swatch}
             <span className="ckx-preset-name">{p.label}</span>
           </button>
         );
@@ -45,11 +60,11 @@ function PresetPicker({ design, onPick }: { design: Design; onPick: (id: string)
 }
 
 export default function DrawerSettings() {
-  const { settings } = useLoaderData<typeof loader>();
+  const { settings, plan } = useLoaderData<typeof loader>();
   const [drawer, setDrawer] = useState(settings.drawer);
   const [design, setDesign] = useState(settings.design);
   const [upsells, setUpsells] = useState(settings.upsells);
-  const { save, saving } = useSave<Partial<Settings>>();
+  const { save, saving, errorBanner } = useSave<Partial<Settings>>();
   const dirty = isDirty({ drawer, design, upsells }, { drawer: settings.drawer, design: settings.design, upsells: settings.upsells });
   const discard = () => {
     setDrawer(settings.drawer);
@@ -78,6 +93,7 @@ export default function DrawerSettings() {
   return (
     <s-page heading="Cart drawer" inlineSize="large">
       <SaveActions dirty={dirty} saving={saving} onSave={() => save({ drawer, design, upsells })} onDiscard={discard} />
+      {errorBanner}
 
       <SettingsLayout
         side={
@@ -104,13 +120,25 @@ export default function DrawerSettings() {
       <Accordion title="Style" icon="paint-brush-round" description="One-click looks, liquid glass and the checkout button">
         <s-stack gap="base">
           <s-paragraph>Pick a look in one click, then fine-tune the colors below if you like.</s-paragraph>
-          <PresetPicker design={design} onPick={pickPreset} />
+          {plan.features.designTier < 3 && (
+            <s-text color="subdued">
+              Each plan adds more looks: Essential 3, Growth 5, Premium all of them with liquid glass.{" "}
+              <s-link href="/app/pricing">See plans</s-link>
+            </s-text>
+          )}
+          <PresetPicker design={design} onPick={pickPreset} tier={plan.features.designTier} />
           <s-divider />
-          <Switch
-            label="Liquid glass (iOS style)"
-            details="Frosted, translucent drawer floating over your store, with a glossy pill checkout button."
-            {...ds("glass")}
-          />
+          <Locked locked={plan.features.designTier < GLASS_TIER}>
+            <Switch
+              label="Liquid glass (iOS style)"
+              details={
+                plan.features.designTier < GLASS_TIER
+                  ? `Part of the ${designTierPlan(GLASS_TIER)} plan.`
+                  : "Frosted, translucent drawer floating over your store, with a glossy pill checkout button."
+              }
+              {...ds("glass")}
+            />
+          </Locked>
           <Grid>
             <Select
               label="Checkout button"
@@ -137,7 +165,7 @@ export default function DrawerSettings() {
           <Switch label="Open the drawer when a product is added to cart" {...d("openOnAdd")} />
           <Switch
             label="Open the drawer when the cart icon is clicked"
-            details="Replaces your theme's cart page/drawer with CartKit."
+            details="Replaces your theme's cart page/drawer with Cartivo."
             {...d("interceptCartLinks")}
           />
           <Grid>
@@ -216,9 +244,9 @@ export default function DrawerSettings() {
             <Grid>
               <Select
                 label="Source"
-                details="Automatic uses Shopify's AI product recommendations. Manual uses your upsell campaigns."
+                details="Automatic uses Shopify's product recommendations. Manual uses your upsell campaigns."
                 options={[
-                  { label: "Automatic (AI recommendations)", value: "auto" },
+                  { label: "Automatic (Shopify recommendations)", value: "auto" },
                   { label: "Manual (upsell campaigns)", value: "manual" },
                   { label: "Manual first, then automatic", value: "both" },
                 ]}

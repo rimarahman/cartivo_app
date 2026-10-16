@@ -1,0 +1,257 @@
+{
+  "images": [
+    {
+      "file": "01-cart-drawer-offers.png",
+      "layout": "left",
+      "title": "Rewards and offers, right in the cart",
+      "sub": "A slide cart drawer that shows free gifts, Buy X Get Y and upsells before checkout.",
+      "alt": "Cartivo cart drawer on a storefront with a free gift, a Buy X Get Y item at $0 and a reward progress bar.",
+      "shots": [
+        {
+          "src": "sf-desktop-d-gift-added.png",
+          "srcW": 3200,
+          "crop": [
+            1300,
+            0,
+            1900,
+            1800
+          ],
+          "x": 662,
+          "y": 40,
+          "w": 866
+        }
+      ]
+    },
+    {
+      "file": "02-free-gift-goal.png",
+      "layout": "top",
+      "title": "Free gift goals with a progress bar",
+      "sub": "Set the cart value and the gifts. Shoppers see how close they are and pick their gift.",
+      "alt": "Cartivo free gift goal settings next to the cart drawer gift picker on the storefront.",
+      "shots": [
+        {
+          "src": "admin-gift-editor.png",
+          "srcW": 2752,
+          "crop": [
+            395,
+            550,
+            1931,
+            1316
+          ],
+          "x": 72,
+          "y": 180,
+          "w": 1000
+        },
+        {
+          "src": "sf-desktop-c-gift-picker-panel.png",
+          "srcW": 840,
+          "crop": [
+            0,
+            0,
+            840,
+            1460
+          ],
+          "x": 1128,
+          "y": 180,
+          "w": 400
+        }
+      ]
+    },
+    {
+      "file": "03-buy-x-get-y.png",
+      "layout": "top",
+      "title": "Buy X Get Y, added for the shopper",
+      "sub": "Choose what shoppers buy and what they get. A free item is added to the cart automatically.",
+      "alt": "Cartivo Buy X Get Y settings next to the cart drawer showing the free item at $0.",
+      "shots": [
+        {
+          "src": "admin-bxgy-editor.png",
+          "srcW": 2752,
+          "crop": [
+            395,
+            537,
+            1931,
+            1316
+          ],
+          "x": 72,
+          "y": 180,
+          "w": 1000
+        },
+        {
+          "src": "sf-desktop-b-bxgy-panel.png",
+          "srcW": 840,
+          "crop": [
+            0,
+            0,
+            840,
+            1460
+          ],
+          "x": 1128,
+          "y": 180,
+          "w": 400
+        }
+      ]
+    },
+    {
+      "file": "04-in-cart-upsell.png",
+      "layout": "top",
+      "title": "In-cart upsells",
+      "sub": "Recommend products when certain items are in the cart, with a one-click Add button.",
+      "alt": "Cartivo in-cart upsell settings next to the cart drawer's Frequently bought together section.",
+      "shots": [
+        {
+          "src": "admin-upsell-editor.png",
+          "srcW": 2752,
+          "crop": [
+            395,
+            523,
+            1931,
+            700
+          ],
+          "x": 72,
+          "y": 300,
+          "w": 1000
+        },
+        {
+          "src": "sf-desktop-e-upsell-panel.png",
+          "srcW": 840,
+          "crop": [
+            0,
+            0,
+            840,
+            1460
+          ],
+          "x": 1128,
+          "y": 180,
+          "w": 400
+        }
+      ]
+    },
+    {
+      "file": "05-drawer-design.png",
+      "layout": "top",
+      "title": "Pick a look, including Liquid glass",
+      "sub": "One-click looks with your colors and texts, shown in a live preview as you edit.",
+      "alt": "Cartivo cart drawer settings: look presets with Liquid glass selected and a live preview of the frosted drawer.",
+      "shots": [
+        {
+          "src": "admin-drawer-style.png",
+          "srcW": 2752,
+          "crop": [
+            40,
+            322,
+            2650,
+            1508
+          ],
+          "x": 176,
+          "y": 172,
+          "w": 1248
+        }
+      ]
+    },
+    {
+      "file": "06-dashboard-setup.png",
+      "layout": "left",
+      "title": "Live status and a setup guide",
+      "sub": "See whether the cart drawer is live on your store and finish setup step by step.",
+      "alt": "Cartivo dashboard with the live status card and a completed setup guide.",
+      "shots": [
+        {
+          "src": "admin-dashboard.png",
+          "srcW": 2752,
+          "crop": [
+            392,
+            44,
+            1288,
+            1362
+          ],
+          "x": 753,
+          "y": 40,
+          "w": 775
+        }
+      ]
+    },
+    {
+      "file": "07-campaigns.png",
+      "layout": "top",
+      "title": "Every campaign in one list",
+      "sub": "Create, schedule, activate or deactivate offers from one place.",
+      "alt": "Cartivo campaigns list with free gift, Buy X Get Y and upsell campaigns and their status.",
+      "shots": [
+        {
+          "src": "admin-campaigns.png",
+          "srcW": 2752,
+          "crop": [
+            392,
+            44,
+            1940,
+            1050
+          ],
+          "x": 153,
+          "y": 178,
+          "w": 1293
+        }
+      ]
+    },
+    {
+      "file": "08-mobile.png",
+      "layout": "left",
+      "title": "Made for mobile shoppers",
+      "sub": "The cart drawer, rewards and offers fit small screens.",
+      "alt": "Cartivo on a phone: the product page and the cart drawer with a free gift and a $0 Buy X Get Y item.",
+      "shots": [
+        {
+          "src": "sf-mobile-0-product.png",
+          "srcW": 780,
+          "crop": [
+            0,
+            0,
+            780,
+            1688
+          ],
+          "x": 640,
+          "y": 60,
+          "w": 360,
+          "phone": true
+        },
+        {
+          "src": "sf-mobile-d-gift-added.png",
+          "srcW": 780,
+          "crop": [
+            0,
+            0,
+            780,
+            1688
+          ],
+          "x": 1100,
+          "y": 60,
+          "w": 360,
+          "phone": true
+        }
+      ]
+    },
+    {
+      "file": "feature-image.png",
+      "dir": "screenshots/feature",
+      "layout": "left",
+      "title": "Your cart, with rewards and offers built in",
+      "sub": "Gifts, Buy X Get Y and upsells where shoppers decide: the cart.",
+      "alt": "Cartivo cart drawer with a free gift and an upsell, next to a storefront product page.",
+      "shots": [
+        {
+          "src": "sf-desktop-e-upsell.png",
+          "srcW": 3200,
+          "crop": [
+            1300,
+            0,
+            1900,
+            1800
+          ],
+          "x": 662,
+          "y": 40,
+          "w": 866
+        }
+      ]
+    }
+  ]
+}

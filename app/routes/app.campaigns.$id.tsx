@@ -3,10 +3,11 @@ import type { ActionFunctionArgs, HeadersFunction, LoaderFunctionArgs } from "re
 import { redirect, useLoaderData, useNavigate } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
-import { getCampaign, saveCampaign } from "../models/store.server";
+import { campaignInputError, getCampaign, parsePayload, saveCampaign } from "../models/store.server";
 import { getPlan } from "../models/billing.server";
 import { canUse, planFor, planName } from "../lib/plans";
 import { trySync } from "../models/sync.server";
+import { Locked } from "../components/ui";
 import {
   CAMPAIGN_TYPES,
   DEFAULT_CAMPAIGN_CONFIG,
@@ -31,10 +32,11 @@ import { getMarketsInfo } from "../models/markets.server";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const { admin, session, billing } = await authenticate.admin(request);
-  const [plan, markets] = await Promise.all([getPlan(billing, session.shop), getMarketsInfo(admin)]);
+  const [plan, markets] = await Promise.all([getPlan(billing, session.shop, admin), getMarketsInfo(admin)]);
   if (params.id === "new") {
     const type = (new URL(request.url).searchParams.get("type") || "rewards") as CampaignType;
-    if (!CAMPAIGN_TYPES[type]) throw redirect("/app/campaigns");
+    // Types outside the plan can't be created (BFS 4.3.7); the Campaigns page shows which plan unlocks them.
+    if (!Object.hasOwn(CAMPAIGN_TYPES, type) || !canUse(plan, type)) throw redirect("/app/campaigns");
     return {
       plan,
       markets,
@@ -58,10 +60,21 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   const { admin, session, billing } = await authenticate.admin(request);
   const form = await request.formData();
-  const payload = JSON.parse(String(form.get("payload") || "{}"));
-  if (!CAMPAIGN_TYPES[payload.type as CampaignType]) return { error: "Unknown campaign type" };
-  const saved = await saveCampaign(session.shop, params.id === "new" ? null : params.id!, payload);
-  const plan = await getPlan(billing, session.shop);
+  const payload = parsePayload(form.get("payload"));
+  if (!payload) return { error: "The campaign couldn't be read. Reload the page and try again." };
+  const type = payload.type as CampaignType;
+  if (!Object.hasOwn(CAMPAIGN_TYPES, type)) return { error: "Unknown campaign type" };
+  const invalid = campaignInputError(payload);
+  if (invalid) return { error: invalid };
+  const plan = await getPlan(billing, session.shop, admin);
+  // Plan-gated types are read-only (BFS 4.3.7): the editor disables saving, and the server refuses it too.
+  if (!canUse(plan, type)) {
+    return {
+      error: `${CAMPAIGN_TYPES[type].label} campaigns are part of the ${planName(planFor(type))} plan. Choose that plan or higher to edit this campaign.`,
+    };
+  }
+  const saved = await saveCampaign(session.shop, params.id === "new" ? null : params.id!, payload as Parameters<typeof saveCampaign>[2]);
+  if (!saved) return { error: "This campaign doesn't exist anymore." };
   const sync = await trySync(admin, session.shop, plan);
   return { saved: true, syncError: sync.error, id: saved.id };
 };
@@ -214,6 +227,8 @@ function RewardsEditor({ config, set }: Props) {
 }
 
 function BxgyEditor({ config, set }: Props) {
+  // Only free items can be added for the shopper; a partly discounted item needs their consent (App Store 1.1.9).
+  const free = Number(config.percent) >= 100;
   return (
     <s-section heading="Buy X Get Y">
       <s-stack gap="base">
@@ -222,7 +237,7 @@ function BxgyEditor({ config, set }: Props) {
         <ProductPicker
           label="Customer gets"
           variants
-          details="The first variant is added automatically when 'auto-add' is on."
+          details="When the item is free and 'auto-add' is on, the first variant is added for the shopper."
           value={config.getProducts}
           onChange={(v) => set({ getProducts: v })}
         />
@@ -230,7 +245,16 @@ function BxgyEditor({ config, set }: Props) {
           <NumberField label="Quantity they get" min={1} {...bind(config, set, "getQuantity")} />
           <NumberField label="Discount on those items" suffix="%" min={1} max={100} details="100% = free" {...bind(config, set, "percent")} />
         </Grid>
-        <Checkbox label="Automatically add the 'get' product to the cart" {...bind(config, set, "autoAdd")} />
+        <Checkbox
+          label="Automatically add the free 'get' product to the cart"
+          details={
+            free
+              ? "Shoppers can remove it from the cart."
+              : "Only free items (100% off) are added automatically. With a partial discount, shoppers add the item themselves so the cart total never goes up without their consent."
+          }
+          disabled={!free}
+          {...bind(config, set, "autoAdd")}
+        />
         <Grid>
           <TextField
             label="Promo message"
@@ -329,21 +353,17 @@ function AnnouncementEditor({ config, set }: Props) {
           <Checkbox label="Show a countdown timer" {...bind(config, set, "timerEnabled")} />
           {config.timerEnabled && (
             <>
-              <Select
-                label="Timer type"
-                options={[
-                  { label: "Fixed end date", value: "fixed" },
-                  { label: "Evergreen (per visitor)", value: "evergreen" },
-                ]}
-                {...bind(config, set, "timerType")}
+              {/* Only real deadlines: per-visitor "evergreen" timers were removed as fake urgency (App Store 1.1.4). */}
+              <DateTimeField
+                label="Offer ends at"
+                details="The real end of your offer. Without a date, no timer is shown."
+                {...bind(config, set, "timerEnd")}
               />
-              {config.timerType === "fixed" ? (
-                <DateTimeField label="Ends at" {...bind(config, set, "timerEnd")} />
-              ) : (
-                <NumberField label="Minutes per visitor" min={1} {...bind(config, set, "evergreenMinutes")} />
-              )}
               <TextField label="Timer text" details="Variable: {{timer}}" {...bind(config, set, "timerText")} />
               <Checkbox label="Hide when the timer reaches zero" {...bind(config, set, "hideWhenExpired")} />
+              {!config.hideWhenExpired && (
+                <TextField label="Text after the offer ends" {...bind(config, set, "expiredText")} />
+              )}
             </>
           )}
         </s-stack>
@@ -393,7 +413,9 @@ function AddonEditor({ config, set }: Props) {
           <TextField label="Checkbox label" details="Variable: {{price}}" {...bind(config, set, "label")} />
           <TextField label="Description" {...bind(config, set, "description")} />
         </Grid>
-        <Checkbox label="Checked by default (adds automatically)" {...bind(config, set, "defaultChecked")} />
+        <s-paragraph>
+          The checkbox always starts unticked: the add-on is only added when the shopper ticks it.
+        </s-paragraph>
       </s-stack>
     </s-section>
   );
@@ -412,7 +434,7 @@ export default function CampaignEditor() {
   const { campaign: initial, plan, markets } = useLoaderData<typeof loader>();
   const needed = canUse(plan, initial.type as CampaignType) ? null : planName(planFor(initial.type as CampaignType));
   const [campaign, setCampaign] = useState<EditableCampaign>(initial);
-  const { save, saving, fetcher } = useSave<typeof campaign>();
+  const { save, saving, fetcher, errorBanner } = useSave<typeof campaign>();
   const navigate = useNavigate();
 
   // After creating a campaign, move to its permanent URL.
@@ -429,6 +451,7 @@ export default function CampaignEditor() {
   }
   // updatedAt changes on every save, so it is not an edit.
   const dirty = isDirty({ ...campaign, updatedAt: null }, { ...initial, updatedAt: null });
+  const canSave = !needed && (dirty || !initial.id);
 
   const Editor = EDITORS[campaign.type as CampaignType];
   const setConfig = (patch: any) => setCampaign((c) => ({ ...c, config: { ...c.config, ...patch } }));
@@ -440,7 +463,7 @@ export default function CampaignEditor() {
       </s-link>
       <SaveActions
         dirty={dirty}
-        canSave={dirty || !initial.id}
+        canSave={canSave}
         saving={saving}
         onSave={() => save(campaign)}
         onDiscard={() => setCampaign(initial)}
@@ -448,19 +471,29 @@ export default function CampaignEditor() {
       <div className="ckx-campaign-save">
         <SaveCard
           dirty={dirty}
-          canSave={dirty || !initial.id}
+          canSave={canSave}
           saving={saving}
           onSave={() => save(campaign)}
           onDiscard={() => setCampaign(initial)}
         />
       </div>
+      {errorBanner}
 
       {needed && (
         <s-banner tone="info" heading={`Needs the ${needed} plan`}>
-          You can build and save this campaign now. It goes live on your store once you{" "}
-          <s-link href="/app/pricing">choose the {needed} plan</s-link> or higher.
+          <s-paragraph>
+            {CAMPAIGN_TYPES[campaign.type as CampaignType].label} campaigns aren&apos;t part of your {plan.name} plan, so this
+            campaign can&apos;t be edited and doesn&apos;t show on your store. You can still deactivate or delete it on the
+            Campaigns page.
+          </s-paragraph>
+          <s-button slot="secondary-actions" href="/app/pricing">
+            See plans
+          </s-button>
         </s-banner>
       )}
+
+      {/* Plan-gated campaign: greyed out and not interactive, saving disabled (BFS 4.3.7). */}
+      <Locked locked={!!needed} stacked>
 
       <s-section heading="Campaign">
         <Grid>
@@ -488,24 +521,33 @@ export default function CampaignEditor() {
       <s-section heading="Markets">
         {!plan.features.markets && (
           <s-banner tone="info">
-            Country targeting, translations and per-currency amounts apply on the{" "}
+            Country targeting, translations and per-currency amounts are available on the{" "}
             <s-link href="/app/pricing">Growth plan</s-link> and higher. Until then this campaign shows in every country.
           </s-banner>
         )}
-        <CountryTargeting
-          countries={markets.countries}
-          value={campaign.config.countries || []}
-          onChange={(countries) => setConfig({ countries })}
-        />
+        <Locked locked={!plan.features.markets}>
+          <CountryTargeting
+            countries={markets.countries}
+            value={campaign.config.countries || []}
+            onChange={(countries) => setConfig({ countries })}
+          />
+        </Locked>
       </s-section>
 
       <s-section heading="Translations">
-        <CampaignTranslations
-          type={campaign.type as CampaignType}
-          config={campaign.config}
-          locales={markets.locales}
-          onChange={(translations) => setConfig({ translations })}
-        />
+        {!plan.features.markets && (
+          <s-text color="subdued">
+            Available on the <s-link href="/app/pricing">Growth plan</s-link> and higher.
+          </s-text>
+        )}
+        <Locked locked={!plan.features.markets}>
+          <CampaignTranslations
+            type={campaign.type as CampaignType}
+            config={campaign.config}
+            locales={markets.locales}
+            onChange={(translations) => setConfig({ translations })}
+          />
+        </Locked>
       </s-section>
 
       <s-section heading="Schedule">
@@ -514,6 +556,7 @@ export default function CampaignEditor() {
           <DateTimeField label="End (optional)" value={campaign.endsAt} onChange={(endsAt) => setCampaign((c) => ({ ...c, endsAt }))} />
         </Grid>
       </s-section>
+      </Locked>
     </s-page>
   );
 }
