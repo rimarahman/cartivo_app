@@ -1,0 +1,126 @@
+{
+ "at": "2026-10-16T06:51:54.582Z",
+ "results": [
+  {
+   "file": "screenshots/01-cart-drawer-offers.png",
+   "bytes": 285019,
+   "width": 1600,
+   "height": 900,
+   "codec": "png",
+   "issues": []
+  },
+  {
+   "file": "screenshots/02-free-gift-goal.png",
+   "bytes": 337351,
+   "width": 1600,
+   "height": 900,
+   "codec": "png",
+   "issues": []
+  },
+  {
+   "file": "screenshots/03-buy-x-get-y.png",
+   "bytes": 316539,
+   "width": 1600,
+   "height": 900,
+   "codec": "png",
+   "issues": []
+  },
+  {
+   "file": "screenshots/04-in-cart-upsell.png",
+   "bytes": 288123,
+   "width": 1600,
+   "height": 900,
+   "codec": "png",
+   "issues": []
+  },
+  {
+   "file": "screenshots/05-drawer-design.png",
+   "bytes": 298863,
+   "width": 1600,
+   "height": 900,
+   "codec": "png",
+   "issues": []
+  },
+  {
+   "file": "screenshots/06-dashboard-setup.png",
+   "bytes": 281934,
+   "width": 1600,
+   "height": 900,
+   "codec": "png",
+   "issues": []
+  },
+  {
+   "file": "screenshots/07-campaigns.png",
+   "bytes": 207755,
+   "width": 1600,
+   "height": 900,
+   "codec": "png",
+   "issues": []
+  },
+  {
+   "file": "screenshots/08-mobile.png",
+   "bytes": 365103,
+   "width": 1600,
+   "height": 900,
+   "codec": "png",
+   "issues": []
+  },
+  {
+   "file": "screenshots/feature/feature-image.png",
+   "bytes": 284791,
+   "width": 1600,
+   "height": 900,
+   "codec": "png",
+   "issues": []
+  },
+  {
+   "file": "brand/cartivo-app-icon-1200.png",
+   "bytes": 35228,
+   "width": 1200,
+   "height": 1200,
+   "codec": "png",
+   "issues": []
+  },
+  {
+   "file": "review-demo/cartivo-review-demo-no-captions.mp4",
+   "bytes": 10015604,
+   "width": 1920,
+   "height": 1080,
+   "codec": "h264",
+   "issues": [],
+   "fps": "30/1",
+   "pix_fmt": "yuv420p",
+   "duration": 247.73,
+   "audio": "none",
+   "decode_errors": 0
+  },
+  {
+   "file": "review-demo/cartivo-review-demo.mp4",
+   "bytes": 10099359,
+   "width": 1920,
+   "height": 1080,
+   "codec": "h264",
+   "issues": [],
+   "fps": "30/1",
+   "pix_fmt": "yuv420p",
+   "duration": 247.73,
+   "audio": "none",
+   "decode_errors": 0
+  },
+  {
+   "file": "promotional-video/cartivo-promo.mp4",
+   "bytes": 11706585,
+   "width": 1920,
+   "height": 1080,
+   "codec": "h264",
+   "issues": [],
+   "fps": "30/1",
+   "pix_fmt": "yuv420p",
+   "duration": 52.43,
+   "audio": "aac 48000 Hz 1 ch",
+   "av_offset_s": 0,
+   "audio_duration": 52.39,
+   "decode_errors": 0
+  }
+ ]
+}

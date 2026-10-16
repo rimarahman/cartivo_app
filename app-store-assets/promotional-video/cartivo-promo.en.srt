@@ -1,0 +1,7 @@
+1
+00:00:12,200 --> 00:00:17,400
+Add to cart: a free board is added and the shopper picks a gift
+
+2
+00:00:35,200 --> 00:00:39,900
+Pick a look, including Liquid glass, and preview it live

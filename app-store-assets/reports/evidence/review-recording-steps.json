@@ -1,0 +1,139 @@
+{
+ "recordedSeconds": 358.749,
+ "frames": 3763,
+ "playbackSpeed": 1.5,
+ "steps": [
+  {
+   "t": 0,
+   "text": "Shopify admin → Apps → Cartivo"
+  },
+  {
+   "t": 13.731,
+   "text": "Dashboard: live status of the cart drawer and a setup guide"
+  },
+  {
+   "t": 17.411,
+   "text": "Campaign types you can create"
+  },
+  {
+   "t": 20.109,
+   "text": "Cart drawer: looks, texts and a live preview"
+  },
+  {
+   "t": 28.133,
+   "text": "Style: pick a ready-made look, the preview updates live"
+  },
+  {
+   "t": 57.613,
+   "text": "Keep Liquid glass and save"
+  },
+  {
+   "t": 70.211,
+   "text": "Upsells: use your upsell campaigns first, then Shopify recommendations"
+  },
+  {
+   "t": 85.316,
+   "text": "Sticky add-to-cart bar and floating cart button"
+  },
+  {
+   "t": 98.203,
+   "text": "Campaigns: every offer in one list (older test campaigns are drafts)"
+  },
+  {
+   "t": 106.793,
+   "text": "Create an in-cart upsell"
+  },
+  {
+   "t": 118.691,
+   "text": "When The Collection Snowboard: Oxygen is in the cart…"
+  },
+  {
+   "t": 135.656,
+   "text": "…recommend The Collection Snowboard: Liquid"
+  },
+  {
+   "t": 151.664,
+   "text": "Save the upsell (saved as a draft)"
+  },
+  {
+   "t": 163.142,
+   "text": "Activate the campaign: it goes live on the storefront"
+  },
+  {
+   "t": 179.953,
+   "text": "Create a Buy X Get Y offer"
+  },
+  {
+   "t": 190.847,
+   "text": "Customer buys The Collection Snowboard: Oxygen…"
+  },
+  {
+   "t": 205.405,
+   "text": "…and gets The Complete Snowboard at 100% off, added automatically"
+  },
+  {
+   "t": 235.276,
+   "text": "Create a free gift goal"
+  },
+  {
+   "t": 253.602,
+   "text": "Tier 1: carts of $100 or more get a free gift"
+  },
+  {
+   "t": 262.009,
+   "text": "Gift options: the shopper picks one Ski Wax"
+  },
+  {
+   "t": 290.063,
+   "text": "Three campaigns live: upsell, Buy X Get Y and the free gift goal"
+  },
+  {
+   "t": 299.945,
+   "text": "Storefront: The Collection Snowboard: Oxygen"
+  },
+  {
+   "t": 303.947,
+   "text": "Floating cart button (bottom right) on every page"
+  },
+  {
+   "t": 307.086,
+   "text": "Scroll down: the sticky add-to-cart bar follows the shopper"
+  },
+  {
+   "t": 309.968,
+   "text": "Add to cart from the sticky bar: the Cartivo cart drawer opens"
+  },
+  {
+   "t": 316.22,
+   "text": "Buy X Get Y: The Complete Snowboard was added at $0"
+  },
+  {
+   "t": 319.726,
+   "text": "Goal reached: choose a free gift"
+  },
+  {
+   "t": 327.153,
+   "text": "The gift is in the cart for free"
+  },
+  {
+   "t": 330.172,
+   "text": "Upsell: one click adds the recommended board"
+  },
+  {
+   "t": 337.146,
+   "text": "Close the drawer: the floating button shows the item count"
+  },
+  {
+   "t": 342.477,
+   "text": "Open the cart again from the floating button"
+  },
+  {
+   "t": 346.507,
+   "text": "Shopify's cart page: the free board and the gift are $0"
+  },
+  {
+   "t": 356.425,
+   "text": "End of demo"
+  }
+ ]
+}
