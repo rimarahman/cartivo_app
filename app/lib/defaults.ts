@@ -304,6 +304,7 @@ export const DEFAULT_CAMPAIGN_CONFIG: Record<CampaignType, any> = {
     timerEnabled: false,
     timerEnd: "", // empty = no timer
     timerText: "Offer ends in {{timer}}",
+    expiredText: "Offer ended", // shown instead of 00:00:00 when the timer isn't hidden on expiry
     hideWhenExpired: true,
   },
   upsell: {
@@ -344,7 +345,10 @@ export const CAMPAIGN_TEXT_KEYS: Record<CampaignType, { key: string; label: stri
     { key: "tableTitle", label: "Product page table title" },
     { key: "nextTierText", label: "Cart upsell message" },
   ],
-  announcement: [{ key: "timerText", label: "Timer text" }],
+  announcement: [
+    { key: "timerText", label: "Timer text" },
+    { key: "expiredText", label: "Text after the offer ends" },
+  ],
   upsell: [{ key: "title", label: "Section title" }],
   addon: [
     { key: "label", label: "Checkbox label" },

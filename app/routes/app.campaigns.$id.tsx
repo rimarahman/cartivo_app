@@ -361,6 +361,9 @@ function AnnouncementEditor({ config, set }: Props) {
               />
               <TextField label="Timer text" details="Variable: {{timer}}" {...bind(config, set, "timerText")} />
               <Checkbox label="Hide when the timer reaches zero" {...bind(config, set, "hideWhenExpired")} />
+              {!config.hideWhenExpired && (
+                <TextField label="Text after the offer ends" {...bind(config, set, "expiredText")} />
+              )}
             </>
           )}
         </s-stack>

@@ -228,6 +228,32 @@ test.describe("Campaigns on the storefront", () => {
     await shop.addFromProductPage("shirt");
     await expect(page.locator(".ck-timer")).toHaveCount(0);
   });
+
+  test("CMP-07 a running countdown shows the time left @p1", async ({ shop, page }) => {
+    await shop.open("timerRunning", "/products/shirt");
+    await shop.addFromProductPage("shirt");
+    await expect(page.locator(".ck-timer")).toContainText("Offer ends in");
+    await expect(page.locator(".ck-timer-value")).toHaveText(/^(\d+d )?\d\d:\d\d:\d\d$/);
+  });
+
+  test("CMP-08 an ended offer says \"Offer ended\", never 00:00:00 @p1", async ({ shop, page }) => {
+    for (const name of ["timerEndedShown", "timerEndedOldConfig"]) {
+      await shop.open(name, "/products/shirt");
+      await shop.addFromProductPage("shirt");
+      const timer = page.locator(".ck-timer");
+      await expect(timer).toBeVisible();
+      await expect(timer).toHaveText("Offer ended");
+      await expect(timer).not.toContainText("00:00:00");
+    }
+  });
+
+  test("CMP-09 \"Hide when the timer reaches zero\" still hides an ended timer @p1", async ({ shop, page }) => {
+    await shop.open("timerEndedHidden", "/products/shirt");
+    await shop.addFromProductPage("shirt");
+    await expect(page.locator(".ck-timer")).toBeHidden();
+    await expect(page.locator(".ck-announcement")).not.toContainText("Offer ended");
+    await expect(page.locator(".ck-announcement")).not.toContainText("00:00:00");
+  });
 });
 
 test.describe("Storefront security", () => {

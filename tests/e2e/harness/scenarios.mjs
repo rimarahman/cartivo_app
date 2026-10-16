@@ -84,6 +84,15 @@ export const SCENARIOS = {
   expired: scenario([rewards([giftTier()], { endsAt: past })]),
   scheduled: scenario([rewards([giftTier()], { startsAt: future })]),
   evergreen: scenario([campaign("cmp_ann", "announcement", { timerEnabled: true, timerType: "evergreen", evergreenMinutes: 15, messages: ["Hurry"] })]),
+  timerRunning: scenario([campaign("cmp_ann", "announcement", { timerEnabled: true, timerEnd: future, messages: ["Hurry"] })]),
+  timerEndedShown: scenario([campaign("cmp_ann", "announcement", { timerEnabled: true, timerEnd: past, hideWhenExpired: false, messages: ["Hurry"] })]),
+  timerEndedHidden: scenario([campaign("cmp_ann", "announcement", { timerEnabled: true, timerEnd: past, hideWhenExpired: true, messages: ["Hurry"] })]),
+  // Published before expiredText existed: no such key in the config.
+  timerEndedOldConfig: scenario([(() => {
+    const c = campaign("cmp_ann", "announcement", { timerEnabled: true, timerEnd: past, hideWhenExpired: false, messages: ["Hurry"] });
+    delete c.config.expiredText;
+    return c;
+  })()]),
   everything: scenario([rewards([giftTier()]), bxgy({ percent: 100, autoAdd: true }), addon(), campaign("cmp_vol", "volume", { products: [ref(301)] })], { codes: { SAVE10: 10 } }),
 };
 // The same cart in each one-click look (`everything_<preset id>`), for the accessibility scan.

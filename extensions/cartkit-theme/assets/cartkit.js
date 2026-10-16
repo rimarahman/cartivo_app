@@ -408,7 +408,7 @@
       "--ck-accent-text": d.accentTextColor,
       "--ck-bg": d.backgroundColor,
       "--ck-text": d.textColor,
-      "--ck-muted": d.mutedColor,
+      "--ck-muted": readableMuted(d.mutedColor, d.backgroundColor, d.textColor),
       "--ck-border": d.borderColor,
       "--ck-progress": d.progressColor,
       "--ck-progress-bg": d.progressBackground,
@@ -438,11 +438,23 @@
   function readableOn(color, background) {
     var fg = rgb(color), bg = rgb(background);
     if (!fg || !bg) return color;
-    var tint = mix(bg, fg, 0.12);
-    var toward = luminance(bg) > 0.4 ? [0, 0, 0] : [255, 255, 255];
-    for (var step = 0; step <= 20; step++) {
-      var c = mix(fg, toward, step / 20);
-      if (contrast(c, tint) >= 4.5) return "rgb(" + c.map(Math.round).join(",") + ")";
+    return readableAgainst(color, fg, mix(bg, fg, 0.12), bg, 20);
+  }
+  // Muted text (taxes note, variants, compare-at prices ...) gets the same treatment (BUG-16), measured
+  // against the footer's --ck-soft (3% of the text colour over the background), the darkest surface it sits
+  // on. Finer steps, so a look that misses by a little moves by a little.
+  function readableMuted(color, background, text) {
+    var fg = rgb(color), bg = rgb(background), tx = rgb(text);
+    if (!fg || !bg || !tx) return color;
+    return readableAgainst(color, fg, mix(bg, tx, 0.03), bg, 50);
+  }
+  // Darkens on light drawers and lightens on dark ones (decided by the drawer background) until the text
+  // reaches 4.5:1 on `surface`.
+  function readableAgainst(color, fg, surface, drawerBg, steps) {
+    var toward = luminance(drawerBg) > 0.4 ? [0, 0, 0] : [255, 255, 255];
+    for (var step = 0; step <= steps; step++) {
+      var c = mix(fg, toward, step / steps).map(Math.round);
+      if (contrast(c, surface) >= 4.5) return step ? "rgb(" + c.join(",") + ")" : color;
     }
     return color;
   }
@@ -577,6 +589,9 @@
       if (!c) return;
       var left = Math.max(0, timerEnd(c) - Date.now());
       if (!left && c.config.hideWhenExpired) { el.hidden = true; return; }
+      // An ended offer says so instead of counting "00:00:00" (configs published before expiredText existed
+      // fall back to the default wording).
+      if (!left) { el.textContent = ct(c, "expiredText") || "Offer ended"; return; }
       var h = Math.floor(left / 3600000), m = Math.floor((left % 3600000) / 60000), s = Math.floor((left % 60000) / 1000);
       var pad = function (n) { return (n < 10 ? "0" : "") + n; };
       var time = (h >= 24 ? Math.floor(h / 24) + "d " + pad(h % 24) : pad(h)) + ":" + pad(m) + ":" + pad(s);
