@@ -19,11 +19,35 @@ Branch `appstore-readiness`, 2026-10-16. Every bug below was reproduced by an ex
 | BUG-13 | Low–Medium | Campaign end date before start date saved silently | Fixed (VAL-03) |
 | BUG-14 | Low | `__proto__` type, non-object config and unlimited names accepted | Fixed (VAL-05/06) |
 | BUG-15 | Low | `app/scopes_update` without a scope list → 500 | Fixed (WH-SCOPES-02) |
-| BUG-16 | Low–Medium (a11y) | "Taxes and shipping calculated at checkout" under 4.5:1 in the Sunset (4.35:1) and Ocean (4.48:1) looks | **Open — needs approval** (A11Y-05) |
+| BUG-16 | Low–Medium (a11y) | "Taxes and shipping calculated at checkout" under 4.5:1 in the Sunset (4.35:1) and Ocean (4.48:1) looks | Fixed (approved, third pass): A11Y-05 passes in all 7 looks |
+| BUG-17 | Low (1.1.4 wording) | An ended countdown showed "Offer ends in 00:00:00" when "Hide when the timer reaches zero" was off (was OBS-7) | Fixed (approved, third pass): CMP-07..09 |
 
 OBS-4 below is corrected: support tickets are limited to 5 per hour per shop (verified by VAL-08).
 
 ---
+
+## BUG-16 — Muted text contrast in the Sunset and Ocean looks (fixed in the third pass)
+
+- **Evidence:** A11Y-05 (axe `color-contrast`) failed for `.ck-taxes` in 4 runs (Sunset and Ocean, desktop and Pixel 7):
+  Sunset `#78716c` on the footer `#f8f3ee` = 4.36:1, Ocean `#64748b` on `#f8f8f9` = 4.48:1. The footer background
+  (`--ck-soft`) is 3% of the text colour over the drawer background, slightly darker than the drawer itself.
+- **Fix:** `cartkit.js` publishes `--ck-muted` through `readableMuted()`: the look's muted colour is kept when it
+  already reaches 4.5:1 on `--ck-soft`, otherwise the same hue is darkened (lightened on dark drawers) in 2% steps
+  until it does. Same approach as BUG-08, so it also protects merchants' own muted colours.
+- **Result:** Sunset `#78716c` → `#736c68` (4.69:1 on the footer, 4.97:1 on the drawer); Ocean `#64748b` → `#627288`
+  (4.62:1 / 4.90:1). Aurora, Liquid glass, Forest, Midnight and Minimal are byte-for-byte unchanged. The BUG-08
+  badge colours are unchanged in all looks (checked by script after the shared helper was refactored).
+- **Regression:** A11Y-04 and A11Y-05 (7 looks) pass on Chrome and Edge, desktop and Pixel 7.
+
+## BUG-17 — Ended countdown showed 00:00:00 (fixed in the third pass)
+
+- **Evidence:** live dev store drawer, second pass: "Offer ends in 00:00:00" (OBS-7).
+- **Fix:** when the offer end has passed and "Hide when the timer reaches zero" is off, the timer shows the
+  campaign's new "Text after the offer ends" (`expiredText`, default "Offer ended", translatable under Markets).
+  Configs published before this field existed fall back to "Offer ended". With the hide option on (the default),
+  the timer is still hidden. The editor shows the new text field only when the hide option is off.
+- **Regression:** CMP-07 (running timer shows `hh:mm:ss`), CMP-08 (ended → "Offer ended", new and old configs),
+  CMP-09 (hide option still hides).
 
 ## BUG-01 — Cross-shop campaign takeover
 

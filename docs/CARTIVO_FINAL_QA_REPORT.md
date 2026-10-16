@@ -4,6 +4,8 @@
 - **Scope:** Local and isolated testing only. Nothing was pushed, merged, deployed or submitted, and no billing charge was created. The production database and production app config weren't touched. The only contact with production was two read-only GETs (`/` and `/healthz`).
 
 > **Status update, 2026-10-16 (second pass):** see `CARTIVO_SHOPIFY_APPSTORE_READINESS_REPORT.md` for the current state. Summary: BUG-08 and BUG-11..15 fixed; all changes committed locally (not pushed); regression 155 passed, 4 failed (BUG-16, open), 0 flaky; LIVE-06a (gift free in Shopify cart and checkout) **passed on the dev store**; LIVE-06b (BXGY) needs a clean re-run; BUG-10 (production on the old build) still open. Verdict unchanged: **NO-GO**.
+>
+> **Third pass, 2026-10-16:** the 4 failures were all BUG-16, which is now fixed. BUG-17 is also fixed (an ended timer shows "Offer ended"). Regression: **165 passed, 0 failed, 0 flaky** on Chrome, and 72/72 on Edge. LIVE-06b, billing and install/uninstall are still not run; runbooks are ready. Commit `2e1b2ca` has been reviewed. Details: section 0 of the readiness report. Verdict still **NO-GO**.
 
 ## Verdict: **NO-GO** for App Store submission
 
@@ -65,7 +67,8 @@ No critical or high defect found by the executed tests is still open in the code
 | BUG-07 Unnamed image links | Medium | Fixed |
 | BUG-08 Colour contrast | Medium | Fixed (second pass): A11Y-04 passes; badge, promo and savings pass in all 7 looks |
 | BUG-11 to BUG-15 | High–Low | Fixed (second pass), see the readiness report |
-| BUG-16 Muted tax line contrast in Sunset and Ocean looks | Low–Medium | **Open** (needs approval) |
+| BUG-16 Muted tax line contrast in Sunset and Ocean looks | Low–Medium | Fixed (third pass) |
+| BUG-17 Ended countdown showed 00:00:00 | Low | Fixed (third pass) |
 | BUG-09 "[object Response]" | Low | Fixed |
 | BUG-10 Production on old build (2.3.1) | Submission blocker | **Open** (needs redeploy) |
 

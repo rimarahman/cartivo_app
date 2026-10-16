@@ -92,11 +92,15 @@ Preconditions for all: harness scenario named in "Data"; fresh cart per test. Ex
 | CMP-04 | Volume | P1 | qty 1/2/3 | Hint; $54; $76.50 | PASS |
 | CMP-05 | Stacking | P1 | Gift + BXGY + volume + code | No duplicates, total $78.30 | PASS |
 | CMP-06 | Fake urgency | P1 | Evergreen timer config | No timer | PASS |
+| CMP-07 | Countdown | P1 | Offer end in the future | "Offer ends in" + `hh:mm:ss` | PASS (third pass) |
+| CMP-08 | Ended countdown | P1 | Offer end passed, hide option off (new config and pre-`expiredText` config) | "Offer ended", never 00:00:00 | PASS (third pass; BUG-17) |
+| CMP-09 | Ended countdown | P1 | Offer end passed, hide option on | Timer hidden | PASS (third pass) |
 | SEC-SF-01 | XSS | P0 | Script payloads in product title, variant, property, note, code | Escaped, not executed | PASS (after test fix) |
 | A11Y-01 | Dialog | P1 | Open drawer | role=dialog, aria-modal, label, focus in, Escape closes | PASS |
 | A11Y-02 | Names | P2 | All drawer buttons | Accessible names | PASS |
 | A11Y-03 | Focus trap | P2 | Tab ×25 | Focus stays in drawer | **FIXED** (focus escaped — BUG-06) |
-| A11Y-04 | axe scan | P1 | axe-core on open drawer | No serious/critical violations | **FAIL** — `color-contrast` (BUG-08, open: colour change needs approval). `link-name` fixed (BUG-07) |
+| A11Y-04 | axe scan | P1 | axe-core on open drawer | No serious/critical violations | PASS (BUG-08 fixed second pass; `link-name` fixed, BUG-07) |
+| A11Y-05 | Contrast per look | P1 | axe `color-contrast` in all 7 one-click looks | No violations | PASS (third pass; Sunset/Ocean were BUG-16) |
 | PERF-01 | Timings | P2 | Add, qty change with gift | Measured (see QA report) | PASS |
 
 ## Server (local app + dev database)

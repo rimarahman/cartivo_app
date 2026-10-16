@@ -1,6 +1,6 @@
 # Cartivo — Shopify App Store Readiness Report
 
-- **Branch:** `appstore-readiness`. **Date:** 2026-10-16 (second pass).
+- **Branch:** `appstore-readiness`. **Date:** 2026-10-16 (second pass; third pass in section 0).
 - **Local commits:** `2e1b2ca`, `c5709a1`, `e2f7024`, `f13b4ea`, `4f6be32`, plus the live-test and documentation commit. **Not pushed.**
 - **Scope:** local and isolated testing only.
   - Nothing was pushed, merged, deployed or submitted.
@@ -10,6 +10,182 @@
 - **Builds on:** `CARTIVO_FINAL_QA_REPORT.md`, `CARTIVO_BUG_REPORT.md`, `CARTIVO_TEST_INVENTORY.md` and `CARTIVO_SHOPIFY_COMPLIANCE.md`.
 
 **GO/NO-GO: NO-GO** (section 23).
+
+---
+
+## 0. Third pass (2026-10-16): what changed
+
+Approved and done: BUG-16 fix, "Offer ended" countdown, accessibility and regression re-runs. Nothing was pushed,
+merged, deployed or submitted; no billing request and no uninstall were made; production wasn't contacted.
+
+### 0.1 The 4 failed tests, one by one (priority A)
+
+| # | Test | Project | Cause | Defect? | Now |
+|---|---|---|---|---|---|
+| 1 | A11Y-05 "sunset" | chromium-desktop | `.ck-taxes` `#78716c` on the footer `#f8f3ee`: 4.36:1 (< 4.5) | Yes, app (BUG-16) | PASS |
+| 2 | A11Y-05 "sunset" | mobile-chrome (Pixel 7) | Same element and colours (viewport-independent) | Same defect | PASS |
+| 3 | A11Y-05 "ocean" | chromium-desktop | `.ck-taxes` `#64748b` on `#f8f8f9`: 4.48:1 | Yes, app (BUG-16) | PASS |
+| 4 | A11Y-05 "ocean" | mobile-chrome (Pixel 7) | Same | Same defect | PASS |
+
+The footer background is `--ck-soft` (3% of the text colour over the drawer background). The muted colours pass
+on the drawer background (4.63 and 4.76:1) but not on this slightly darker footer. No test, harness or
+environment problem was involved; all four were the same real defect.
+
+### 0.2 Fixes
+
+- **BUG-16 (contrast, Sunset and Ocean):** `--ck-muted` is now the look's muted colour, kept when it already
+  reaches 4.5:1 on the footer, otherwise the same hue darkened in 2% steps until it does
+  (`readableMuted()` in `cartkit.js`, same method as BUG-08).
+  - Sunset `#78716c` → `#736c68`: 4.69:1 on the footer, 4.97:1 on the drawer.
+  - Ocean `#64748b` → `#627288`: 4.62:1 and 4.90:1.
+  - The other five looks are unchanged; the BUG-08 badge colours are unchanged in every look.
+  - Merchant-chosen muted colours that fail get the same minimal adjustment.
+- **BUG-17 (was OBS-7, "Offer ended"):** an ended, visible countdown shows "Offer ended" (campaign field
+  "Text after the offer ends", default "Offer ended", translatable) instead of "Offer ends in 00:00:00".
+  - "Hide when the timer reaches zero" still hides it (default on).
+  - Configs published before the field existed fall back to "Offer ended".
+
+### 0.3 Executed evidence (third pass)
+
+| Run | Result |
+|---|---|
+| Typecheck | Clean |
+| Lint | 0 errors (1 existing warning in `quality.spec.ts`) |
+| Unit (`npm test`) | 24/24 + 13/13 |
+| Build | OK |
+| Consolidated Playwright, installed Chrome (`server` + `chromium-desktop` + `mobile-chrome`) | **165 passed, 0 failed, 0 flaky** (`tests/e2e/.results/results.json`, 2026-10-16 04:51 UTC; HTML in `tests/e2e/.report/`). Was 155/4. |
+| Edge: `quality.spec.ts` + `cart.spec.ts`, desktop + Pixel 7 | **72 passed, 0 failed, 0 flaky** (`tests/e2e/evidence/edge-a11y-cart-results-pass3.json`) |
+| New cases | CMP-07, CMP-08, CMP-09 (countdown), each on desktop and Pixel 7 |
+
+### 0.4 LIVE-06b (BXGY) re-run (priority B): not run, needs you
+
+- A single unauthenticated GET of the storefront now returns a normal `302 → /password`, not Shopify's
+  "connection needs to be verified" page.
+- The run needs the storefront password, which isn't stored anywhere. Steps: `tests/e2e/live/README.md`, with
+  `-g "LIVE-06b"` (one login only).
+- **Status: NOT RUN.** It is not recorded as a pass.
+- Dev DB check (read-only, 04:50 UTC): the BXGY campaign is active. The $60 gift campaign ends today at
+  14:09 UTC, and 3 rewards campaigns are active.
+- Your `npm run dev` (started 10:37 local) is running and serves the working tree, so the dev store preview
+  already has the third-pass `cartkit.js`.
+
+### 0.5 Install, OAuth, uninstall, reinstall and billing (priority C): prepared, not run
+
+The runbooks are in `tests/e2e/live/README.md`:
+
+- LIVE-04: billing, with test charges;
+- LIVE-01/02: uninstall and reinstall;
+- the recommended order;
+- the expected results for each step.
+
+`tests/e2e/live/dev-state.mjs` takes read-only before/after snapshots of the dev store's rows, and refuses any
+database other than the dev one.
+
+### 0.6 Billing environment (priority E): verified, `DEV_PLAN` not removed
+
+| Check | Result |
+|---|---|
+| `shopify app info --config cartivo-dev` | "Cartivo Dev", client `ab4953…`, org Softique Commerce, dev store `cartivo-app-test` |
+| `.env` | `BILLING_DISABLED=false`, `DEV_PLAN=grow`, no Shopify API key or secret |
+| Test mode | `isTestBilling()` returns `true` whenever `NODE_ENV` isn't `production`. `npm run dev` runs `react-router dev`, so `billing.request`, `billing.check` and `billing.cancel` are all `isTest: true`. In production, test charges are only used on Partner development stores. |
+| Charge amounts | Essential $10, Growth $20, Premium $60, every 30 days, USD (`shopify.server.ts`) |
+| Effect of removing `DEV_PLAN` | The dev store's trial ended 2026-10-14 and Starter was chosen 2026-10-15. Without `DEV_PLAN` it resolves to **Starter**, and the next publish turns off campaigns, sticky and floating, and Forest → Minimal. Nothing is deleted. Run LIVE-06b first. |
+
+`DEV_PLAN` was left in place. Removing it and approving test charges are steps 2–8 of the LIVE-04 runbook,
+done from your admin session.
+
+### 0.7 Uninstall data-loss inventory (priority F): needs your explicit approval
+
+The full table is in `tests/e2e/live/README.md` ("What an uninstall loses").
+
+- **Immediately:** the offline session is deleted. The app embed is removed from the theme. Any test
+  subscription is cancelled.
+- **Expected on the Shopify side:** the "Cartivo rewards" discount and the app-owned config metafield go away.
+  Shopify only retains metafield values temporarily, with no guaranteed period.
+- **About 48 hours later:** Shopify sends `shop/redact`, and Cartivo then deletes **all** of the dev store's
+  rows: 9 campaigns, settings, the trial row, tickets and chat. Reinstalling may not stop it.
+- **Unaffected:** the production Cartivo app on the store, products, orders, theme code and the storefront
+  password.
+- The trial row keeps a reinstall on Starter, so the first-install trial (2.3.2) needs a second development
+  store.
+
+**No uninstall was done.**
+
+### 0.8 Commit `2e1b2ca` (priority D): what it changes
+
+**Where it is:**
+
+- `2e1b2ca` is a local commit on `appstore-readiness`, 6 commits below `HEAD`. It is **not pushed** (origin is at
+  `f6b778f`), not on `main`, and not deployed. It wasn't reverted.
+- It builds on `beed070` ("Starter includes only the Minimal look"), which is also local and unpushed.
+- The changes are not in production: production runs a build older than both (BUG-10).
+
+**Entitlements compared with `origin/main`** (the last pushed baseline). These are the effective rules after
+`beed070` + `2e1b2ca`:
+
+| Feature | `origin/main` | After `2e1b2ca` |
+|---|---|---|
+| One-click looks (7) | All plans, all looks | Starter: Minimal. Essential: + Ocean, Forest. Growth: + Sunset, Midnight. Premium: + Aurora, Liquid glass |
+| Liquid glass switch | All plans | Premium only |
+| Fine-tuned colours ("custom" look) | All plans | All plans (glass removed below Premium) |
+| Sticky add-to-cart | All plans incl. Starter | Essential+ |
+| Floating cart button | All plans incl. Starter | Essential+ |
+| Custom CSS | All plans incl. Starter | Essential+ |
+| Custom HTML (top/bottom) and JavaScript | All plans incl. Starter | **Growth+** (Essential loses it too) |
+| Drawer text translations (settings `translations`) | All plans | **Growth+** (Markets) (Essential loses it too) |
+| Campaign types, active-campaign limits, Markets for campaigns, live chat | — | Unchanged |
+| Prices ($10 / $20 / $60) and the 7-day all-features trial | — | Unchanged |
+
+- **How it's enforced:** the editor locks these features. Server-side saves are refused (PLAN-03/04). On publish,
+  `syncShop` strips them from the storefront config.
+- **Stored data is never deleted.** Upgrading restores it on the next publish.
+- **New:** `DEV_PLAN` in `.env` runs the app as any plan without billing. It is ignored when
+  `NODE_ENV=production`.
+
+**Is it intentional?** It looks like a deliberate product decision, but only you can confirm the business intent.
+The evidence:
+
+- The commit message lists each change.
+- The pricing cards, the FAQ ("Which cart designs come with each plan?", "What happens if I move to a lower plan?"),
+  the Starter dashboard copy and the cancel banner were all updated to match.
+- 8 unit tests and the server tests PLAN-03/04 assert the new rules.
+- It came from your uncommitted working tree, not from QA. QA only committed it separately in the second pass.
+
+**Points that look unintended or need a decision:**
+
+1. **The default look is Aurora (Premium tier).**
+   - Every new install starts on Aurora. During the trial the drawer shows Aurora.
+   - When the trial ends, a merchant on Starter, Essential ($10) **or Growth ($20)** who never changed the look
+     is published as **Minimal**.
+   - The copy only warns about Minimal on cancel, not on a paid plan below Premium.
+   - Suggested fix (needs your decision): make the default look a Starter-tier look, or warn on the Plans page.
+2. **"Custom" keeps any colours on every plan.**
+   - Changing a single colour turns the look into "custom", which is kept on every plan.
+   - So a merchant who touched one colour keeps an Aurora-like design on Starter, while one who didn't gets Minimal.
+   - The FAQ says fine-tuning colours is on every plan, so the gate effectively covers one-click presets and
+     glass only.
+3. **Paid Essential subscribers lose features they had:** custom HTML/JS, drawer translations, and the Sunset,
+   Midnight, Aurora and Glass looks.
+
+**Impact on existing merchants** (if deployed as is):
+
+- **When it applies:** on the merchant's **next publish**, not at deploy time. That means any save, the
+  Plans/pricing return, a dashboard load while the config is unpublished, or an `app_subscriptions/update`
+  webhook. Until then the published metafield keeps the old features.
+- **After that publish:**
+  - **Starter:** loses sticky add-to-cart, the floating cart, custom CSS/HTML/JS, drawer translations, glass, and
+    any one-click look except Minimal. This is the most visible change, because these were advertised as free.
+  - **Essential:** loses custom HTML/JS, drawer translations and the Growth/Premium looks.
+  - **Growth:** loses Aurora and Liquid glass.
+  - **Premium and trial:** no change.
+- **How many merchants:** unknown. Counting installs per plan needs the production database or the Partner
+  Dashboard, which this pass was not allowed to query.
+- **Before release:**
+  - update the App Store listing's pricing and feature lists to match (1.1.4 / listing accuracy);
+  - consider telling paying merchants, or grandfathering them;
+  - test a downgrade in LIVE-04.
+
+Nothing in this commit was reverted or released.
 
 ---
 
@@ -176,7 +352,7 @@ All six topics: bad HMAC → 401, valid → 200.
 | Privacy webhooks | Compliance topics | PASS | Section 13 |
 | 5.2–5.10 | Other extension groups | N/A | Conditions not met |
 | Listing, privacy policy, terms, support contact | Partner Dashboard | NOT TESTED | Not in the repo; privacy policy still to be created per `APP_STORE_SUBMISSION_CHECKLIST.md` |
-| BFS accessibility | Contrast | **PASS for the default look**; **FAIL in Sunset and Ocean** | A11Y-04 pass; A11Y-05 (BUG-16) |
+| BFS accessibility | Contrast | **PASS in all 7 looks** (third pass) | A11Y-04, A11Y-05 on Chrome and Edge |
 
 ## 17–19. Issues: discovered, fixed, remaining
 
@@ -186,10 +362,10 @@ All six topics: bad HMAC → 401, valid → 200.
 | **BUG-08** | Medium (a11y) | **Fixed this pass** (approved): A11Y-04 passes; badge/promo/savings pass in all 7 looks |
 | BUG-11 | High (1.1.9) | Fixed, committed (CON-21..23) |
 | BUG-12..15 | Medium–Low | Fixed, committed (VAL-01..07, WH-SCOPES-02) |
-| **BUG-16** | Low–Medium (a11y, Premium looks) | **Open: needs your approval.** `.ck-taxes` uses each look's muted colour: Sunset `#78716c` on `#f8f3ee` (4.35:1), Ocean `#64748b` on `#f8f8f9` (4.48:1). Options: slightly darker muted colours in those two presets (`app/lib/defaults.ts`), or the same "readable" adjustment used for BUG-08 applied to `.ck-taxes`. |
+| **BUG-16** | Low–Medium (a11y) | **Fixed (third pass, approved):** see section 0.2. Was: `.ck-taxes` uses each look's muted colour: Sunset `#78716c` on `#f8f3ee` (4.35:1), Ocean `#64748b` on `#f8f8f9` (4.48:1). Options: slightly darker muted colours in those two presets (`app/lib/defaults.ts`), or the same "readable" adjustment used for BUG-08 applied to `.ck-taxes`. |
 | **BUG-10** | Submission blocker | **Open:** production runs the old build (2.3.1) |
 | BUG-03 live check | Critical if wrong | **Resolved for gifts** (LIVE-06a); BXGY re-run pending |
-| OBS-7 | Observation (1.1.4 wording) | Live drawer showed "Offer ends in 00:00:00": the dev store's announcement has "Hide when the timer reaches zero" switched off (the default is on). Suggest showing "Offer ended" or hiding the timer once it has ended. Not changed. |
+| OBS-7 → BUG-17 | Low (1.1.4 wording) | **Fixed (third pass, approved):** an ended visible timer shows "Offer ended"; the hide option is kept (CMP-07..09). |
 | OBS-8 | Test data | The dev store has 9 active campaigns, including two free-shipping goals ($50 and $1000) whose messages disagree in the drawer. Merchant data, not a defect; clean it up before review screenshots. |
 | Suggested | Improvement | Warn the merchant when the "Cartivo rewards" discount isn't active |
 
@@ -230,25 +406,62 @@ All six topics: bad HMAC → 401, valid → 200.
 - **LIVE-04 (billing):** remove `DEV_PLAN` from `.env`, restart `npm run dev`, then approve and decline test charges on the Plans page.
 - **LIVE-03/05/07/08/09/10:** admin and theme-editor click-throughs. These need you logged in to the dev store admin; Shopify login and 2FA can't be automated here.
 
-## 22. Submission blockers
+## 22. Submission blockers (updated in the third pass)
 
-1. **BUG-10:** production fails 2.3.1 until this branch is deployed.
-2. **LIVE-06b not cleanly recorded** (BXGY $0 was seen, but the run was marked failed). The gift case passed live.
-3. **Install, OAuth and billing journeys not executed** (2.3.2–2.3.4, 1.2.2, 1.2.3).
-4. **Commits are local only:** nothing is deployed.
+Precise blockers, in the order to clear them:
 
-Not blockers for listing: BUG-16 (Built for Shopify contrast in two Premium looks); Firefox and WebKit not run.
+1. **BUG-10: production fails 2.3.1.** Production still runs the old build, as last checked on 2026-10-16
+   (not re-checked in the third pass, to avoid contacting production).
+   - Fix: deploy this branch yourself.
+   - Then confirm `/` has no `name="shop"` field, and that `ALLOW_MANUAL_LOGIN` is unset.
+2. **Decide on commit `2e1b2ca` before any deploy** (section 0.8).
+   - Deploying it changes plan entitlements for existing merchants on their next publish.
+   - The App Store listing's pricing and feature text must match whichever version ships.
+3. **LIVE-06b (BXGY $0 in Shopify's cart and checkout): not cleanly recorded.**
+   - Needs your storefront password: one run, `-g "LIVE-06b"`.
+4. **LIVE-04 billing: NOT RUN.** Covers approve, decline, upgrade, downgrade and cancel with test charges
+   (1.2.1–1.2.3).
+   - Environment verified (section 0.6).
+   - Needs you to remove `DEV_PLAN` and click the Shopify approval pages.
+5. **LIVE-01/02 install, OAuth, uninstall, reinstall: NOT RUN** (2.3.2–2.3.4).
+   - Needs your explicit approval of the data-loss inventory (section 0.7).
+   - The first-install trial path needs a second development store.
+6. **Listing assets: NOT TESTED** (not in the repo). Privacy policy URL, support contact, and screenshots without
+   the duplicate test campaigns (OBS-8).
+
+**Not blockers for listing:**
+
+- Firefox, WebKit and tablet projects not run (browser downloads stalled);
+- LIVE-03, 05, 07–10 admin click-throughs;
+- Lighthouse on a real store.
 
 ## 23. GO/NO-GO
 
 ### **NO-GO**
 
-- **Why:** production fails a submission requirement (2.3.1). The live journeys App Review starts with (install, OAuth, billing) have no executed evidence yet. The live gift check passed (LIVE-06a); the BXGY check needs a clean re-run.
-- **Code quality on this branch is good:** every executed functional, security, webhook, buyer-consent and accessibility test passes, except BUG-16, which awaits your approval.
-- **Path to GO:**
-  1. Re-run LIVE-06b (section 21).
-  2. Decide BUG-16.
-  3. Deploy the branch yourself, then confirm the landing page has no shop field.
-  4. Run LIVE-01/02/04 with your approval for the uninstall.
-- With those passing, the assessment becomes **READY WITH MINOR ISSUES**, or READY once BUG-16 is fixed and Firefox/WebKit have run.
-- **App Store approval remains Shopify's decision.**
+**Why:**
+
+- Production fails 2.3.1 (BUG-10).
+- The journeys App Review starts with (install, OAuth, billing) have no executed evidence.
+- The plan-tier commit needs a release decision.
+
+**Code on this branch:** every executed functional, security, webhook, buyer-consent and accessibility test passes:
+
+- 165/165 on Chrome (server, desktop and Pixel 7);
+- 72/72 on Edge for accessibility and cart;
+- BUG-16 and BUG-17 fixed.
+
+There are no open code defects found by executed tests.
+
+**Path to GO:**
+
+1. LIVE-06b.
+2. Decide on `2e1b2ca`.
+3. Deploy and re-check 2.3.1.
+4. LIVE-04.
+5. LIVE-01/02, after your approval.
+6. Listing assets.
+
+With 1–5 passing, the assessment becomes **READY WITH MINOR ISSUES** (Firefox/WebKit not run).
+
+**App Store approval remains Shopify's decision.**
