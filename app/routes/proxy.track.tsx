@@ -1,4 +1,4 @@
-// Storefront analytics endpoint: POST https://{shop}/apps/cartkit/track
+// Storefront analytics endpoint: POST https://{shop}/apps/cartivo/track
 import type { ActionFunctionArgs } from "react-router";
 import { authenticate } from "../shopify.server";
 import db from "../db.server";

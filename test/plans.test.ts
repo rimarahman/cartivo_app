@@ -84,3 +84,13 @@ test("fine-tuned ('custom') designs are kept, without liquid glass below Premium
   assert.deepEqual(designForPlan(custom, 2), { ...custom, glass: false });
   assert.deepEqual(designForPlan(custom, 3), custom);
 });
+
+test("the glass effect layers on any look, only on Premium", () => {
+  const sunsetGlass = { ...DEFAULT_SETTINGS.design, preset: "sunset", glass: true };
+  assert.deepEqual(designForPlan(sunsetGlass, 3), sunsetGlass);
+  assert.deepEqual(designForPlan(sunsetGlass, 2), { ...sunsetGlass, glass: false });
+  const fallback = designForPlan(sunsetGlass, 1);
+  assert.equal(fallback.preset, "minimal");
+  assert.equal(fallback.glass, false);
+  assert.ok(DESIGN_PRESETS.every((p) => p.id === "glass" || !("glass" in p.design)));
+});

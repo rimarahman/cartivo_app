@@ -56,7 +56,7 @@ export function signedWebhook(topic: string, shop: string, body: unknown, secret
 
 // App proxy request signature: hex HMAC of the sorted "key=value" pairs joined without separators.
 export function proxyQuery(shop: string, secret = ENV.SHOPIFY_API_SECRET!) {
-  const params: Record<string, string> = { shop, path_prefix: "/apps/cartkit", timestamp: String(Math.floor(Date.now() / 1000)), logged_in_customer_id: "" };
+  const params: Record<string, string> = { shop, path_prefix: "/apps/cartivo", timestamp: String(Math.floor(Date.now() / 1000)), logged_in_customer_id: "" };
   const message = Object.keys(params).sort().map((k) => `${k}=${params[k]}`).join("");
   const signature = createHmac("sha256", secret).update(message).digest("hex");
   return new URLSearchParams({ ...params, signature }).toString();

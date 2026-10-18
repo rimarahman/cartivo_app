@@ -32,7 +32,7 @@ Result meanings:
 | 2.3.3 | Redirect to app UI after install | `_index` redirects `?shop=` to `/app` | — | BLOCKED (LIVE-01) | |
 | 2.3.4 | OAuth on reinstall | Uninstall webhook deletes sessions (WH-UNINSTALL); Prisma session storage upserts | WH-UNINSTALL | PASS (partial); full reinstall BLOCKED (LIVE-02) | |
 | 3.1.1 | Valid TLS | Production `https://cartivo-app.onrender.com` answered 200 over HTTPS | Read-only GET | PASS | — |
-| 3.2.x | Restricted scopes | Scopes: `read_locales,read_products,write_discounts` (no restricted scopes) | Config review | N/A | — |
+| 3.2.x | Restricted scopes | Scopes: `read_locales,read_products,write_app_proxy,write_discounts` (no restricted scopes) | Config review | N/A | — |
 | 5.1.1 | Theme app extensions only | `extensions/cartkit-theme` app embed + block; no ScriptTag/Asset API | Code search | PASS (code) | — |
 | 5.1.3 | Onboarding + deep link | Dashboard deep link `.../themes/current/editor?context=apps&activateAppId=<key>/<embed>` (`app._index.tsx:93`) | Code review | PASS (code); live click-through BLOCKED (LIVE-03) | |
 | 5.1.5 | Customer data back to merchant | No customer data collected (events have no customer ids; note/code go to the Shopify cart) | Code review, PROXY-02 | PASS | — |

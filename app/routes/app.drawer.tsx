@@ -81,6 +81,11 @@ export default function DrawerSettings() {
     value: design[key] as any,
     onChange: (v: any) => setDesign((s) => (s[key] === v ? s : { ...s, [key]: v, preset: "custom" })),
   });
+  // The glass effect layers on top of any look, so it keeps the picked look selected.
+  const glassSwitch = {
+    value: design.glass,
+    onChange: (v: boolean) => setDesign((s) => ({ ...s, glass: v })),
+  };
   const u = <K extends keyof typeof upsells>(key: K) => ({
     value: upsells[key] as any,
     onChange: (v: any) => setUpsells((s) => ({ ...s, [key]: v })),
@@ -130,13 +135,13 @@ export default function DrawerSettings() {
           <s-divider />
           <Locked locked={plan.features.designTier < GLASS_TIER}>
             <Switch
-              label="Liquid glass (iOS style)"
+              label="Glass effect (works with any look)"
               details={
                 plan.features.designTier < GLASS_TIER
                   ? `Part of the ${designTierPlan(GLASS_TIER)} plan.`
-                  : "Frosted, translucent drawer floating over your store, with a glossy pill checkout button."
+                  : "Frosted, translucent drawer floating over your store, with a glossy pill checkout button. Keeps the colors of the look you picked."
               }
-              {...ds("glass")}
+              {...glassSwitch}
             />
           </Locked>
           <Grid>

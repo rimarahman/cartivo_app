@@ -345,7 +345,7 @@ All six topics: bad HMAC → 401, valid → 200.
 | **2.3.1** | No manual shop-domain entry | **FAIL (production)** | GET `https://cartivo-app.onrender.com/` on 2026-10-16 still shows `name="shop"` and "CartKit" (BUG-10). Branch code hides it. |
 | 2.3.2–2.3.4 | OAuth on install and reinstall, redirect to app UI | NOT TESTED | LIVE-01/02 |
 | 3.1.1 | TLS | PASS | HTTPS 200 |
-| 3.2.x | Restricted scopes | N/A | `read_locales,read_products,write_discounts` |
+| 3.2.x | Restricted scopes | N/A | `read_locales,read_products,write_app_proxy,write_discounts` |
 | 5.1.1 | Theme app extensions only | PASS | Theme Check; no Asset API |
 | 5.1.3 | Onboarding + deep link | PASS (code); click-through NOT TESTED | `app/routes/app._index.tsx:93` |
 | 5.1.5 | Customer data | PASS | None collected |

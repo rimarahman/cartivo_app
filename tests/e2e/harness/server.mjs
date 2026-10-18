@@ -192,7 +192,7 @@ const server = http.createServer(async (req, res) => {
     if (u.pathname === "/__state") return send(res, 200, { cart: priced(s), log: s.log, track: s.track });
     if (u.pathname === "/__fault") { Object.assign(s.faults, await body(req)); return send(res, 200, { ok: true }); }
     if (u.pathname === "/__seed") { for (const it of (await body(req)).items) addLine(s, it); return send(res, 200, priced(s)); }
-    if (u.pathname === "/apps/cartkit/track") { s.track.push(await body(req)); return send(res, 204, ""); }
+    if (u.pathname === "/apps/cartivo/track") { s.track.push(await body(req)); return send(res, 204, ""); }
 
     const ajax = u.pathname.replace(/\.(js|json)$/, "");
     if (/^\/cart\/(add|change|update|clear)$/.test(ajax) || ajax === "/cart" && req.method === "POST") {
