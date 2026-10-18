@@ -200,6 +200,90 @@
 .ckx-savecard.ckx-dirty .ckx-savecard-status::before { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, .25); }
 .ckx-campaign-save { margin-bottom: 16px; }
 
+/* floating Help button + support panel (components/SupportWidget) */
+.ckx-help-fab {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  position: fixed; right: 20px; bottom: 20px; z-index: 520; display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px 10px 10px; border: 0; border-radius: 99px; cursor: pointer; font-weight: 650; font-size: 14px; color: #fff;
+  background: linear-gradient(100deg, var(--ckx-brand-from), var(--ckx-brand-to)); box-shadow: 0 12px 28px -10px rgba(79, 70, 229, .7);
+  transition: transform .25s var(--ckx-ease), box-shadow .25s;
+}
+.ckx-help-fab:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -10px rgba(79, 70, 229, .8); }
+.ckx-help-fab:focus-visible { outline: 2px solid #4f46e5; outline-offset: 3px; }
+.ckx-help-fab-icon { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, .22); font-size: 14px; }
+.ckx-help-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0, 0, 0, .2); opacity: 0; visibility: hidden; transition: opacity .3s, visibility 0s linear .3s; }
+.ckx-help-overlay.ckx-open { opacity: 1; visibility: visible; transition: opacity .3s; }
+.ckx-help-panel {
+  position: fixed; right: 20px; bottom: 76px; z-index: 510; width: min(400px, calc(100vw - 32px)); max-height: min(640px, calc(100vh - 100px));
+  display: flex; flex-direction: column; overflow: hidden; border-radius: 16px; background: #fff; outline: none; color: #303030;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, "Helvetica Neue", sans-serif; font-size: 13px;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .45), 0 0 0 1px rgba(0, 0, 0, .06);
+  opacity: 0; visibility: hidden; transform: translateY(14px) scale(.97); transform-origin: bottom right;
+  transition: opacity .3s ease, transform .4s var(--ckx-ease), visibility 0s linear .4s;
+}
+.ckx-help-panel.ckx-open { opacity: 1; visibility: visible; transform: none; transition: opacity .3s ease, transform .4s var(--ckx-ease); }
+.ckx-help-head { padding: 18px 18px 0; color: #fff; background: linear-gradient(115deg, var(--ckx-brand-from), var(--ckx-brand-to)); }
+.ckx-help-head strong { display: block; font-size: 17px; margin-bottom: 2px; }
+.ckx-help-head span { font-size: 13px; opacity: .9; }
+.ckx-help-tabs { display: flex; gap: 4px; margin-top: 14px; }
+.ckx-help-tabs button {
+  position: relative; flex: 1; padding: 9px; border: 0; border-radius: 10px 10px 0 0; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+  color: #fff; background: rgba(255, 255, 255, .14); transition: background .2s;
+}
+.ckx-help-tabs button[aria-selected="true"] { background: #fff; color: #303030; }
+.ckx-help-body { padding: 16px 18px 18px; overflow-y: auto; display: grid; gap: 12px; align-content: start; }
+.ckx-help-alert { display: flex; gap: 8px; padding: 10px 12px; border-radius: 10px; background: #fff7e6; font-size: 13px; line-height: 1.45; }
+.ckx-help-quick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ckx-help-quick a {
+  display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 10px; border: 1px solid var(--ckx-border);
+  color: inherit; text-decoration: none; font-size: 13px; font-weight: 600; transition: border-color .2s, background .2s;
+}
+.ckx-help-quick a:hover { border-color: #a5b4fc; background: #f5f7ff; }
+.ckx-help-section { font-size: 12px; font-weight: 650; text-transform: uppercase; letter-spacing: .04em; color: var(--ckx-muted); margin-top: 4px; }
+.ckx-help-faq { display: grid; gap: 6px; }
+.ckx-help-cta { padding: 11px; border: 1px dashed #a5b4fc; border-radius: 10px; background: #f5f7ff; color: #3730a3; font: inherit; font-weight: 600; cursor: pointer; }
+.ckx-help-cta:hover { background: #eef2ff; }
+.ckx-help-form { display: grid; gap: 12px; }
+.ckx-tickets { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ckx-tickets li { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; padding: 10px 12px; border-radius: 10px; background: var(--ckx-soft); }
+.ckx-tickets li s-badge { grid-row: 1 / span 2; grid-column: 2; }
+@media (max-width: 640px) { .ckx-help-fab-label { display: none; } .ckx-help-fab { padding: 10px; } .ckx-help-panel { right: 16px; } }
+@media (prefers-reduced-motion: reduce) { .ckx-help-panel, .ckx-help-overlay, .ckx-help-fab { transition: none; } }
+
+.ckx-help-fab-badge {
+  position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 99px; background: #e11d48; color: #fff;
+  font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #fff;
+}
+.ckx-help-dot { position: absolute; top: 7px; right: 10px; width: 8px; height: 8px; border-radius: 50%; background: #e11d48; }
+
+/* FAQ in the panel: one answer open at a time, sliding open (grid-template-rows 0fr -> 1fr) */
+.ckx-faq { border: 1px solid var(--ckx-border); border-radius: 10px; background: #fff; transition: border-color .3s, box-shadow .3s; }
+.ckx-faq[data-open="true"] { border-color: #a5b4fc; box-shadow: 0 6px 18px -12px rgba(79, 70, 229, .45); }
+.ckx-faq > button {
+  width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 12px; border: 0; background: none;
+  font: inherit; font-size: 13px; font-weight: 600; color: inherit; text-align: left; cursor: pointer; border-radius: 10px;
+}
+.ckx-faq > button:focus-visible { outline: 2px solid #4f46e5; outline-offset: 1px; }
+.ckx-faq > button::after {
+  content: ""; flex-shrink: 0; width: 7px; height: 7px; margin: 0 3px 3px 0; border: solid var(--ckx-muted); border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg); transition: transform .45s var(--ckx-ease);
+}
+.ckx-faq[data-open="true"] > button::after { transform: translateY(3px) rotate(-135deg); }
+.ckx-faq-panel { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .5s var(--ckx-ease), opacity .3s ease; }
+.ckx-faq[data-open="true"] .ckx-faq-panel { grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows .5s var(--ckx-ease), opacity .45s ease .1s; }
+.ckx-faq-panel > div { min-height: 0; overflow: hidden; }
+.ckx-faq-panel p { margin: 0; padding: 0 12px 12px; font-size: 13px; line-height: 1.55; color: #303030; }
+@media (prefers-reduced-motion: reduce) { .ckx-faq-panel { transition: none; } }
+
+/* live chat tab of the panel */
+.ckx-help-body-chat { padding: 0; display: flex; flex-direction: column; min-height: 0; flex: 1; overflow: hidden; }
+.ckx-help-panel:has(.ckx-help-body-chat) { height: min(640px, calc(100vh - 100px)); }
+.ckx-chat-locked { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 28px; text-align: center; background: #fafafa; }
+.ckx-chat-locked-icon { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; background: #eef2ff; }
+.ckx-chat-locked strong { font-size: 15px; }
+.ckx-chat-locked p { margin: 0; color: var(--ckx-muted); font-size: 13px; line-height: 1.5; max-width: 280px; }
+.ckx-chat-locked-cta { margin-top: 4px; padding: 9px 18px; border-radius: 10px; color: #fff; font-weight: 600; text-decoration: none; background: linear-gradient(100deg, var(--ckx-brand-from), var(--ckx-brand-to)); }
+
 /* support inbox tickets and chat (also used by routes/support.inbox) */
 .ckx-ticket-subject { font-weight: 600; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ckx-ticket-meta { grid-column: 1; font-size: 12px; color: var(--ckx-muted); }
