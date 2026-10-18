@@ -85,7 +85,7 @@
 
 ## N/A
 
-- **Section 1–4:** 1.1.6, 1.1.7, 1.1.8, 1.1.11, 1.1.13, 1.1.14, 1.1.15, 1.1.16 (marketplace, payment gateway, POS, browser extension, product duplication, agency, refund, lending: অ্যাপ এর কোনোটাই করে না); 2.2.5–2.2.9 (admin বা Sidekick extension নেই, Max modal নেই); 3.2.1–3.2.5 (এই restricted scope-গুলো চাওয়া হয় না; এখনকার scope: `read_locales,read_products,write_discounts`); 4.5.1 (sales channel নয়); 4.5.5 (অ্যাপে আলাদা login নেই)।
+- **Section 1–4:** 1.1.6, 1.1.7, 1.1.8, 1.1.11, 1.1.13, 1.1.14, 1.1.15, 1.1.16 (marketplace, payment gateway, POS, browser extension, product duplication, agency, refund, lending: অ্যাপ এর কোনোটাই করে না); 2.2.5–2.2.9 (admin বা Sidekick extension নেই, Max modal নেই); 3.2.1–3.2.5 (এই restricted scope-গুলো চাওয়া হয় না; এখনকার scope: `read_locales,read_products,write_app_proxy,write_discounts`); 4.5.1 (sales channel নয়); 4.5.5 (অ্যাপে আলাদা login নেই)।
 - **Category 5.2–5.11:** Payment, Payment facilitator, Purchase option, Product sourcing, Checkout customization (checkout UI extension নেই), Sales channel, Post purchase, Mobile app builder, Donation, Blockchain। এর কোনো extension type বা scope অ্যাপে নেই।
 
 ## AI self-review tool

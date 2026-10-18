@@ -24,7 +24,7 @@
 | Billing error | ✅ FIXED | Plans পেজে `billing.request` বা `billing.cancel` ব্যর্থ হলে (Shopify-এর user error, network) আগে generic error page আসত। এখন লাল `ErrorBanner` দেখায়, plan অপরিবর্তিত থাকে, আর error log হয় (commit `66fdb27`)। Approve-এর redirect (`Response`) আগের মতো throw হয়। |
 | Plan gating (server) | ✅ FIXED | Campaign save আর activate server-এও plan যাচাই করে, তাই UI এড়িয়ে সরাসরি POST করলেও plan-এ নেই এমন campaign type সেভ বা চালু হয় না (commit `66fdb27`)। Storefront-এ যা যায় তা আগের মতোই `planCampaigns` দিয়ে ছাঁকা হয়। |
 | Billing callback | ✅ | Return URL-এ (`/app/pricing?upgraded=1`) কিছু বিশ্বাস করা হয় না। Plan সবসময় Shopify থেকে নতুন করে পড়া হয় (`billing.check`)। `app_subscriptions/update` webhook HMAC দিয়ে যাচাই করা। |
-| Access scope | ✅ FIXED | `read_locales,read_products,write_discounts`। `read_themes` সরানো হয়েছে (commit `d81fbd3`)। কোনো protected customer data scope নেই। |
+| Access scope | ✅ FIXED | `read_locales,read_products,write_app_proxy,write_discounts`। `read_themes` সরানো হয়েছে (commit `d81fbd3`)। কোনো protected customer data scope নেই। |
 | HTTPS | ✅ (manual test) | Render managed TLS। TOML-এর সব URL `https://`। |
 | Rate limit (Shopify API) | ⚠️ | Library-র GraphQL client ব্যবহার হয়। Throttle হলে আলাদা কোনো retry বা backoff নেই। Sync ব্যর্থ হলে error banner দেখায় (`trySync` → `syncError`)। কম ঝুঁকি। |
 | Dependency | ⚠️ | নিচে দেখুন। |

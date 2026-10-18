@@ -19,7 +19,7 @@
   var S = CONFIG.settings;
   var SHOPIFY = window.Shopify || {};
   var ROOT = ((SHOPIFY.routes && SHOPIFY.routes.root) || CTX.rootUrl || "/").replace(/\/?$/, "/");
-  var PROXY = "/apps/cartkit";
+  var PROXY = "/apps/cartivo";
   var RATE = parseFloat((SHOPIFY.currency && SHOPIFY.currency.rate) || 1) || 1;
   var nativeFetch = window.fetch.bind(window);
 

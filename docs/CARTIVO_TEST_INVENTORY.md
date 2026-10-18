@@ -25,7 +25,7 @@ Evidence locations:
 | Discount Function | free gifts, BXGY, volume, order % / fixed, free shipping, schedules, Markets | `extensions/cartkit-discounts/src` |
 | Theme extension | app embed (drawer, sticky ATC, floating cart, announcements, goals, upsells, add-ons, gift picker, note, discount code, terms), volume-tiers block | `extensions/cartkit-theme` |
 | Webhooks | app/uninstalled, app/scopes_update, app_subscriptions/update, customers/data_request, customers/redact, shop/redact | `app/routes/webhooks.*` |
-| App proxy | `/apps/cartkit/track` analytics events | `app/routes/proxy.track.tsx` |
+| App proxy | `/apps/cartivo/track` analytics events | `app/routes/proxy.track.tsx` |
 | Support | tickets with diagnostics, live chat, support inbox at `/support/inbox` (key + signed cookie) | `app/models/support.server.ts`, `chat.server.ts`, `routes/support.inbox.tsx` |
 | Auth | embedded session tokens, OAuth, manual login form (dev only), bot filter | `app/shopify.server.ts`, `routes/auth.*`, `routes/_index` |
 

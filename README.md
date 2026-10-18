@@ -25,7 +25,7 @@ app/                     Admin app (React Router + Polaris web components)
   routes/app.advanced    Custom CSS/HTML/JS, theme selectors, translations
   routes/app.analytics   Event dashboard
   routes/app.pricing     Billing
-  routes/proxy.track     Storefront analytics endpoint (/apps/cartkit/track)
+  routes/proxy.track     Storefront analytics endpoint (/apps/cartivo/track)
   models/sync.server.ts  Publishes config to the storefront + discount function
 extensions/
   cartkit-theme/         Theme app extension: app embed (drawer, sticky, floating) + volume table block

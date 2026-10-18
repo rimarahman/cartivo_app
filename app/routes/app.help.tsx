@@ -21,6 +21,8 @@ import {
 import { Checkbox, Grid, Select, TextField } from "../components/fields";
 import { LiveChat, useLiveChat } from "../components/LiveChat";
 import { useEmbedStatus } from "../components/useEmbedStatus";
+import { useRepublish } from "../components/useRepublish";
+import { ErrorBanner } from "../components/ErrorBanner";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { admin, session, billing } = await authenticate.admin(request);
@@ -85,7 +87,7 @@ const FAQ = [
   },
   {
     q: "My campaign isn't showing on the storefront",
-    a: "Campaigns need a paid plan (Essential or higher; Volume discounts need Premium) and the status “Active”. Also check the schedule and the countries it's limited to, then use “Republish to store” on the dashboard.",
+    a: "Campaigns need a paid plan (Essential or higher; Volume discounts need Premium) and the status “Active”. Also check the schedule and the countries it's limited to, then use “Republish to store” under Help → Quick fixes.",
   },
   {
     q: "Gift or volume prices aren't discounted at checkout",
@@ -113,6 +115,8 @@ export default function Help() {
   const send = useFetcher<SupportActionData>();
   const shopify = useAppBridge();
   const embed = useEmbedStatus();
+  const publish = useRepublish();
+  const [publishDismissed, setPublishDismissed] = useState<unknown>(null);
   const [form, setForm] = useState({ ...EMPTY, email: info.email });
   const [diagnostics, setDiagnostics] = useState(true);
   const sending = send.state !== "idle";
@@ -140,6 +144,13 @@ export default function Help() {
 
   return (
     <s-page heading="Help">
+      {publish.error && publish.result !== publishDismissed && (
+        <ErrorBanner
+          message={publish.error}
+          onDismiss={() => setPublishDismissed(publish.result)}
+          action={{ label: "Try again", onAction: publish.republish, loading: publish.republishing }}
+        />
+      )}
       {embed === false && (
         <s-banner tone="warning" heading="The Cartivo app embed is off">
           <s-paragraph>The cart drawer won&apos;t show on your store until you turn on the app embed in your live theme.</s-paragraph>
@@ -254,6 +265,13 @@ export default function Help() {
               {l.title}
             </s-link>
           ))}
+          <s-divider />
+          <s-text color="subdued">
+            Changes not showing on your store? Publish your saved settings and campaigns again.
+          </s-text>
+          <s-button onClick={publish.republish} {...(publish.republishing ? { loading: true } : {})}>
+            Republish to store
+          </s-button>
         </s-stack>
       </s-section>
       <s-section slot="aside" heading="Response times">

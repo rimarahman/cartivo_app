@@ -4,6 +4,8 @@ import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
 import db from "../db.server";
 import { StatCard } from "../components/ui";
+import { useEmbedStatus } from "../components/useEmbedStatus";
+import { getSettings } from "../models/store.server";
 
 const EVENT_LABELS: Record<string, string> = {
   drawer_open: "Cart drawer opens",
@@ -41,11 +43,22 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     const day = new Date(Date.now() - (days - 1 - i) * 864e5).toISOString().slice(0, 10);
     return { day, count: daily[day] || 0 };
   });
-  return { days, totals, series };
+  // Storefront events reach us through the app proxy at /apps/cartivo. If another app already holds that path,
+  // or the merchant changed it in Settings → Apps, events silently go nowhere: flag that once the drawer has
+  // been on for a day without a single event in the last week.
+  const [settings, firstSeen, recent] = await Promise.all([
+    getSettings(session.shop),
+    db.shopTrial.findUnique({ where: { shop: session.shop }, select: { startedAt: true } }),
+    db.event.findFirst({ where: { shop: session.shop, createdAt: { gte: new Date(Date.now() - 7 * 864e5) } }, select: { id: true } }),
+  ]);
+  const noData = settings.drawer.enabled && !recent && !!firstSeen && firstSeen.startedAt.getTime() < Date.now() - 864e5;
+  return { days, totals, series, noData, storeHandle: session.shop.replace(".myshopify.com", "") };
 };
 
 export default function Analytics() {
-  const { days, totals, series } = useLoaderData<typeof loader>();
+  const { days, totals, series, noData, storeHandle } = useLoaderData<typeof loader>();
+  // Only warn when the app embed is on: with it off, no data is expected (the Dashboard covers that case).
+  const embed = useEmbedStatus(noData);
   const [, setParams] = useSearchParams();
   const max = Math.max(1, ...series.map((s) => s.count));
   const opens = totals.drawer_open?.count || 0;
@@ -57,6 +70,18 @@ export default function Analytics() {
 
   return (
     <s-page heading="Analytics">
+      {noData && embed === true && (
+        <s-banner tone="warning" heading="We're not receiving data from your store">
+          <s-paragraph>
+            Cartivo is live on your store, but no cart activity has reached us in the last 7 days. This usually means
+            another app uses the same app proxy URL. In Settings → Apps → Cartivo, set the App proxy URL to
+            /apps/cartivo.
+          </s-paragraph>
+          <s-button slot="secondary-actions" href={`https://admin.shopify.com/store/${storeHandle}/settings/apps`} target="_blank">
+            Open app settings
+          </s-button>
+        </s-banner>
+      )}
       <s-section>
         <s-stack direction="inline" gap="small-200">
           {[7, 30, 90].map((d) => (

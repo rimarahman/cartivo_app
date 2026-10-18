@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: "My campaign isn't showing on the storefront",
-    a: "Campaigns need a paid plan (Essential or higher; Volume discounts need Premium) and the status “Active”. Also check the schedule and the countries it's limited to, then use “Republish to store” on the dashboard.",
+    a: "Campaigns need a paid plan (Essential or higher; Volume discounts need Premium) and the status “Active”. Also check the schedule and the countries it's limited to, then use “Republish to store” under Help → Quick fixes.",
   },
   {
     q: "Gift or volume prices aren't discounted at checkout",

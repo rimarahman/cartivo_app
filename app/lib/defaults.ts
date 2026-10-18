@@ -120,7 +120,8 @@ export type Design = Settings["design"];
 
 export type DesignTier = 0 | 1 | 2 | 3;
 
-// One-click looks for the cart drawer. Each preset overrides the design colors only.
+// One-click looks for the cart drawer. Each preset overrides the design colors only; the glass effect is its own
+// switch that works with any look (only the Liquid glass look turns it on).
 // `tier` is the lowest plan that includes the look: 0 Starter, 1 Essential, 2 Growth, 3 Premium.
 export const DESIGN_PRESETS: { id: string; label: string; tier: DesignTier; design: Partial<Design> }[] = [
   {
@@ -128,7 +129,7 @@ export const DESIGN_PRESETS: { id: string; label: string; tier: DesignTier; desi
     label: "Aurora",
     tier: 3,
     design: {
-      glass: false, checkoutStyle: "gradient", gradientFrom: "#4f46e5", gradientTo: "#db2777", checkoutTextColor: "#ffffff", accentColor: "#4f46e5", accentTextColor: "#ffffff",
+      checkoutStyle: "gradient", gradientFrom: "#4f46e5", gradientTo: "#db2777", checkoutTextColor: "#ffffff", accentColor: "#4f46e5", accentTextColor: "#ffffff",
       backgroundColor: "#ffffff", textColor: "#111827", mutedColor: "#6b7280", borderColor: "#ececf1",
       progressColor: "#16a34a", progressBackground: "#ececf1", badgeColor: "#16a34a", borderRadius: 10,
     },
@@ -148,7 +149,7 @@ export const DESIGN_PRESETS: { id: string; label: string; tier: DesignTier; desi
     label: "Sunset",
     tier: 2,
     design: {
-      glass: false, checkoutStyle: "gradient", gradientFrom: "#f97316", gradientTo: "#e11d48", checkoutTextColor: "#ffffff", accentColor: "#ea580c", accentTextColor: "#ffffff",
+      checkoutStyle: "gradient", gradientFrom: "#f97316", gradientTo: "#e11d48", checkoutTextColor: "#ffffff", accentColor: "#ea580c", accentTextColor: "#ffffff",
       backgroundColor: "#fffaf5", textColor: "#1c1917", mutedColor: "#78716c", borderColor: "#f1e7dd",
       progressColor: "#ea580c", progressBackground: "#f1e7dd", badgeColor: "#c2410c", borderRadius: 12,
     },
@@ -158,7 +159,7 @@ export const DESIGN_PRESETS: { id: string; label: string; tier: DesignTier; desi
     label: "Ocean",
     tier: 1,
     design: {
-      glass: false, checkoutStyle: "gradient", gradientFrom: "#0ea5e9", gradientTo: "#4f46e5", checkoutTextColor: "#ffffff", accentColor: "#0284c7", accentTextColor: "#ffffff",
+      checkoutStyle: "gradient", gradientFrom: "#0ea5e9", gradientTo: "#4f46e5", checkoutTextColor: "#ffffff", accentColor: "#0284c7", accentTextColor: "#ffffff",
       backgroundColor: "#ffffff", textColor: "#0f172a", mutedColor: "#64748b", borderColor: "#e2e8f0",
       progressColor: "#0ea5e9", progressBackground: "#e2e8f0", badgeColor: "#0284c7", borderRadius: 10,
     },
@@ -168,7 +169,7 @@ export const DESIGN_PRESETS: { id: string; label: string; tier: DesignTier; desi
     label: "Forest",
     tier: 1,
     design: {
-      glass: false, checkoutStyle: "gradient", gradientFrom: "#059669", gradientTo: "#0e7490", checkoutTextColor: "#ffffff", accentColor: "#047857", accentTextColor: "#ffffff",
+      checkoutStyle: "gradient", gradientFrom: "#059669", gradientTo: "#0e7490", checkoutTextColor: "#ffffff", accentColor: "#047857", accentTextColor: "#ffffff",
       backgroundColor: "#ffffff", textColor: "#052e16", mutedColor: "#5b6b62", borderColor: "#e3ece6",
       progressColor: "#10b981", progressBackground: "#e3ece6", badgeColor: "#047857", borderRadius: 8,
     },
@@ -178,7 +179,7 @@ export const DESIGN_PRESETS: { id: string; label: string; tier: DesignTier; desi
     label: "Midnight",
     tier: 2,
     design: {
-      glass: false, checkoutStyle: "gradient", gradientFrom: "#8b5cf6", gradientTo: "#ec4899", checkoutTextColor: "#ffffff", accentColor: "#a78bfa", accentTextColor: "#0b0b12",
+      checkoutStyle: "gradient", gradientFrom: "#8b5cf6", gradientTo: "#ec4899", checkoutTextColor: "#ffffff", accentColor: "#a78bfa", accentTextColor: "#0b0b12",
       backgroundColor: "#0f0f17", textColor: "#f4f4f5", mutedColor: "#a1a1aa", borderColor: "#262633",
       progressColor: "#a78bfa", progressBackground: "#262633", badgeColor: "#4ade80", borderRadius: 12,
     },
@@ -188,7 +189,7 @@ export const DESIGN_PRESETS: { id: string; label: string; tier: DesignTier; desi
     label: "Minimal",
     tier: 0,
     design: {
-      glass: false, checkoutStyle: "solid", gradientFrom: "#111111", gradientTo: "#3f3f46", checkoutTextColor: "#ffffff", accentColor: "#111111", accentTextColor: "#ffffff",
+      checkoutStyle: "solid", gradientFrom: "#111111", gradientTo: "#3f3f46", checkoutTextColor: "#ffffff", accentColor: "#111111", accentTextColor: "#ffffff",
       backgroundColor: "#ffffff", textColor: "#111111", mutedColor: "#6b7280", borderColor: "#e5e7eb",
       progressColor: "#111111", progressBackground: "#e5e7eb", badgeColor: "#15803d", borderRadius: 4,
     },
@@ -387,5 +388,5 @@ export function designForPlan(design: Design, tier: DesignTier): Design {
   const glass = design.glass && tier >= GLASS_TIER;
   if (design.preset === "custom" || presetTier(design.preset) <= tier) return { ...design, glass };
   const minimal = DESIGN_PRESETS.find((p) => p.id === FREE_DESIGN_PRESET)!;
-  return { ...design, ...minimal.design, preset: FREE_DESIGN_PRESET };
+  return { ...design, ...minimal.design, preset: FREE_DESIGN_PRESET, glass };
 }

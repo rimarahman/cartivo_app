@@ -13,7 +13,6 @@ import { PAID_PLANS, canUse } from "../lib/plans";
 import { METAFIELD_NAMESPACE, trySync } from "../models/sync.server";
 import { CampaignTypeGrid, StatCard } from "../components/ui";
 import { EMBED_HANDLE, useEmbedStatus } from "../components/useEmbedStatus";
-import { useSave } from "../components/useSave";
 
 async function configPublished(admin: any) {
   try {
@@ -66,7 +65,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const { admin, session, billing } = await authenticate.admin(request);
+  const { session } = await authenticate.admin(request);
   const form = await request.formData();
   const intent = form.get("intent");
   // Hide or bring back the setup guide (BFS 4.2.2: onboarding UI can be removed).
@@ -79,15 +78,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     });
     return { ok: true };
   }
-  // "Republish" button: pushes the current configuration to the storefront again.
-  const plan = await getPlan(billing, session.shop, admin);
-  const sync = await trySync(admin, session.shop, plan);
-  return { saved: sync.ok, syncError: sync.error };
+  return new Response(null, { status: 400 });
 };
 
 export default function Dashboard() {
   const data = useLoaderData<typeof loader>();
-  const { save, saving, errorBanner } = useSave<Record<string, never>>();
   const setup = useFetcher();
   const embed = useEmbedStatus();
   const editorUrl = `https://${data.shop}/admin/themes/current/editor?context=apps&activateAppId=${data.apiKey}/${EMBED_HANDLE}`;
@@ -150,12 +145,6 @@ export default function Dashboard() {
 
   return (
     <s-page heading="Dashboard">
-      <s-button slot="primary-action" onClick={() => save({})} {...(saving ? { loading: true } : {})}>
-        Republish to store
-      </s-button>
-
-      {errorBanner}
-
       {/* No trial or plan banner (BFS 4.3.4/4.3.6): the trial days left are in the Plan card, and the app embed
           status in the Status hero below. */}
 
