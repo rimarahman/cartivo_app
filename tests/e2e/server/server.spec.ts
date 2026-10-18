@@ -243,6 +243,24 @@ test.describe("Support inbox", () => {
     expect(forged.status).toBe(401);
     expect(await db.chatMessage.count({ where: { shop: SHOP_A } })).toBe(0);
   });
+
+  test("INBOX-02 the team signs in with the key and replies; the reply lands in that shop's thread only @p1", async () => {
+    const inbox = `${APP}/support/inbox.data?_routes=routes/support.inbox`;
+    await db.chatMessage.create({ data: { shop: SHOP_A, sender: "merchant", body: "Is the drawer RTL-ready?" } });
+    const signin = await fetch(inbox, { method: "POST", headers: UA, body: new URLSearchParams({ intent: "signin", key: ENV.SUPPORT_INBOX_KEY! }), redirect: "manual" });
+    const cookie = (signin.headers.get("set-cookie") || "").split(";")[0];
+    expect(cookie, "sign-in sets the agent cookie").toMatch(/^cartkit_inbox=/);
+
+    const list = await fetch(inbox, { headers: { ...UA, Cookie: cookie } });
+    expect(await list.text(), "the merchant's conversation is listed").toContain(SHOP_A);
+
+    const reply = await fetch(inbox, { method: "POST", headers: { ...UA, Cookie: cookie }, body: new URLSearchParams({ intent: "reply", shop: SHOP_A, body: "Yes, it is." }) });
+    expect(reply.status).toBe(200);
+    const thread = await db.chatMessage.findMany({ where: { shop: SHOP_A }, orderBy: { createdAt: "asc" } });
+    expect(thread.map((m) => [m.sender, m.body])).toEqual([["merchant", "Is the drawer RTL-ready?"], ["agent", "Yes, it is."]]);
+    expect(await db.chatMessage.count({ where: { shop: SHOP_B } })).toBe(0);
+    await db.chatMessage.deleteMany({ where: { shop: SHOP_A } });
+  });
 });
 
 test.describe("Input validation", () => {

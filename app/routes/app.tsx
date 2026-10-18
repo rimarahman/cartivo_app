@@ -1,11 +1,12 @@
 import type { HeadersFunction, LinksFunction, LoaderFunctionArgs, ShouldRevalidateFunction } from "react-router";
-import { Outlet, redirect, useLoaderData, useRouteError } from "react-router";
+import { Outlet, redirect, useLoaderData, useLocation, useRouteError } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
 
 import { authenticate } from "../shopify.server";
 import { getPlan } from "../models/billing.server";
 import adminStyles from "../styles/admin.css?url";
+import { SupportWidget } from "../components/SupportWidget";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: "/storefront.css" },
@@ -32,6 +33,7 @@ export const shouldRevalidate: ShouldRevalidateFunction = () => true;
 
 export default function App() {
   const { apiKey } = useLoaderData<typeof loader>();
+  const { pathname } = useLocation();
 
   return (
     <AppProvider apiKey={apiKey}>
@@ -48,6 +50,8 @@ export default function App() {
         <s-link href="/app/help">Help</s-link>
       </s-app-nav>
       <Outlet />
+      {/* The Help page already has the same FAQ, chat and email form: no second copy (and no second chat poll) there. */}
+      {!pathname.startsWith("/app/help") && <SupportWidget />}
     </AppProvider>
   );
 }

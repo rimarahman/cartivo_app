@@ -69,3 +69,15 @@ test("unlimited campaigns serialise as null (JSON-safe), and the plan table can'
   plan.features.campaignTypes.length = 0;
   assert.ok(resolvePlan([sub("Premium")], endedTrial, {}, false).features.campaignTypes.length > 0);
 });
+
+test("live chat by plan: open in the trial, Growth and Premium; locked on Essential, Starter and after the trial", () => {
+  const chat = (subs: ReturnType<typeof sub>[], trial: typeof activeTrial, freeChosen = false) =>
+    resolvePlan(subs, trial, {}, freeChosen).features.liveChat;
+  assert.equal(chat([], activeTrial), true, "trial");
+  assert.equal(chat([sub("Growth")], endedTrial), true, "Growth");
+  assert.equal(chat([sub("Premium")], endedTrial), true, "Premium");
+  assert.equal(chat([sub("Essential")], endedTrial), false, "Essential");
+  assert.equal(chat([sub("Essential")], activeTrial), false, "Essential bought during the trial: the paid plan decides");
+  assert.equal(chat([], endedTrial, true), false, "Starter (free)");
+  assert.equal(chat([], endedTrial), false, "trial over, no plan picked");
+});
