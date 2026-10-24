@@ -23,22 +23,24 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { session } = await authenticate.admin(request);
   const days = Math.min(90, Math.max(1, Number(new URL(request.url).searchParams.get("days")) || 30));
   const since = new Date(Date.now() - days * 864e5);
-  const events = await db.event.findMany({
-    where: { shop: session.shop, createdAt: { gte: since } },
-    select: { type: true, value: true, createdAt: true },
-  });
+  // Counted in Postgres: a busy store can have millions of events in 90 days, too many to load into memory.
+  const [grouped, dailyRows] = await Promise.all([
+    db.event.groupBy({
+      by: ["type"],
+      where: { shop: session.shop, createdAt: { gte: since } },
+      _count: { _all: true },
+      _sum: { value: true },
+    }),
+    db.$queryRaw<{ day: string; count: number }[]>`
+      SELECT to_char("createdAt", 'YYYY-MM-DD') AS day, COUNT(*)::int AS count
+      FROM "Event"
+      WHERE shop = ${session.shop} AND type = 'drawer_open' AND "createdAt" >= ${since}
+      GROUP BY 1`,
+  ]);
 
   const totals: Record<string, { count: number; value: number }> = {};
-  const daily: Record<string, number> = {};
-  for (const e of events) {
-    totals[e.type] ??= { count: 0, value: 0 };
-    totals[e.type].count++;
-    totals[e.type].value += e.value || 0;
-    if (e.type === "drawer_open") {
-      const day = e.createdAt.toISOString().slice(0, 10);
-      daily[day] = (daily[day] || 0) + 1;
-    }
-  }
+  for (const g of grouped) totals[g.type] = { count: g._count._all, value: g._sum.value || 0 };
+  const daily: Record<string, number> = Object.fromEntries(dailyRows.map((d) => [d.day, d.count]));
   const series = Array.from({ length: days }, (_, i) => {
     const day = new Date(Date.now() - (days - 1 - i) * 864e5).toISOString().slice(0, 10);
     return { day, count: daily[day] || 0 };
