@@ -3,7 +3,7 @@
 // what the app does with each answer. Run with `npm test`.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { TRIAL_DAYS, resolvePlan, trialState } from "../app/lib/plans.ts";
+import { BILLING_PLAN_NAMES, PAID_PLANS, PLAN_ORDER, TRIAL_DAYS, billingPlanName, resolvePlan, trialState } from "../app/lib/plans.ts";
 
 const DAY = 864e5;
 const NOW = Date.UTC(2026, 9, 16, 12);
@@ -80,4 +80,33 @@ test("live chat by plan: open in the trial, Growth and Premium; locked on Essent
   assert.equal(chat([sub("Essential")], activeTrial), false, "Essential bought during the trial: the paid plan decides");
   assert.equal(chat([], endedTrial, true), false, "Starter (free)");
   assert.equal(chat([], endedTrial), false, "trial over, no plan picked");
+});
+
+test("yearly plans: same features as monthly, and the billing cycle comes from the subscription name", () => {
+  for (const [name, id] of [["Essential", "basic"], ["Growth", "grow"], ["Premium", "pro"]] as const) {
+    const monthly = resolvePlan([sub(name)], endedTrial, {}, false);
+    const yearly = resolvePlan([sub(`${name} Yearly`)], endedTrial, {}, false);
+    assert.equal(yearly.id, id, name);
+    assert.equal(monthly.cycle, "monthly", name);
+    assert.equal(yearly.cycle, "yearly", name);
+    assert.deepEqual(yearly.features, monthly.features, name);
+    assert.equal(yearly.subscriptionId, `gid://shopify/AppSubscription/${name} Yearly`, "needed to cancel it");
+  }
+  assert.equal(resolvePlan([], activeTrial, {}, false).cycle, null, "no subscription, no cycle");
+});
+
+test("monthly to yearly: the ACTIVE subscription decides while the old one is replaced", () => {
+  const plan = resolvePlan([sub("Growth", "CANCELLED"), sub("Growth Yearly")], endedTrial, {}, false);
+  assert.equal(plan.id, "grow");
+  assert.equal(plan.cycle, "yearly");
+  // Yearly to monthly is deferred by Shopify: the yearly plan stays ACTIVE until its year ends.
+  const deferred = resolvePlan([sub("Growth Yearly"), sub("Growth", "ACCEPTED")], endedTrial, {}, false);
+  assert.equal(deferred.cycle, "yearly");
+});
+
+test("billing plan names match the plans configured in shopify.server.ts", () => {
+  assert.deepEqual(BILLING_PLAN_NAMES, ["Essential", "Essential Yearly", "Growth", "Growth Yearly", "Premium", "Premium Yearly"]);
+  assert.equal(billingPlanName("pro", "yearly"), "Premium Yearly");
+  assert.equal(billingPlanName("basic"), "Essential");
+  for (const p of PLAN_ORDER) assert.equal(PAID_PLANS[p].yearlyPrice, PAID_PLANS[p].price * 10, "2 months free");
 });

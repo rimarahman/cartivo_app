@@ -33,17 +33,22 @@ export const PLAN_FEATURES: Record<PlanId, PlanFeatures> = {
   trial: { campaignTypes: ALL_TYPES, maxActiveCampaigns: Infinity, markets: true, prioritySupport: true, liveChat: true, designTier: 3, stickyCart: true, customCss: true, customCode: true },
 };
 
+// Each paid plan is billed every 30 days (price) or yearly (yearlyPrice, two months free).
+export type BillingCycle = "monthly" | "yearly";
+
 // Billing plan names as configured in shopify.server.ts (also what Shopify shows the merchant).
-export const PAID_PLANS: Record<PaidPlanId, { name: string; price: number; tagline: string; badge?: string; features: string[] }> = {
+export const PAID_PLANS: Record<PaidPlanId, { name: string; price: number; yearlyPrice: number; tagline: string; badge?: string; features: string[] }> = {
   basic: {
     name: "Essential",
     price: 10,
+    yearlyPrice: 100,
     tagline: "More cart designs, sticky cart and cart goals",
     features: ["Everything in Starter", "3 cart designs", "Sticky add-to-cart & floating cart", "Custom CSS", "Free shipping & free gift goals", "Announcements & countdown timers", "Up to 3 active campaigns"],
   },
   grow: {
     name: "Growth",
     price: 20,
+    yearlyPrice: 200,
     tagline: "Upsells, languages and custom code",
     // Factual labels only (App Store 1.1.4): no "most popular" or "best value" claims without data behind them.
     badge: "Live chat included",
@@ -61,6 +66,7 @@ export const PAID_PLANS: Record<PaidPlanId, { name: string; price: number; tagli
   pro: {
     name: "Premium",
     price: 60,
+    yearlyPrice: 600,
     tagline: "Every design and feature, no limits",
     badge: "All features",
     features: ["Everything in Growth", "All 7 cart designs, incl. Liquid glass", "Volume discounts", "Unlimited active campaigns", "Priority live chat support"],
@@ -87,9 +93,16 @@ export function planFor(type: CampaignType): PaidPlanId {
 // Lowest plan that includes a design tier ("Starter", "Essential", ...).
 export const designTierPlan = (tier: DesignTier) => (tier === 0 ? FREE_PLAN.name : PAID_PLANS[PLAN_ORDER[tier - 1]].name);
 
+// Shopify subscription name for a plan and cycle: "Growth" (every 30 days) or "Growth Yearly".
+export const billingPlanName = (id: PaidPlanId, cycle: BillingCycle = "monthly") =>
+  cycle === "yearly" ? `${PAID_PLANS[id].name} Yearly` : PAID_PLANS[id].name;
+export const BILLING_PLAN_NAMES = PLAN_ORDER.flatMap((p) => [billingPlanName(p), billingPlanName(p, "yearly")]);
+
 export function paidPlanByName(name: string | undefined | null): PaidPlanId | null {
-  return PLAN_ORDER.find((p) => PAID_PLANS[p].name === name) ?? null;
+  return PLAN_ORDER.find((p) => billingPlanName(p) === name || billingPlanName(p, "yearly") === name) ?? null;
 }
+export const cycleByName = (name: string | undefined | null): BillingCycle =>
+  name?.endsWith(" Yearly") ? "yearly" : "monthly";
 
 // The serializable plan state the server hands to pages.
 export type PlanInfo = {
@@ -98,6 +111,7 @@ export type PlanInfo = {
   trialEndsAt: string | null; // set while the app trial runs
   trialDaysLeft: number;
   subscriptionId: string | null;
+  cycle: BillingCycle | null; // billing cycle of the active subscription, null without one
   features: Omit<PlanFeatures, "maxActiveCampaigns"> & { maxActiveCampaigns: number | null }; // null = unlimited (JSON-safe)
 };
 
@@ -120,6 +134,7 @@ export function planInfo(id: PlanId, extra: Partial<PlanInfo> = {}): PlanInfo {
     trialEndsAt: null,
     trialDaysLeft: 0,
     subscriptionId: null,
+    cycle: null,
     ...extra,
     // Copy the array: callers must never be able to mutate the shared plan table.
     features: { ...f, campaignTypes: [...f.campaignTypes], maxActiveCampaigns: Number.isFinite(f.maxActiveCampaigns) ? f.maxActiveCampaigns : null },
@@ -134,7 +149,7 @@ export function resolvePlan(
   freeChosen: boolean,
 ) {
   const sub = subs.find((s) => s.status === "ACTIVE" && paidPlanByName(s.name));
-  if (sub) return planInfo(paidPlanByName(sub.name)!, { subscriptionId: sub.id, ...trialExtra });
+  if (sub) return planInfo(paidPlanByName(sub.name)!, { subscriptionId: sub.id, cycle: cycleByName(sub.name), ...trialExtra });
   if (trial.active) return planInfo("trial", trialExtra);
   return planInfo(freeChosen ? "free" : "choose");
 }
