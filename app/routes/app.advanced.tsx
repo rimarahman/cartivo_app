@@ -109,7 +109,7 @@ export default function AdvancedSettings() {
         </s-stack>
       </Accordion>
 
-      <Accordion title="Theme compatibility" icon="theme" description="Cart icon and count selectors, paths to skip, Google Analytics">
+      <Accordion title="Theme compatibility" icon="theme" description="Cart icon, count and theme drawer selectors, paths to skip, Google Analytics">
         <s-stack gap="base">
           <Grid>
             <TextField
@@ -123,6 +123,12 @@ export default function AdvancedSettings() {
               placeholder=".cart-count"
               details="Cartivo keeps these in sync with the cart item count."
               {...a("cartCountSelector")}
+            />
+            <TextField
+              label="Theme cart drawer selector"
+              placeholder="#theme-cart-drawer"
+              details="If your theme's own cart still opens next to Cartivo's, add its drawer here and Cartivo closes it."
+              {...a("themeDrawerSelector")}
             />
             <TextField
               label="Disable on these URL paths"

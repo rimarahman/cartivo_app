@@ -1212,6 +1212,7 @@
   }
 
   function afterAdd() {
+    lastAddAt = Date.now();
     return refresh().then(function () {
       emit("item:added", cart);
       if (S.drawer.openOnAdd) open();
@@ -1219,10 +1220,11 @@
   }
 
   // ---------------------------------------------------------------- theme integration
-  var COUNT_SELECTORS = ["[data-cart-count]", ".cart-count", "#CartCount", ".cart-count-bubble span[aria-hidden='true']", ".cart-link__bubble-num"];
+  var COUNT_SELECTORS = ["[data-cart-count]", ".cart-count", "#CartCount", ".cart-count-bubble span[aria-hidden='true']", ".cart-link__bubble-num", "cart-count", ".js-cart-count"];
   function updateCounts(count) {
     if (count == null) count = cart.items.filter(function (i) { return !isAddon(i); }).reduce(function (s, i) { return s + i.quantity; }, 0);
-    var selectors = COUNT_SELECTORS.concat(String(S.advanced.cartCountSelector || "").split(",").map(function (s) { return s.trim(); }).filter(Boolean));
+    var selectors = COUNT_SELECTORS.concat(String(themeProfile().count || "").split(","), String(S.advanced.cartCountSelector || "").split(","))
+      .map(function (s) { return s.trim(); }).filter(Boolean);
     selectors.forEach(function (sel) {
       try {
         document.querySelectorAll(sel).forEach(function (el) {
@@ -1255,7 +1257,8 @@
   }
 
   function interceptForms() {
-    document.addEventListener(
+    // Window capture runs before themes' document-level delegated submit handlers (see interceptCartLinks).
+    window.addEventListener(
       "submit",
       function (e) {
         var form = e.target;
@@ -1316,6 +1319,7 @@
   var externalAdd = false;
   function onExternalCartChange(isAdd) {
     externalAdd = externalAdd || isAdd;
+    if (isAdd) lastAddAt = Date.now();
     clearTimeout(externalTimer);
     externalTimer = setTimeout(function () {
       var wasAdd = externalAdd;
@@ -1325,24 +1329,124 @@
     }, 80);
   }
 
+  // Cart icons, cart counts and theme cart drawers come from three layers: generic patterns that match most
+  // themes, a profile for popular themes we know the markup of, and the merchant's Theme compatibility settings.
+  // Theme profiles are keyed by Shopify.theme.schema_name, lower-cased.
+  var THEME_PROFILES = {
+    impulse: { icon: ".js-drawer-open-cart", count: ".cart-link__bubble-num", drawer: "#CartDrawer" },
+    motion: { icon: ".js-drawer-open-cart", count: ".cart-link__bubble-num", drawer: "#CartDrawer" },
+    streamline: { icon: ".js-drawer-open-cart", count: ".cart-link__bubble-num", drawer: "#CartDrawer" },
+    prestige: { icon: '[data-action="open-drawer"][data-drawer-id="sidebar-cart"]', count: ".Header__CartCount", drawer: "#sidebar-cart" },
+  };
+  var profile = null;
+  function themeProfile() {
+    var theme = window.Shopify && window.Shopify.theme;
+    return profile || (profile = THEME_PROFILES[String((theme && theme.schema_name) || "").toLowerCase()] || {});
+  }
+
+  // Each selector is checked on its own, so one invalid entry in the settings can't disable the rest.
+  function selectorList() {
+    var out = [];
+    Array.prototype.forEach.call(arguments, function (part) {
+      String(part || "").split(",").forEach(function (s) {
+        s = s.trim();
+        if (!s) return;
+        try { document.querySelector(s); out.push(s); } catch (e) { /* invalid selector */ }
+      });
+    });
+    return out.join(",");
+  }
+  function closestMatch(el, selector) {
+    try { return selector && el && el.closest ? el.closest(selector) : null; } catch (e) { return null; }
+  }
+
+  // Elements that are a cart icon wherever they are on the page.
+  var CART_ICONS = [
+    'a[href$="/cart"]', 'a[href*="/cart?"]', 'a[href="#cart"]', "#cart-icon-bubble",
+    "[data-cart-drawer-toggle]", ".js-cart-drawer-toggle", ".js-drawer-open-cart",
+    '[aria-controls*="cart" i]', '[data-drawer-target*="cart" i]', '[data-drawer-id*="cart" i]',
+    // Horizon-family themes: the toggle is a plain button in the drawer component, outside its dialog.
+    "cart-drawer-component button:not(dialog button)",
+  ].join(",");
+  // Looser patterns, trusted only inside the site header.
+  var HEADER_CART_ICONS = 'button[class*="cart" i], a[class*="cart" i], [data-action*="cart" i]';
+  var HEADER = 'header, header-component, sticky-header, [class*="header" i], [id*="header" i]';
+  // Never a cart icon: add to cart, checkout, and Cartivo's own elements.
+  var NOT_ICONS = 'form[action*="/cart/add"], [type="submit"], [name="checkout"], [href*="checkout"], .ck-root, .ck-float, .ck-sticky';
+  // The looser header patterns also skip anything in a dialog (a mini cart's own buttons).
+  var NOT_HEADER_ICONS = NOT_ICONS + ', dialog, [role="dialog"], [aria-modal="true"]';
+
   function interceptCartLinks() {
     if (!S.drawer.enabled || !S.drawer.interceptCartLinks) return;
     document.documentElement.classList.add("ck-hide-theme-cart");
-    var selector = ['a[href$="/cart"]', 'a[href*="/cart?"]', "#cart-icon-bubble", "[data-cart-drawer-toggle]", ".js-cart-drawer-toggle"]
-      .concat(String(S.advanced.cartIconSelector || "").split(",").map(function (s) { return s.trim(); }).filter(Boolean))
-      .join(",");
-    document.addEventListener(
+    var icons = selectorList(CART_ICONS, themeProfile().icon, S.advanced.cartIconSelector);
+    // On window, not document: themes like Horizon delegate their own clicks from a document
+    // capture listener, which would run before ours and open the theme drawer as well.
+    window.addEventListener(
       "click",
       function (e) {
-        var target;
-        try { target = e.target.closest(selector); } catch (err) { return; }
-        if (!target || target.closest(".ck-root") || e.metaKey || e.ctrlKey) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;
+        var target = closestMatch(e.target, icons);
+        if (target && closestMatch(target, NOT_ICONS)) target = null;
+        if (!target) {
+          target = closestMatch(e.target, HEADER_CART_ICONS);
+          if (target && (!closestMatch(target, HEADER) || closestMatch(target, NOT_HEADER_ICONS))) target = null;
+        }
+        if (!target) return;
         e.preventDefault();
         e.stopImmediatePropagation();
         open();
       },
       true,
     );
+    guardThemeDrawer();
+  }
+
+  // Themes also open their own cart drawer from code (after an add to cart, from a "cart:open" event, ...).
+  // When one opens, close it the theme's own way, so its scroll lock and focus trap are released too.
+  var THEME_DRAWERS = [
+    "cart-drawer", "cart-notification", "#cart-notification", "#CartDrawer", "#cart-drawer", "#mini-cart",
+    "#sidebar-cart", "cart-drawer-component dialog",
+    // Any other cart drawer by id; not a <details> inside one (a theme's "Add a note" toggle uses "open" too).
+    '[id*="cart-drawer" i]:not(details)',
+  ].join(",");
+  var OPEN_CLASS = /(^|[\s-])(is-)?(open|opened|active|visible)(\s|$)/i;
+  var lastAddAt = 0;
+  function isOpenDrawer(el) {
+    if (el.hasAttribute("open")) return true;
+    if (el.getAttribute("aria-hidden") === "false") return true;
+    return OPEN_CLASS.test(el.getAttribute("class") || "");
+  }
+  function closeThemeDrawer(el) {
+    // The drawer's own component (Dawn's <cart-drawer>, Horizon's <cart-drawer-component>, ...) knows how to close.
+    for (var node = el, depth = 0; node && node !== document.body && depth < 4; node = node.parentElement, depth++) {
+      if (node.tagName.indexOf("-") === -1) continue;
+      var fn = node.close || node.closeDialog || node.hide;
+      if (typeof fn === "function") {
+        try { fn.call(node); } catch (e) { /* fall through */ }
+        if (!isOpenDrawer(el)) return;
+      }
+    }
+    if (el.tagName === "DIALOG" && el.open) { el.close(); return; }
+    el.removeAttribute("open");
+    if (el.getAttribute("aria-hidden") === "false") el.setAttribute("aria-hidden", "true");
+    el.setAttribute("class", (el.getAttribute("class") || "").split(/\s+/).filter(function (c) { return !OPEN_CLASS.test(c); }).join(" "));
+  }
+  function guardThemeDrawer() {
+    if (!window.MutationObserver) return;
+    var drawers = selectorList(THEME_DRAWERS, themeProfile().drawer, S.advanced.themeDrawerSelector);
+    new MutationObserver(function (mutations) {
+      var shut = false;
+      mutations.forEach(function (m) {
+        var el = m.target;
+        if (el.nodeType !== 1 || !el.matches(drawers) || el.closest(".ck-root")) return;
+        if (!isOpenDrawer(el)) return;
+        closeThemeDrawer(el);
+        shut = true;
+      });
+      // Show ours instead, unless it was an add to cart and the merchant turned "open on add" off.
+      if (shut && (S.drawer.openOnAdd || Date.now() - lastAddAt > 2000)) open();
+    }).observe(document.documentElement, { subtree: true, attributes: true, attributeFilter: ["open", "class", "aria-hidden"] });
   }
 
   // ---------------------------------------------------------------- floating cart
