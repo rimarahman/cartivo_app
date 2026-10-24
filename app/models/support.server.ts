@@ -1,6 +1,7 @@
 // Support requests from the Help page: validation, storage, diagnostics and team notification.
 import db from "../db.server";
 import { SUPPORT_CATEGORIES, type SupportCategory } from "../lib/support";
+import { sendMail } from "./mail.server";
 
 type Admin = { graphql: (query: string, options?: any) => Promise<Response> };
 
@@ -102,16 +103,15 @@ async function saveTicket(shop: string, input: TicketInput, diagnostics: Record<
       diagnostics: diagnostics ? JSON.stringify(diagnostics) : null,
     },
   });
-  await notifyTeam(ticket);
+  await Promise.all([notifyTeam(ticket), emailTeam(ticket)]);
   return { ticket };
 }
 
-// Posts new requests to a Slack/Discord-compatible incoming webhook when SUPPORT_WEBHOOK_URL is set.
-async function notifyTeam(t: { id: string; shop: string; email: string; category: string; subject: string; message: string; diagnostics: string | null }) {
-  const url = process.env.SUPPORT_WEBHOOK_URL;
-  if (!url) return;
+type Ticket = { id: string; shop: string; email: string; category: string; subject: string; message: string; diagnostics: string | null };
+
+function ticketText(t: Ticket) {
   const topic = SUPPORT_CATEGORIES[t.category as SupportCategory] ?? t.category;
-  const text = [
+  return [
     `New Cartivo support request #${t.id}`,
     `Store: ${t.shop}`,
     `Reply to: ${t.email}`,
@@ -121,6 +121,20 @@ async function notifyTeam(t: { id: string; shop: string; email: string; category
     t.message,
     t.diagnostics ? `\nDiagnostics: ${t.diagnostics}` : "",
   ].join("\n");
+}
+
+// Emails new requests to SUPPORT_EMAIL; replying goes straight to the merchant.
+async function emailTeam(t: Ticket) {
+  const to = process.env.SUPPORT_EMAIL;
+  if (!to) return;
+  await sendMail({ to, replyTo: t.email, subject: `[Cartivo #${t.id.slice(-6)}] ${t.subject} (${t.shop})`, text: ticketText(t) });
+}
+
+// Posts new requests to a Slack/Discord-compatible incoming webhook when SUPPORT_WEBHOOK_URL is set.
+async function notifyTeam(t: Ticket) {
+  const url = process.env.SUPPORT_WEBHOOK_URL;
+  if (!url) return;
+  const text = ticketText(t);
   try {
     await fetch(url, {
       method: "POST",

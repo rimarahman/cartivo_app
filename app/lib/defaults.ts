@@ -108,6 +108,7 @@ export const DEFAULT_SETTINGS = {
     customHtmlBottom: "",
     cartIconSelector: "",
     cartCountSelector: "",
+    themeDrawerSelector: "",
     googleAnalytics: true,
     disableOnPaths: "",
   },
