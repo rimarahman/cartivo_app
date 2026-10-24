@@ -1,6 +1,7 @@
 // Live chat with the Cartivo team on the Help page. Polls /app/chat every few seconds while the page is open.
+// Plain fetch (App Bridge adds the session token), not useFetcher: a fetcher's network error ("Failed to fetch"
+// after the tab slept or the server spun down) throws to the route ErrorBoundary and replaces the whole app.
 import { useEffect, useRef, useState } from "react";
-import { useFetcher } from "react-router";
 import { TextField } from "./fields";
 import type { ChatActionData, ChatLoaderData } from "../routes/app.chat";
 import type { ChatMessageView } from "../models/chat.server";
@@ -12,67 +13,90 @@ const SLOW = 30000;
 type Pending = { id: string; body: string; failed?: boolean };
 
 export function useLiveChat(active: boolean) {
-  const poll = useFetcher<ChatLoaderData>();
-  const send = useFetcher<ChatActionData>();
   const [messages, setMessages] = useState<ChatMessageView[]>([]);
   const [online, setOnline] = useState(false);
   const [unread, setUnread] = useState(0);
   const [pending, setPending] = useState<Pending[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [allowed, setAllowed] = useState(true); // false on plans without live chat
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string>();
   const last = messages[messages.length - 1]?.createdAt;
   const lastRef = useRef(last);
   const activeRef = useRef(active);
+  const polling = useRef(false);
   useEffect(() => {
     lastRef.current = last;
     activeRef.current = active;
   });
 
-  // Merge polled messages (render-time, keyed on the response object).
-  const [seenPoll, setSeenPoll] = useState<ChatLoaderData | null>(null);
-  if (poll.data && poll.data !== seenPoll) {
-    setSeenPoll(poll.data);
-    setLoaded(true);
-    setAllowed(poll.data.allowed);
-    setOnline(poll.data.online);
-    setUnread(active ? 0 : poll.data.unread);
-    if (poll.data.messages.length) setMessages((m) => merge(m, poll.data!.messages));
-  }
-
-  // Swap the optimistic bubble for the stored message (or mark it failed).
-  const [seenSend, setSeenSend] = useState<ChatActionData | null>(null);
-  if (send.state === "idle" && send.data && send.data !== seenSend) {
-    setSeenSend(send.data);
-    const sent = send.data.message;
-    setPending((p) => (sent ? p.slice(1) : p.map((x, i) => (i === 0 ? { ...x, failed: true } : x))));
-    if (sent) setMessages((m) => merge(m, [sent]));
-  }
-
   useEffect(() => {
-    const load = () => {
-      if (poll.state !== "idle") return;
+    let alive = true;
+    const load = async () => {
+      // Skip while the tab is in the background; it re-polls as soon as it's visible again.
+      if (polling.current || document.hidden) return;
+      polling.current = true;
       const q = new URLSearchParams();
       if (lastRef.current) q.set("since", lastRef.current);
       if (activeRef.current) q.set("read", "1");
-      poll.load(`${ROUTE}?${q}`);
+      try {
+        const res = await fetch(`${ROUTE}?${q}`);
+        if (!res.ok || !alive) return;
+        const data: ChatLoaderData = await res.json();
+        if (!alive) return;
+        setLoaded(true);
+        setAllowed(data.allowed);
+        setOnline(data.online);
+        setUnread(activeRef.current ? 0 : data.unread);
+        if (data.messages.length) setMessages((m) => merge(m, data.messages));
+      } catch {
+        // Offline, asleep or the server waking up: try again on the next tick.
+      } finally {
+        polling.current = false;
+      }
+    };
+    const onVisible = () => {
+      if (!document.hidden) load();
     };
     // Locked plans: only re-check when the chat is opened (e.g. after upgrading), no background polling.
     if (allowed || active) load();
-    if (!allowed) return;
+    if (!allowed) return () => {
+      alive = false;
+    };
     const t = setInterval(load, active ? FAST : SLOW);
-    return () => clearInterval(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      alive = false;
+      clearInterval(t);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
   }, [active, allowed]);
 
   const submit = (body: string) => {
     const text = body.trim();
-    if (!text || send.state !== "idle") return false;
+    if (!text || sending) return false;
     setPending((p) => [...p.filter((x) => !x.failed), { id: `tmp-${Date.now()}`, body: text }]);
-    send.submit({ body: text }, { method: "post", action: ROUTE });
+    setSending(true);
+    setError(undefined);
+    (async () => {
+      let result: ChatActionData;
+      try {
+        const res = await fetch(ROUTE, { method: "POST", body: new URLSearchParams({ body: text }) });
+        result = res.ok ? await res.json() : { error: "Message not sent. Please try again." };
+      } catch {
+        result = { error: "Message not sent. Check your connection and try again." };
+      }
+      // Swap the optimistic bubble for the stored message (or mark it failed).
+      const sent = result.message;
+      setPending((p) => (sent ? p.slice(1) : p.map((x, i) => (i === 0 ? { ...x, failed: true } : x))));
+      if (sent) setMessages((m) => merge(m, [sent]));
+      setError(result.error);
+      setSending(false);
+    })();
     return true;
   };
 
-  return { allowed, messages, pending, online, unread, loaded, sending: send.state !== "idle", error: send.data?.error, submit };
+  return { allowed, messages, pending, online, unread, loaded, sending, error, submit };
 }
 
 function merge(current: ChatMessageView[], incoming: ChatMessageView[]) {
