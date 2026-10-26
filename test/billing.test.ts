@@ -99,7 +99,7 @@ test("monthly to yearly: the ACTIVE subscription decides while the old one is re
   const plan = resolvePlan([sub("Growth", "CANCELLED"), sub("Growth Yearly")], endedTrial, {}, false);
   assert.equal(plan.id, "grow");
   assert.equal(plan.cycle, "yearly");
-  // Yearly to monthly is deferred by Shopify: the yearly plan stays ACTIVE until its year ends.
+  // If Shopify defers a change, the old plan stays ACTIVE (and decides) until the new one activates.
   const deferred = resolvePlan([sub("Growth Yearly"), sub("Growth", "ACCEPTED")], endedTrial, {}, false);
   assert.equal(deferred.cycle, "yearly");
 });

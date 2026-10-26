@@ -87,7 +87,7 @@ export default function Pricing() {
           )}
         </s-stack>
         <div className="ckx-plan-price">
-          ${info ? (yearly ? info.yearlyPrice : info.price) : 0} <small>/ {yearly ? "year" : "month"}</small>
+          ${info ? (yearly ? info.yearlyPrice : info.price) : 0} <small>/ {info && yearly ? "year" : "month"}</small>
         </div>
         {info && yearly && (
           <span className="ckx-plan-tagline">
@@ -229,8 +229,8 @@ export default function Pricing() {
           </s-paragraph>
           <s-paragraph>
             <s-text type="strong">How does yearly billing work?</s-text> You pay for 12 months at once and get 2 months free.
-            Moving from a yearly plan to monthly billing or to a lower yearly plan takes effect when your current year
-            ends.
+            You can switch between monthly and yearly billing anytime; Shopify shows what you&apos;ll pay before you
+            approve the change.
           </s-paragraph>
           <s-paragraph>
             <s-text type="strong">Which cart designs come with each plan?</s-text> Starter has the Minimal look. Essential adds
