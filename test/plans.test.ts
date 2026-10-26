@@ -11,6 +11,7 @@ const plan = (id: PlanId): PlanInfo => ({
   trialEndsAt: null,
   trialDaysLeft: 0,
   subscriptionId: null,
+  cycle: null,
   features: { ...PLAN_FEATURES[id], maxActiveCampaigns: null },
 });
 

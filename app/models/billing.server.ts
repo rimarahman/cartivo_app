@@ -1,9 +1,11 @@
 import db from "../db.server";
 import {
-  PAID_PLANS,
+  BILLING_PLAN_NAMES,
+  billingPlanName,
   planInfo as info,
   resolvePlan,
   trialState,
+  type BillingCycle,
   type PaidPlanId,
   type PlanId,
   type PlanInfo,
@@ -49,7 +51,7 @@ export async function isTestBilling(admin: Admin, shop: string) {
   }
 }
 
-const PLAN_NAMES = Object.values(PAID_PLANS).map((p) => p.name);
+const PLAN_NAMES = BILLING_PLAN_NAMES;
 
 // The 7-day all-features trial starts the first time the shop opens the app. The row survives
 // uninstall/reinstall (so the trial can't be restarted) and is removed only by shop/redact.
@@ -106,4 +108,4 @@ export async function getPlanFromAdmin(admin: Admin, shop: string): Promise<Plan
 }
 
 
-export const paidPlanName = (id: PaidPlanId) => PAID_PLANS[id].name;
+export const paidPlanName = (id: PaidPlanId, cycle: BillingCycle = "monthly") => billingPlanName(id, cycle);

@@ -6,7 +6,7 @@ import { authenticate } from "../shopify.server";
 import { billingDisabled, chooseFree, devPlan, getPlan, isTestBilling, paidPlanName } from "../models/billing.server";
 import { trySync } from "../models/sync.server";
 import { ErrorBanner } from "../components/ErrorBanner";
-import { FREE_FEATURES, FREE_PLAN, PAID_PLANS, PLAN_ORDER, TRIAL_DAYS, type PaidPlanId } from "../lib/plans";
+import { FREE_FEATURES, FREE_PLAN, PAID_PLANS, PLAN_ORDER, TRIAL_DAYS, type BillingCycle, type PaidPlanId } from "../lib/plans";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { admin, session, billing } = await authenticate.admin(request);
@@ -22,12 +22,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const intent = form.get("intent");
   if (intent === "subscribe") {
     const id = String(form.get("plan")) as PaidPlanId;
+    const cycle: BillingCycle = form.get("cycle") === "yearly" ? "yearly" : "monthly";
     if (!PAID_PLANS[id]) return { error: "Unknown plan" };
     const shopHandle = session.shop.replace(".myshopify.com", "");
     // Paid plans have no trial: billing starts when the merchant approves the charge.
     try {
       await billing.request({
-        plan: paidPlanName(id) as any,
+        plan: paidPlanName(id, cycle) as any,
         isTest: await isTestBilling(admin, session.shop),
         returnUrl: `https://admin.shopify.com/store/${shopHandle}/apps/${process.env.SHOPIFY_API_KEY}/app/pricing?upgraded=1`,
       });
@@ -67,7 +68,12 @@ export default function Pricing() {
   const submit = useSubmit();
   const busy = (value: string) => nav.state !== "idle" && (nav.formData?.get("plan") ?? nav.formData?.get("intent")) === value;
   const paid = PLAN_ORDER.includes(plan.id as PaidPlanId) && !billingDisabled;
+  // Prices shown monthly or yearly; opens on the cycle of the current subscription.
+  const [cycle, setCycle] = useState<BillingCycle>(plan.cycle ?? "monthly");
+  const yearly = cycle === "yearly";
+  // current: the plan the store is on (any cycle); exact: that plan on the cycle being shown.
   const current = (id: string) => plan.id === id && !billingDisabled;
+  const exact = (id: string) => current(id) && (id === "free" || plan.cycle === cycle);
 
   const card = (id: "free" | PaidPlanId, action: JSX.Element) => {
     const info = id === "free" ? null : PAID_PLANS[id];
@@ -76,11 +82,18 @@ export default function Pricing() {
         {info?.badge && !current(id) && <span className={`ckx-plan-ribbon${id === "pro" ? " ckx-plan-ribbon-best" : ""}`}>{info.badge}</span>}
         <s-stack direction="inline" gap="small-200" alignItems="center">
           <s-heading>{info ? info.name : FREE_PLAN.name}</s-heading>
-          {current(id) && <s-badge tone="success">Current plan</s-badge>}
+          {current(id) && (
+            <s-badge tone="success">{info && plan.cycle ? `Current plan, ${plan.cycle}` : "Current plan"}</s-badge>
+          )}
         </s-stack>
         <div className="ckx-plan-price">
-          ${info ? info.price : 0} <small>/ month</small>
+          ${info ? (yearly ? info.yearlyPrice : info.price) : 0} <small>/ {info && yearly ? "year" : "month"}</small>
         </div>
+        {info && yearly && (
+          <span className="ckx-plan-tagline">
+            ${(info.yearlyPrice / 12).toFixed(2)} a month, 2 months free
+          </span>
+        )}
         <span className="ckx-plan-tagline">{info ? info.tagline : FREE_PLAN.tagline}</span>
         <ul>
           {(info ? info.features : FREE_FEATURES).map((f) => (
@@ -115,16 +128,20 @@ export default function Pricing() {
   };
 
   const paidAction = (id: PaidPlanId) => {
-    if (current(id)) return <s-text color="subdued">You&apos;re on {PAID_PLANS[id].name}.</s-text>;
-    const label = paid
-      ? PAID_PLANS[id].price > PAID_PLANS[plan.id as PaidPlanId].price
-        ? `Upgrade to ${PAID_PLANS[id].name}`
-        : `Switch to ${PAID_PLANS[id].name}`
-      : `Choose ${PAID_PLANS[id].name}`;
+    const name = PAID_PLANS[id].name;
+    if (exact(id)) return <s-text color="subdued">You&apos;re on {name}, billed {cycle}.</s-text>;
+    const label = current(id)
+      ? `Switch to ${cycle} billing`
+      : paid
+        ? PLAN_ORDER.indexOf(id) > PLAN_ORDER.indexOf(plan.id as PaidPlanId)
+          ? `Upgrade to ${name}`
+          : `Switch to ${name}`
+        : `Choose ${name}`;
     return (
       <Form method="post">
         <input type="hidden" name="intent" value="subscribe" />
         <input type="hidden" name="plan" value={id} />
+        <input type="hidden" name="cycle" value={cycle} />
         <s-button
           type="submit"
           variant={id === "grow" ? "primary" : "secondary"}
@@ -163,6 +180,14 @@ export default function Pricing() {
       )}
 
       <s-section>
+        <s-stack direction="inline" gap="small-200" alignItems="center">
+          <s-button variant={yearly ? "secondary" : "primary"} onClick={() => setCycle("monthly")}>
+            Monthly
+          </s-button>
+          <s-button variant={yearly ? "primary" : "secondary"} onClick={() => setCycle("yearly")}>
+            Yearly (2 months free)
+          </s-button>
+        </s-stack>
         <div className="ckx-plans">
           {card("free", freeAction())}
           {PLAN_ORDER.map((id) => card(id, paidAction(id)))}
@@ -201,6 +226,11 @@ export default function Pricing() {
           <s-paragraph>
             <s-text type="strong">Can I change plans later?</s-text> Yes, anytime. Shopify prorates the difference and bills you
             with your Shopify invoice.
+          </s-paragraph>
+          <s-paragraph>
+            <s-text type="strong">How does yearly billing work?</s-text> You pay for 12 months at once and get 2 months free.
+            You can switch between monthly and yearly billing anytime; Shopify shows what you&apos;ll pay before you
+            approve the change.
           </s-paragraph>
           <s-paragraph>
             <s-text type="strong">Which cart designs come with each plan?</s-text> Starter has the Minimal look. Essential adds

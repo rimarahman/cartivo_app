@@ -18,12 +18,16 @@ const shopify = shopifyApp({
   authPathPrefix: "/auth",
   sessionStorage: new PrismaSessionStorage(prisma),
   distribution: AppDistribution.AppStore,
-  // Essential $10, Growth $20, Premium $60 (names must match PAID_PLANS in app/lib/plans.ts). The 7-day trial is
-  // tracked by the app (ShopTrial), and the paid plans have no trial of their own: billing starts on approval.
+  // Essential $10, Growth $20, Premium $60 every 30 days, or $100 / $200 / $600 a year (names must match
+  // billingPlanName in app/lib/plans.ts). The 7-day trial is tracked by the app (ShopTrial), and the paid plans
+  // have no trial of their own: billing starts on approval.
   billing: {
     Essential: { lineItems: [{ amount: 10, currencyCode: "USD", interval: BillingInterval.Every30Days }] },
     Growth: { lineItems: [{ amount: 20, currencyCode: "USD", interval: BillingInterval.Every30Days }] },
     Premium: { lineItems: [{ amount: 60, currencyCode: "USD", interval: BillingInterval.Every30Days }] },
+    "Essential Yearly": { lineItems: [{ amount: 100, currencyCode: "USD", interval: BillingInterval.Annual }] },
+    "Growth Yearly": { lineItems: [{ amount: 200, currencyCode: "USD", interval: BillingInterval.Annual }] },
+    "Premium Yearly": { lineItems: [{ amount: 600, currencyCode: "USD", interval: BillingInterval.Annual }] },
   },
   future: {
     expiringOfflineAccessTokens: true,
