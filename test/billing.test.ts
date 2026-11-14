@@ -82,6 +82,15 @@ test("live chat by plan: open in the trial, Growth and Premium; locked on Essent
   assert.equal(chat([], endedTrial), false, "trial over, no plan picked");
 });
 
+test("switching to Starter during the trial ends the trial (App Review: Starter must not show the trial again)", () => {
+  const plan = resolvePlan([], activeTrial, { trialEndsAt: "x", trialDaysLeft: 5 }, true);
+  assert.equal(plan.id, "free");
+  assert.equal(plan.trialEndsAt, null);
+  assert.equal(plan.features.liveChat, false);
+  // A paid plan picked again later still wins over the earlier Starter choice.
+  assert.equal(resolvePlan([sub("Premium")], activeTrial, {}, true).id, "pro");
+});
+
 test("yearly plans: same features as monthly, and the billing cycle comes from the subscription name", () => {
   for (const [name, id] of [["Essential", "basic"], ["Growth", "grow"], ["Premium", "pro"]] as const) {
     const monthly = resolvePlan([sub(name)], endedTrial, {}, false);

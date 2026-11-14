@@ -141,7 +141,7 @@ export function planInfo(id: PlanId, extra: Partial<PlanInfo> = {}): PlanInfo {
   };
 }
 
-// Current plan: an active Shopify subscription wins, then the app trial, then Free if picked, else "choose".
+// Current plan: an active Shopify subscription wins, then Free if picked, then the app trial, else "choose".
 export function resolvePlan(
   subs: { id: string; name: string; status: string }[],
   trial: ReturnType<typeof trialState>,
@@ -150,6 +150,8 @@ export function resolvePlan(
 ) {
   const sub = subs.find((s) => s.status === "ACTIVE" && paidPlanByName(s.name));
   if (sub) return planInfo(paidPlanByName(sub.name)!, { subscriptionId: sub.id, cycle: cycleByName(sub.name), ...trialExtra });
+  // Picking Starter (e.g. cancelling a paid plan during the trial) ends the trial: the merchant sees the plan they chose.
+  if (freeChosen) return planInfo("free");
   if (trial.active) return planInfo("trial", trialExtra);
-  return planInfo(freeChosen ? "free" : "choose");
+  return planInfo("choose");
 }

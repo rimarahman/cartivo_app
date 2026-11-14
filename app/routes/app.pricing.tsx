@@ -1,19 +1,30 @@
-import type { ActionFunctionArgs, HeadersFunction, LoaderFunctionArgs } from "react-router";
+import type { ActionFunctionArgs, HeadersFunction, LoaderFunctionArgs, ShouldRevalidateFunction } from "react-router";
 import { useState } from "react";
 import { Form, redirect, useActionData, useLoaderData, useNavigation, useSubmit } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
-import { billingDisabled, chooseFree, devPlan, getPlan, isTestBilling, paidPlanName } from "../models/billing.server";
+import { billingDisabled, chooseFree, devPlan, getPlan, isTestBilling, paidPlanName, planAfterReturn } from "../models/billing.server";
 import { trySync } from "../models/sync.server";
 import { ErrorBanner } from "../components/ErrorBanner";
 import { FREE_FEATURES, FREE_PLAN, PAID_PLANS, PLAN_ORDER, TRIAL_DAYS, type BillingCycle, type PaidPlanId } from "../lib/plans";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { admin, session, billing } = await authenticate.admin(request);
-  const plan = await getPlan(billing, session.shop, admin);
-  // Returning from the billing confirmation page: publish the new plan's campaigns right away.
-  if (new URL(request.url).searchParams.get("upgraded")) await trySync(admin, session.shop, plan);
-  return { plan, billingDisabled: billingDisabled(), devPlan: devPlan() };
+  const params = new URL(request.url).searchParams;
+  const chargeId = params.get("charge_id");
+  // Returning from the billing confirmation page: wait for that exact charge to settle, then publish the new plan's campaigns.
+  const { plan, charge } =
+    chargeId && !billingDisabled() && !devPlan()
+      ? await planAfterReturn(billing, admin, session.shop, chargeId)
+      : { plan: await getPlan(billing, session.shop, admin), charge: null };
+  if (params.get("upgraded")) await trySync(admin, session.shop, plan);
+  // Approval didn't go through (declined, expired or still pending): say so instead of silently showing the old plan.
+  // Not when another subscription is active (e.g. an old link with a charge that was later replaced).
+  const notActivated =
+    charge && ["DECLINED", "EXPIRED", "PENDING"].includes(charge.status) && !plan.subscriptionId
+      ? { name: charge.name, status: charge.status.toLowerCase() }
+      : null;
+  return { plan, notActivated, billingDisabled: billingDisabled(), devPlan: devPlan() };
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -59,7 +70,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Pricing() {
-  const { plan, billingDisabled, devPlan } = useLoaderData<typeof loader>();
+  const { plan, notActivated, billingDisabled, devPlan } = useLoaderData<typeof loader>();
   const result = useActionData<typeof action>();
   // Billing errors stay until dismissed (BFS 4.2.4); a new result brings the banner back.
   const [dismissed, setDismissed] = useState<unknown>(null);
@@ -157,6 +168,13 @@ export default function Pricing() {
   return (
     <s-page heading="Plans">
       {error && <ErrorBanner message={error} onDismiss={() => setDismissed(result)} />}
+      {notActivated && (
+        <s-banner tone="warning" heading={`Your ${notActivated.name} subscription isn't active yet`}>
+          {notActivated.status === "pending"
+            ? "Shopify is still confirming your approval. Reload this page in a few seconds to see your new plan."
+            : `Shopify reports the subscription as ${notActivated.status}, so your plan hasn't changed. Choose the plan again to retry, and make sure the charge is approved.`}
+        </s-banner>
+      )}
       {devPlan && !billingDisabled && (
         <s-banner tone="info">
           Development: the app runs as {plan.name} (DEV_PLAN={devPlan} in .env), so no Shopify charge is needed. Remove
@@ -249,3 +267,8 @@ export default function Pricing() {
 }
 
 export const headers: HeadersFunction = (headersArgs) => boundary.headers(headersArgs);
+
+// The URL keeps ?charge_id after returning from Shopify, so a form post here (e.g. a failed downgrade) would wait
+// for that charge again. Its plan is already on screen: don't reload after posts on such a URL.
+export const shouldRevalidate: ShouldRevalidateFunction = ({ formMethod, currentUrl, defaultShouldRevalidate }) =>
+  formMethod && currentUrl.searchParams.has("charge_id") ? false : defaultShouldRevalidate;
