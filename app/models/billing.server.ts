@@ -79,7 +79,7 @@ export async function chooseFree(shop: string) {
   });
 }
 
-// Current plan: an active Shopify subscription wins, then the app trial, then Free if picked, else "choose".
+// Current plan: an active Shopify subscription wins, then Free if picked, then the app trial, else "choose".
 export async function getPlan(billing: any, shop: string, admin: Admin): Promise<PlanInfo> {
   const row = await trialRow(shop);
   const trial = trialState(row.startedAt);
@@ -90,6 +90,38 @@ export async function getPlan(billing: any, shop: string, admin: Admin): Promise
 
   const { appSubscriptions } = await billing.check({ plans: PLAN_NAMES, isTest: await isTestBilling(admin, shop) });
   return resolvePlan(appSubscriptions || [], trial, trialExtra, !!row.freeChosenAt);
+}
+
+// Returning from Shopify's approval page (?charge_id=...). Right after approval the subscription can still be
+// PENDING, or not yet listed as active, for a moment: wait briefly until Shopify settles it, so this page and every
+// other page (which use getPlan) agree on the plan. The charge is read from this app installation's own
+// subscriptions, so a charge_id of another app or shop never matches. Logged so a failed review can be traced.
+export type ReturnedCharge = { id: string; name: string; status: string; test: boolean };
+const ATTEMPTS = 4;
+export async function planAfterReturn(billing: any, admin: Admin, shop: string, chargeId: string) {
+  const gid = /^\d+$/.test(chargeId) ? `gid://shopify/AppSubscription/${chargeId}` : null;
+  let plan = await getPlan(billing, shop, admin);
+  let charge: ReturnedCharge | null = null;
+  if (!gid) return { plan, charge };
+  for (let attempt = 1; attempt <= ATTEMPTS; attempt++) {
+    try {
+      const json: any = await (await admin.graphql(`#graphql
+        query ReturnedCharge { currentAppInstallation { allSubscriptions(first: 25, sortKey: CREATED_AT, reverse: true) { nodes { id name status test } } } }`)).json();
+      charge = (json.data?.currentAppInstallation?.allSubscriptions?.nodes || []).find((s: ReturnedCharge) => s.id === gid) ?? null;
+    } catch (e) {
+      if (e instanceof Response) throw e;
+      console.error(`Couldn't read charge ${chargeId} for ${shop}`, e);
+      return { plan, charge };
+    }
+    const settled = charge?.status !== "PENDING" && (charge?.status !== "ACTIVE" || plan.subscriptionId === gid);
+    console.log(
+      `Billing return for ${shop}: charge ${chargeId} ${charge ? `${charge.name} ${charge.status}${charge.test ? " (test)" : ""}` : "not found"}, plan ${plan.id} (attempt ${attempt})`,
+    );
+    if (settled || attempt === ATTEMPTS) break;
+    await new Promise((r) => setTimeout(r, 1500));
+    plan = await getPlan(billing, shop, admin);
+  }
+  return { plan, charge };
 }
 
 // Same as getPlan, for webhooks (no billing helper there): reads the subscriptions with the Admin API.
