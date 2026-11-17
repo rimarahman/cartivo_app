@@ -74,6 +74,7 @@ function priced(s) {
       title: p.title, product_title: p.title, variant_title: variantById(l.variant_id).title, handle: p.handle,
       url: `/products/${p.handle}?variant=${l.variant_id}`, image: null, vendor: "Harness",
       product_has_only_default_variant: p.variants.length < 2,
+      selling_plan_allocation: l.selling_plan ? { price: l.price, selling_plan: { id: Number(l.selling_plan), name: variantById(l.variant_id).selling_plans[l.selling_plan].name } } : null,
       properties: l.properties, price: l.price, original_price: l.price, final_price: l.price - Math.round((disc?.amount || 0) / l.quantity),
       original_line_price: original, final_line_price: original - (disc?.amount || 0),
       line_level_discount_allocations: disc ? [{ amount: disc.amount, discount_application: { title: disc.title } }] : [],
@@ -103,14 +104,17 @@ function priced(s) {
   };
 }
 
-function addLine(s, { id, quantity = 1, properties = {} }) {
+function addLine(s, { id, quantity = 1, properties = {}, selling_plan }) {
   const v = variantById(Number(id));
   if (!v) throw Object.assign(new Error("Cannot find variant"), { status: 404 });
   if (!v.available) throw Object.assign(new Error("Sold out"), { status: 422, description: `${v.title} is sold out.` });
+  // Like Shopify: an empty selling_plan is a one-time purchase; a plan the variant doesn't have is rejected.
+  const plan = selling_plan ? String(selling_plan) : null;
+  if (plan && !v.selling_plans?.[plan]) throw Object.assign(new Error("Invalid plan"), { status: 422, description: "Variant can not be purchased with this selling plan." });
   const props = Object.fromEntries(Object.entries(properties || {}).filter(([, val]) => val !== "" && val != null));
-  const same = s.lines.find((l) => l.variant_id === v.id && JSON.stringify(l.properties) === JSON.stringify(props));
+  const same = s.lines.find((l) => l.variant_id === v.id && l.selling_plan === plan && JSON.stringify(l.properties) === JSON.stringify(props));
   if (same) same.quantity += Number(quantity);
-  else s.lines.unshift({ key: `${v.id}:${nextKey++}`, variant_id: v.id, product_id: v.product_id, price: v.price, quantity: Number(quantity), properties: props });
+  else s.lines.unshift({ key: `${v.id}:${nextKey++}`, variant_id: v.id, product_id: v.product_id, price: plan ? v.selling_plans[plan].price : v.price, selling_plan: plan, quantity: Number(quantity), properties: props });
 }
 function changeLine(s, key, quantity) {
   const line = s.lines.find((l) => l.key === key || String(l.variant_id) === String(key));
@@ -119,14 +123,26 @@ function changeLine(s, key, quantity) {
   else line.quantity = quantity;
 }
 
-function page(s, kind, handle) {
+// Purchase options as subscription widgets render them (?widget=): a `selling_plan` field inside the product form
+// ("inside"), radios beside the form in the product section ("outside"), or only the URL parameter ("url").
+// "disabled" is a hidden field beside the form that the widget disables for one-time purchase.
+function planWidget(product, mode, where) {
+  const plans = product?.variants[0].selling_plans;
+  if (plans && mode === "disabled" && where === "outside") return `<input type="hidden" name="selling_plan" value="${Object.keys(plans)[0]}" disabled>`;
+  if (!plans || where !== mode) return "";
+  const radio = (value, label) => `<label><input type="radio" name="selling_plan" value="${value}" data-testid="plan-${value || "once"}"> ${label}</label>`;
+  return `<fieldset>${radio("", "One-time purchase")}${Object.entries(plans).map(([id, p]) => radio(id, p.name)).join("")}</fieldset>`;
+}
+
+function page(s, kind, handle, widget) {
   const sc = SCENARIOS[s.scenario];
   const product = kind === "product" ? Object.values(PRODUCTS).find((p) => p.handle === handle) : null;
   const ctx = {
     moneyFormat: "${{amount}}", locale: "en", country: "US", language: "EN", rootUrl: "/", template: kind,
     designMode: false, previewDrawer: false, cart: priced(s),
     product: product && { title: product.title, has_only_default_variant: product.variants.length < 2, featured_image: null,
-      variants: product.variants.map((v) => ({ id: v.id, title: v.title, available: v.available, price: v.price, compare_at_price: null, featured_image: null })) },
+      variants: product.variants.map((v) => ({ id: v.id, title: v.title, available: v.available, price: v.price, compare_at_price: null, featured_image: null,
+        selling_plans: Object.fromEntries(Object.entries(v.selling_plans || {}).map(([id, p]) => [id, { price: p.price, compare_at_price: p.compare_at_price }])) })) },
   };
   const jsonScript = (o) => JSON.stringify(o).replace(/</g, "\\u003c");
   const form = product
@@ -134,15 +150,18 @@ function page(s, kind, handle) {
         ${product.variants.length > 1
           ? `<select name="id" data-testid="variant">${product.variants.map((v) => `<option value="${v.id}"${v.available ? "" : " disabled"}>${v.title}</option>`).join("")}</select>`
           : `<input type="hidden" name="id" value="${product.variants[0].id}">`}
+        ${planWidget(product, widget, "inside")}
         <input type="number" name="quantity" value="1" min="1" data-testid="qty">
         <button type="submit" data-testid="add-to-cart">Add to cart</button>
-      </form><div style="height:2000px"></div>`
+      </form>${planWidget(product, widget, "outside")}
+      ${product.variants[0].selling_plans ? `<form action="/cart/add" method="post" class="quick-add"><input type="hidden" name="id" value="2001"><button type="submit" data-testid="quick-add">Quick add socks</button></form>` : ""}
+      <div style="height:2000px"></div>`
     : "";
   const nav = Object.values(PRODUCTS).map((p) => `<a href="/products/${p.handle}">${p.title.replace(/</g, "&lt;")}</a>`).join(" | ");
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Harness ${kind}</title><link rel="stylesheet" href="/assets/cartkit.css"></head>
 <body><header><a href="/">Home</a> <nav>${nav}</nav> <a href="/cart" id="cart-icon-bubble">Cart <span class="cart-count">${ctx.cart.item_count}</span></a></header>
-<main><h1>${product ? product.title.replace(/</g, "&lt;") : "Home"}</h1>${form}</main>
+<main><div class="shopify-section"><h1>${product ? product.title.replace(/</g, "&lt;") : "Home"}</h1>${form}</div></main>
 <script id="cartkit-config" type="application/json">${jsonScript({ version: 1, settings: sc.settings, campaigns: sc.campaigns })}</script>
 <script id="cartkit-context" type="application/json">${jsonScript(ctx)}</script>
 <script src="/assets/cartkit.js" defer></script></body></html>`;
@@ -203,7 +222,7 @@ const server = http.createServer(async (req, res) => {
     if (ajax === "/cart" && req.method === "GET") return send(res, 200, priced(s));
     if (ajax === "/cart/add") {
       const b = await body(req);
-      const items = b.items || [{ id: b.id, quantity: Number(b.quantity || 1), properties: b.properties }];
+      const items = b.items || [{ id: b.id, quantity: Number(b.quantity || 1), properties: b.properties, selling_plan: b.selling_plan }];
       s.log.push({ op: "add", items });
       try { for (const it of items) addLine(s, it); } catch (e) { return send(res, e.status || 422, { status: e.status, message: e.message, description: e.description || e.message }); }
       return send(res, 200, { items });
@@ -229,7 +248,7 @@ const server = http.createServer(async (req, res) => {
       if (!p) return send(res, 404, {});
       return send(res, 200, { id: p.id, title: p.title, handle: p.handle, price: p.variants[0].price, has_only_default_variant: p.variants.length < 2, featured_image: null, images: [], variants: p.variants });
     }
-    if (pm) return send(res, 200, page(s, "product", pm[1]));
+    if (pm) return send(res, 200, page(s, "product", pm[1], u.searchParams.get("widget")));
     if (ajax === "/recommendations/products") {
       const recs = SCENARIOS[s.scenario].recommendations || [];
       return send(res, 200, { products: recs.map((id) => ({ ...PRODUCTS[id], price: PRODUCTS[id].variants[0].price, featured_image: null, images: [] })) });

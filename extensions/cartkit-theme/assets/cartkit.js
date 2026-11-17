@@ -205,6 +205,38 @@
     return api("cart/update.js", body);
   }
 
+  // ---------------------------------------------------------------- subscriptions (selling plans)
+  // The purchase option picked for the product in `form`: a selling plan id, "" for a one-time purchase, or null
+  // when the page shows no purchase options. Subscription widgets keep it in a `selling_plan` field of the product
+  // form, in a field elsewhere in the product section, or in the `selling_plan` URL parameter.
+  function sellingPlanFor(form, variantId) {
+    var own = Array.prototype.some.call(form.elements, function (el) { return el.name === "selling_plan"; });
+    if (own) return String(new FormData(form).get("selling_plan") || "");
+    // Fields outside the form and the URL only count for the page's product (planAllocation checks that), so a
+    // quick-add form for another product never gets this product's plan.
+    var scope = form.closest(".shopify-section") || document;
+    var fields = Array.prototype.filter.call(scope.querySelectorAll('[name="selling_plan"]'), function (el) {
+      return !(el.form && el.form !== form) && !el.closest(".ck-root, .ck-sticky");
+    });
+    if (fields.length) {
+      // A widget is there: a disabled or unchecked field means one-time purchase, whatever the URL says.
+      var picked = fields.filter(function (el) {
+        return !el.matches(":disabled") && ((el.type !== "radio" && el.type !== "checkbox") || el.checked);
+      })[0];
+      var value = picked ? String(picked.value || "") : "";
+      return value && planAllocation(variantId, value) ? value : "";
+    }
+    var fromUrl = new URLSearchParams(window.location.search).get("selling_plan");
+    return fromUrl && planAllocation(variantId, fromUrl) ? fromUrl : null;
+  }
+  // Price of a product-page variant bought with a selling plan (from the embed's context), or null.
+  function planAllocation(variantId, planId) {
+    var variant = ((CTX.product && CTX.product.variants) || []).filter(function (v) { return String(v.id) === String(variantId); })[0];
+    var plans = variant && variant.selling_plans;
+    var key = String(planId);
+    return plans && /^\d+$/.test(key) && Object.prototype.hasOwnProperty.call(plans, key) ? plans[key] : null;
+  }
+
   function prop(item, key) {
     return item.properties && item.properties[key];
   }
@@ -1287,7 +1319,11 @@
         e.stopImmediatePropagation();
         var submit = form.querySelector('[type="submit"]');
         if (submit) submit.setAttribute("aria-busy", "true");
-        api("cart/add.js", new FormData(form))
+        // Keeps the subscription the shopper picked, also when the widget's field isn't inside the form.
+        var data = new FormData(form);
+        var plan = sellingPlanFor(form, data.get("id"));
+        if (plan) data.set("selling_plan", plan);
+        api("cart/add.js", data)
           .then(function () {
             track("item_add");
             ga("add_to_cart", { source: "cartkit" });
@@ -1537,6 +1573,15 @@
 
     var select = bar.querySelector(".ck-sticky-variant");
     var current = selected();
+    // The subscription picked in the theme's product form, when the current variant can be bought with it.
+    function currentPlan() {
+      var plan = current && sellingPlanFor(form, current.id);
+      return plan && planAllocation(current.id, plan) ? plan : "";
+    }
+    function currentPrice() {
+      var plan = currentPlan();
+      return plan ? planAllocation(current.id, plan) : current;
+    }
     function sync() {
       if (!current) return;
       if (select) select.value = String(current.id);
@@ -1545,7 +1590,8 @@
       if (imgEl && image) imgEl.src = img(image, 120);
       var priceEl = bar.querySelector(".ck-sticky-price");
       if (priceEl) {
-        priceEl.innerHTML = (current.compare_at_price > current.price ? "<s>" + money(current.compare_at_price) + "</s> " : "") + money(current.price);
+        var p = currentPrice();
+        priceEl.innerHTML = (p.compare_at_price > p.price ? "<s>" + money(p.compare_at_price) + "</s> " : "") + money(p.price);
       }
       var btn = bar.querySelector(".ck-sticky-btn");
       btn.disabled = !current.available;
@@ -1558,8 +1604,8 @@
         sync();
       });
     }
-    // Follow variant changes made in the theme's product form.
-    form.addEventListener("change", function () {
+    // Follow variant and purchase option changes made in the theme's product form (or the widgets beside it).
+    (form.closest(".shopify-section") || form).addEventListener("change", function () {
       setTimeout(function () { current = selected(); sync(); }, 50);
     });
     bar.querySelector(".ck-sticky-btn").addEventListener("click", function () {
@@ -1567,9 +1613,13 @@
       var qty = Math.max(1, parseInt(qtyEl ? qtyEl.value : "1", 10) || 1);
       var btn = this;
       btn.disabled = true;
-      addItems([{ id: current.id, quantity: qty }])
+      var line = { id: current.id, quantity: qty };
+      var plan = currentPlan();
+      if (plan) line.selling_plan = Number(plan);
+      var price = currentPrice().price;
+      addItems([line])
         .then(function () {
-          track("sticky_add", current.price * qty);
+          track("sticky_add", price * qty);
           ga("add_to_cart", { source: "cartkit_sticky" });
           return afterAdd();
         })

@@ -18,6 +18,8 @@ export const PRODUCTS = {
   // Two $24.95 products for the "progress after discounts" scenarios (the candle takes a 20% line discount).
   901: { id: 901, handle: "mug", title: "Mug", variants: [v(9001, 901, "Default Title", 2495)] },
   902: { id: 902, handle: "candle", title: "Candle", variants: [v(9021, 902, "Default Title", 2495)] },
+  // Subscription product (like Shopify's "Selling Plans Ski Wax" test data): $24.95 once, $21.21 on plan 7001.
+  1101: { id: 1101, handle: "ski-wax", title: "Selling Plans Ski Wax", variants: [{ ...v(11001, 1101, "Default Title", 2495), selling_plans: { 7001: { name: "Delivery every week", price: 2121, compare_at_price: 2495 } } }] },
   801: { id: 801, handle: "xss", title: '<img src=x onerror="window.__xss=1">Evil', variants: [v(8001, 801, '<b onmouseover="window.__xss=1">V</b>', 500)] },
 };
 export const variantById = (id) => Object.values(PRODUCTS).flatMap((p) => p.variants).find((x) => x.id === Number(id));
