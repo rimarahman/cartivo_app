@@ -29,7 +29,8 @@ export const devPlan = (): PlanId | null => {
 
 // Test charges (no money moves) are used in development and, in production, only on Shopify development
 // stores (shop.plan.partnerDevelopment), e.g. Partner test stores and App Review's stores. Every other store
-// gets real charges; there is deliberately no environment switch that could make them free.
+// gets real charges; there is deliberately no environment switch that could make them free. This decides only how a
+// charge is created: reading the plan accepts every active subscription (see getPlan).
 // Cached briefly: a development store transferred to a merchant stops being one, and must get real charges.
 const DEV_STORE_TTL = 10 * 60 * 1000;
 const devStores = new Map<string, { dev: boolean; at: number }>();
@@ -88,8 +89,24 @@ export async function getPlan(billing: any, shop: string, admin: Admin): Promise
   const dev = devPlan();
   if (dev) return info(dev);
 
-  const { appSubscriptions } = await billing.check({ plans: PLAN_NAMES, isTest: await isTestBilling(admin, shop) });
-  return resolvePlan(appSubscriptions || [], trial, trialExtra, !!row.freeChosenAt);
+  // isTest: true returns test subscriptions too. Test charges are only ever created for development stores (the
+  // isTestBilling check when the charge is requested), so one that exists was made for a store Shopify doesn't
+  // bill. Checking the dev store again here hid approved charges whenever the second answer differed (App Review:
+  // "Premium ACTIVE (test), plan trial").
+  const { appSubscriptions } = await billing.check({ plans: PLAN_NAMES, isTest: true });
+  const subs = appSubscriptions || [];
+  warnTestOnRealStore(subs, admin, shop);
+  return resolvePlan(subs, trial, trialExtra, !!row.freeChosenAt);
+}
+
+// A test subscription on a store that isn't a development store (e.g. a transferred one): logged so it can be
+// followed up. It doesn't block the plan, since a failed or differing dev-store answer must never hide a charge.
+function warnTestOnRealStore(subs: { name: string; status: string; test?: boolean }[], admin: Admin, shop: string) {
+  const sub = subs.find((s) => s.test && s.status === "ACTIVE");
+  if (!sub) return;
+  isTestBilling(admin, shop).then((dev) => {
+    if (!dev) console.warn(`Test subscription ${sub.name} is active on ${shop}, which isn't a development store`);
+  }, () => {});
 }
 
 // Returning from Shopify's approval page (?charge_id=...). Right after approval the subscription can still be
@@ -134,8 +151,9 @@ export async function getPlanFromAdmin(admin: Admin, shop: string): Promise<Plan
   if (dev) return info(dev);
   const json: any = await (await admin.graphql(`#graphql
     query { currentAppInstallation { activeSubscriptions { id name status test } } }`)).json();
-  const test = await isTestBilling(admin, shop);
-  const subs = (json.data?.currentAppInstallation?.activeSubscriptions || []).filter((s: any) => test || !s.test);
+  // Test subscriptions count here too (see getPlan).
+  const subs = json.data?.currentAppInstallation?.activeSubscriptions || [];
+  warnTestOnRealStore(subs, admin, shop);
   return resolvePlan(subs, trial, trialExtra, !!row.freeChosenAt);
 }
 
