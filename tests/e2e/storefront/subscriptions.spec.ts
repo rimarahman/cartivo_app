@@ -38,6 +38,27 @@ test.describe("Subscriptions", () => {
     });
   }
 
+  // Real store (Dawn + <product-subscriptions>): the plan lives in the installment form, one-time is "onetime".
+  for (const [plan, price] of [[PLAN, 2121], ["once", 2495]] as const) {
+    test(`SUB-09 Dawn installment-form widget: ${plan} reaches the cart, from the theme button and the sticky bar @p0`, async ({ shop, page, errors }) => {
+      await shop.open("base", "/products/ski-wax?widget=installment");
+      await pick(page, plan);
+      await shop.addFromProductPage("ski-wax");
+      await page.evaluate(() => { (window as any).Cartivo.close(); window.scrollTo(0, 1500); });
+      const bar = page.locator(".ck-sticky.ck-visible");
+      await expect(bar.locator(".ck-sticky-price")).toContainText(plan === "once" ? "$24.95" : "$21.21");
+      await bar.locator(".ck-sticky-btn").click();
+      await expect(page.locator(".ck-root")).toHaveClass(/ck-open/);
+      await shop.settle();
+      const cart = await shop.cart();
+      expect(cart.items).toHaveLength(1);
+      expect(line(cart).quantity).toBe(2);
+      expect(line(cart).selling_plan_allocation?.selling_plan.id ?? null).toBe(plan === "once" ? null : PLAN);
+      expect(cart.total_price).toBe(price * 2);
+      expect(errors).toEqual([]);
+    });
+  }
+
   test("SUB-03 subscription kept in the URL only (selling_plan parameter) is kept @p1", async ({ shop }) => {
     await shop.open("base", `/products/ski-wax?widget=url&selling_plan=${PLAN}`);
     await shop.addFromProductPage("ski-wax");
