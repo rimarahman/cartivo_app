@@ -129,6 +129,15 @@ function changeLine(s, key, quantity) {
 function planWidget(product, mode, where) {
   const plans = product?.variants[0].selling_plans;
   if (plans && mode === "disabled" && where === "outside") return `<input type="hidden" name="selling_plan" value="${Object.keys(plans)[0]}" disabled>`;
+  // "installment": Dawn-based themes with a <product-subscriptions> widget (seen on a real store): the hidden
+  // selling_plan field sits in the installment form of the same variant, one-time is the value "onetime", and the
+  // theme's script copies the clicked option into the field.
+  if (plans && mode === "installment" && where === "before") {
+    const opt = (value, label) => `<label><input type="radio" name="purchase_option" value="${value}" data-testid="plan-${value === "onetime" ? "once" : value}"${value === "onetime" ? " checked" : ""}> ${label}</label>`;
+    return `<form action="/cart/add" method="post" class="installment"><input type="hidden" name="id" value="${product.variants[0].id}">
+      <product-subscriptions><input type="hidden" name="selling_plan" value="onetime">${opt("onetime", "One-time purchase")}${Object.entries(plans).map(([id, p]) => opt(id, p.name)).join("")}</product-subscriptions></form>
+      <script>document.querySelectorAll('[name="purchase_option"]').forEach((o) => o.addEventListener("click", () => { document.querySelector('product-subscriptions [name="selling_plan"]').value = o.value; }));</script>`;
+  }
   if (!plans || where !== mode) return "";
   const radio = (value, label) => `<label><input type="radio" name="selling_plan" value="${value}" data-testid="plan-${value || "once"}"> ${label}</label>`;
   return `<fieldset>${radio("", "One-time purchase")}${Object.entries(plans).map(([id, p]) => radio(id, p.name)).join("")}</fieldset>`;
@@ -146,7 +155,7 @@ function page(s, kind, handle, widget) {
   };
   const jsonScript = (o) => JSON.stringify(o).replace(/</g, "\\u003c");
   const form = product
-    ? `<form action="/cart/add" method="post" class="product-form" data-testid="product-form">
+    ? `${planWidget(product, widget, "before")}<form action="/cart/add" method="post" class="product-form" data-testid="product-form">
         ${product.variants.length > 1
           ? `<select name="id" data-testid="variant">${product.variants.map((v) => `<option value="${v.id}"${v.available ? "" : " disabled"}>${v.title}</option>`).join("")}</select>`
           : `<input type="hidden" name="id" value="${product.variants[0].id}">`}

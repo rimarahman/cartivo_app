@@ -208,7 +208,8 @@
   // ---------------------------------------------------------------- subscriptions (selling plans)
   // The purchase option picked for the product in `form`: a selling plan id, "" for a one-time purchase, or null
   // when the page shows no purchase options. Subscription widgets keep it in a `selling_plan` field of the product
-  // form, in a field elsewhere in the product section, or in the `selling_plan` URL parameter.
+  // form, in a field elsewhere in the product section (Dawn-based themes: in the installment form of the same
+  // variant, which the theme's own script reads), or in the `selling_plan` URL parameter.
   function sellingPlanFor(form, variantId) {
     var own = Array.prototype.some.call(form.elements, function (el) { return el.name === "selling_plan"; });
     if (own) return String(new FormData(form).get("selling_plan") || "");
@@ -216,7 +217,10 @@
     // quick-add form for another product never gets this product's plan.
     var scope = form.closest(".shopify-section") || document;
     var fields = Array.prototype.filter.call(scope.querySelectorAll('[name="selling_plan"]'), function (el) {
-      return !(el.form && el.form !== form) && !el.closest(".ck-root, .ck-sticky");
+      if (el.closest(".ck-root, .ck-sticky")) return false;
+      if (!el.form || el.form === form) return true;
+      var other = el.form.elements.namedItem("id");
+      return !!other && String(other.value) === String(variantId);
     });
     if (fields.length) {
       // A widget is there: a disabled or unchecked field means one-time purchase, whatever the URL says.
