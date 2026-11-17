@@ -214,16 +214,31 @@
   function productId(item) { return String(item.product_id); }
 
   // ---------------------------------------------------------------- campaign logic
-  function rewardsProgress(campaign) {
+  // "After discounts" (the default) counts what the shopper pays: line discounts and order discounts are taken off.
+  function countsAfterDiscounts(campaign) {
+    return campaign.config.basis !== "quantity" && campaign.config.afterDiscounts !== false;
+  }
+  function rewardsProgress(campaign, beforeDiscounts) {
+    var after = !beforeDiscounts && countsAfterDiscounts(campaign);
     var subtotal = 0;
     var qty = 0;
     cart.items.forEach(function (item) {
       if (isGift(item)) return;
-      subtotal += item.original_line_price;
+      subtotal += after ? item.final_line_price : item.original_line_price;
       qty += item.quantity;
     });
+    if (after) {
+      (cart.cart_level_discount_applications || []).forEach(function (d) { subtotal -= d.total_allocated_amount || 0; });
+      subtotal = Math.max(0, subtotal);
+    }
     // thresholds are in shop currency, cart is in presentment currency (cents)
     return campaign.config.basis === "quantity" ? qty : subtotal / 100 / RATE;
+  }
+  // Discount tiers always measure the cart before discounts: counting their own discount would lock them
+  // again as soon as they unlock. Same rule as the discount Function.
+  function isDiscountTier(tier) { return tier.type === "percent_off" || tier.type === "fixed_off"; }
+  function tierValue(campaign, tier, value) {
+    return isDiscountTier(tier) && countsAfterDiscounts(campaign) ? rewardsProgress(campaign, true) : value;
   }
   // Campaign text in the shopper's language ("fr", "pt-br" ...), falling back to the default text.
   function ct(c, key) {
@@ -245,7 +260,7 @@
     return fixed != null ? Number(fixed) / RATE : Number(tier.threshold || 0);
   }
   function tierUnlocked(campaign, tier, value) {
-    return value + 1e-9 >= tierTarget(campaign, tier);
+    return tierValue(campaign, tier, value) + 1e-9 >= tierTarget(campaign, tier);
   }
   function bxgyState(c) {
     var cfg = c.config;
@@ -613,8 +628,10 @@
     var prev = 0;
     for (var i = 0; i < tiers.length; i++) {
       var target = tierTarget(c, tiers[i]);
-      if (value < target) {
-        var part = target > prev ? (value - prev) / (target - prev) : 0;
+      // Discount tiers count before discounts, so the fill stays at a goal that is already done.
+      var v = tierValue(c, tiers[i], value);
+      if (v + 1e-9 < target) {
+        var part = target > prev ? (v - prev) / (target - prev) : 0;
         return ((i + Math.max(0, part)) / tiers.length) * 100;
       }
       prev = target;
@@ -631,10 +648,11 @@
     var next = tiers.filter(function (tier) { return !tierUnlocked(c, tier, value); })[0];
     var message;
     if (next) {
-      var remaining = tierTarget(c, next) - value;
+      var remaining = tierTarget(c, next) - tierValue(c, next, value);
       var remainingText = c.config.basis === "quantity"
         ? Math.ceil(remaining) + (Math.ceil(remaining) === 1 ? " item" : " items")
-        : money(Math.ceil(remaining * RATE * 100));
+        // toFixed drops float noise first (45 - 44.91 is 0.0900000000003, which would ceil to 10 cents).
+        : money(Math.ceil(+(remaining * RATE * 100).toFixed(6)));
       message = fill(esc(ct(c, "progressText")), { remaining: "<strong>" + esc(remainingText) + "</strong>", reward: "<strong>" + esc(tierLabel(c, next)) + "</strong>" });
     } else {
       message = esc(ct(c, "completeText"));

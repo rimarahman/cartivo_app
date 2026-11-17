@@ -137,3 +137,114 @@ test("markets: discount label in the buyer's language", () => {
   assert.equal(msg("PT_BR"), "Frete grátis");
   assert.equal(msg("DE"), "Free shipping");
 });
+
+// Progress before / after discounts. Reported case: two products at 24.95, the second 20% off through
+// Buy X Get Y (19.96), cart pays 44.91.
+const bxgy20 = { buyProductIds: [P(1)], buyQuantity: 1, getProductIds: [P(2)], getQuantity: 1, percent: 20, message: "20% off" };
+const shipAt = (threshold, extra = {}) => ({
+  rewards: [{ id: "c1", basis: "subtotal", ...extra, tiers: [{ id: "t1", threshold, type: "free_shipping", value: 100, label: "Free shipping" }] }],
+  bxgy: [bxgy20],
+});
+const bxgyCart = () => [line(1, 1, 1, 1, 24.95), line(2, 2, 2, 1, 24.95)];
+const freeShipping = (config) => cartDeliveryOptionsDiscountsGenerateRun(input(bxgyCart(), config)).operations.length === 1;
+
+test("after discounts (default): Buy X Get Y saving is not counted toward free shipping", () => {
+  assert.equal(freeShipping(shipAt(45)), false, "44.91 paid is below 45");
+  assert.equal(freeShipping(shipAt(44.91)), true, "44.91 paid reaches 44.91");
+  assert.equal(freeShipping(shipAt(45, { afterDiscounts: true })), false);
+});
+
+test("before discounts: progress uses the full 49.90", () => {
+  assert.equal(freeShipping(shipAt(45, { afterDiscounts: false })), true);
+  assert.equal(freeShipping(shipAt(50, { afterDiscounts: false })), false);
+});
+
+test("after discounts: the order reward is taken off before free shipping is checked", () => {
+  const config = {
+    rewards: [{
+      id: "c1", basis: "subtotal",
+      tiers: [
+        { id: "t1", threshold: 40, type: "percent_off", value: 10, label: "10% off" },
+        { id: "t2", threshold: 50, type: "free_shipping", value: 100, label: "Free shipping" },
+      ],
+    }],
+  };
+  const cart = [line(1, 1, 1, 1, 52)]; // 52 - 10% = 46.80 paid
+  assert.equal(cartDeliveryOptionsDiscountsGenerateRun(input(cart, config)).operations.length, 0);
+  config.rewards[0].afterDiscounts = false;
+  assert.equal(cartDeliveryOptionsDiscountsGenerateRun(input(cart, config)).operations.length, 1);
+});
+
+test("after discounts: a discount tier still unlocks on the cart before its own discount", () => {
+  const config = {
+    rewards: [{ id: "c1", basis: "subtotal", tiers: [{ id: "t1", threshold: 50, type: "percent_off", value: 10, label: "10% off" }] }],
+  };
+  const r = cartLinesDiscountsGenerateRun(input([line(1, 1, 1, 1, 52)], config)); // 46.80 after its own 10%
+  assert.equal(r.operations[0].orderDiscountsAdd.candidates[0].value.percentage.value, 10);
+});
+
+test("after discounts: gift tier counts the cart minus Cartivo discounts", () => {
+  const config = {
+    rewards: [{ id: "c1", basis: "subtotal", tiers: [{ id: "t1", threshold: 45, type: "free_gift", value: 100, label: "Gift", giftVariantIds: [V(99)] }] }],
+    bxgy: [bxgy20],
+  };
+  const cart = [...bxgyCart(), line(3, 9, 99, 1, 10, "c1:t1")];
+  const gifted = (cfg) => cartLinesDiscountsGenerateRun(input(cart, cfg)).operations[0].productDiscountsAdd.candidates
+    .some((c) => c.targets[0].cartLine.id === "gid://shopify/CartLine/3");
+  assert.equal(gifted(config), false);
+  assert.equal(gifted({ ...config, rewards: [{ ...config.rewards[0], afterDiscounts: false }] }), true);
+});
+
+test("quantity goals ignore the discount setting", () => {
+  const config = shipAt(2, { basis: "quantity" });
+  assert.equal(freeShipping(config), true);
+});
+
+test("after discounts: presentment currency amounts are converted before comparing", () => {
+  // Cart in a currency at rate 2: 99.80 before, 89.82 after the 20% saving = 44.91 shop currency.
+  const cart = [line(1, 1, 1, 1, 49.9), line(2, 2, 2, 1, 49.9)];
+  const ship = (t) => cartDeliveryOptionsDiscountsGenerateRun(input(cart, shipAt(t), "2.0")).operations.length === 1;
+  assert.equal(ship(45), false);
+  assert.equal(ship(44.91), true);
+});
+
+test("after discounts: non-product lines don't count toward the delivery estimate", () => {
+  const config = shipAt(40);
+  config.volume = [{ productIds: [], combineProducts: true, tiers: [{ minQuantity: 2, percent: 50 }] }];
+  config.bxgy = [];
+  const custom = { id: "gid://shopify/CartLine/9", quantity: 1, cost: { amountPerQuantity: { amount: "100" }, subtotalAmount: { amount: "100" } }, gift: null, merchandise: { __typename: "CustomProduct" } };
+  // One 45 product line + a custom line: no volume discount applies to the product line alone.
+  const r = cartDeliveryOptionsDiscountsGenerateRun(input([line(1, 1, 1, 1, 45), custom], config));
+  assert.equal(r.operations.length, 1);
+});
+
+test("campaigns keep their own progress setting", () => {
+  const config = {
+    rewards: [
+      { id: "a", basis: "subtotal", afterDiscounts: true, tiers: [{ id: "t1", threshold: 45, type: "free_gift", value: 100, label: "A", giftVariantIds: [V(98)] }] },
+      { id: "b", basis: "subtotal", afterDiscounts: false, tiers: [{ id: "t1", threshold: 45, type: "free_gift", value: 100, label: "B", giftVariantIds: [V(99)] }] },
+    ],
+    bxgy: [bxgy20],
+  };
+  const cart = [...bxgyCart(), line(3, 9, 98, 1, 10, "a:t1"), line(4, 9, 99, 1, 10, "b:t1")];
+  const ids = cartLinesDiscountsGenerateRun(input(cart, config)).operations[0].productDiscountsAdd.candidates
+    .map((c) => c.targets[0].cartLine.id);
+  assert.equal(ids.includes("gid://shopify/CartLine/3"), false, "after-discounts campaign: 44.91 < 45");
+  assert.equal(ids.includes("gid://shopify/CartLine/4"), true, "before-discounts campaign: 49.90 >= 45");
+});
+
+test("after discounts: order estimate uses the tier checkout applies (percent on what is left)", () => {
+  // Subtotal 60, BXGY takes 15 (50% of 30). Tiers: 10% and 5 fixed; 10% of 60 wins, applied to 45 = 4.50.
+  // Paid 40.50 -> free shipping at 40.50 but not at 40.51 (picking the fixed tier would give 40.00).
+  const config = (threshold) => ({
+    rewards: [{ id: "c1", basis: "subtotal", tiers: [
+      { id: "p", threshold: 10, type: "percent_off", value: 10, label: "10%" },
+      { id: "f", threshold: 10, type: "fixed_off", value: 5, label: "5 off" },
+      { id: "s", threshold, type: "free_shipping", value: 100, label: "Ship" },
+    ] }],
+    bxgy: [{ ...bxgy20, percent: 50 }],
+  });
+  const cart = [line(1, 1, 1, 1, 30), line(2, 2, 2, 1, 30)];
+  assert.equal(cartDeliveryOptionsDiscountsGenerateRun(input(cart, config(40.5))).operations.length, 1);
+  assert.equal(cartDeliveryOptionsDiscountsGenerateRun(input(cart, config(40.51))).operations.length, 0);
+});

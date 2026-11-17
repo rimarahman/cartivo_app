@@ -1,11 +1,20 @@
-import { cartCurrency, currencyRate, hasClass, readConfig, tierLabel, unlockedTiers } from "./shared.js";
+import { cartCurrency, cartivoDiscountTotal, countsAfterDiscounts, currencyRate, hasClass, readConfig, tierLabel, unlockedTiers } from "./shared.js";
 
 /** Free shipping when a "free_shipping" reward tier is unlocked. */
 export function cartDeliveryOptionsDiscountsGenerateRun(input) {
   if (!hasClass(input, "SHIPPING")) return { operations: [] };
   const config = readConfig(input);
-  const unlocked = unlockedTiers(config, input.cart.lines, currencyRate(input), cartCurrency(input));
-  const freeShipping = unlocked.find(({ tier }) => tier.type === "free_shipping");
+  // Same lines as the cart-lines target, so both agree on progress.
+  const lines = input.cart.lines.filter((l) => l.merchandise?.__typename === "ProductVariant");
+  const rate = currencyRate(input);
+  const currency = cartCurrency(input);
+  const isShipping = ({ tier }) => tier.type === "free_shipping";
+  // Discounts only lower progress, so a cart that misses free shipping before them misses it after:
+  // skip working out Cartivo's discounts then (keeps the Function cheap on large carts).
+  if (!unlockedTiers(config, lines, rate, currency).some(isShipping)) return { operations: [] };
+  // "After discounts" campaigns count the cart minus Cartivo's own discounts (other discounts are not visible here).
+  const discount = config.rewards.some(countsAfterDiscounts) ? cartivoDiscountTotal(config, lines, rate, currency) : 0;
+  const freeShipping = unlockedTiers(config, lines, rate, currency, discount).find(isShipping);
   const groups = input.cart.deliveryGroups || [];
   if (!freeShipping || !groups.length) return { operations: [] };
 

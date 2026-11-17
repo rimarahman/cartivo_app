@@ -124,6 +124,14 @@ function RewardsEditor({ config, set }: Props) {
             <TextField label="All rewards unlocked message" {...bind(config, set, "completeText")} />
             <TextField label="Gift picker title" {...bind(config, set, "giftPickerTitle")} />
           </Grid>
+          {!isQty && (
+            <Checkbox
+              label="Count progress after discounts"
+              details="Progress uses what the shopper pays, after Cartivo discounts such as Buy X Get Y. Turn off to use the cart value before discounts. Percentage and fixed amount tiers always use the value before discounts."
+              value={config.afterDiscounts !== false}
+              onChange={(v: boolean) => set({ afterDiscounts: v })}
+            />
+          )}
         </s-stack>
       </s-section>
 

@@ -106,6 +106,7 @@ function functionConfig(campaigns: CampaignRecord[], timeZone: string) {
         id: c.id,
         ...schedule,
         basis: cfg.basis,
+        afterDiscounts: cfg.afterDiscounts !== false,
         tiers: (cfg.tiers || []).map((t: any) => ({
           id: t.id,
           threshold: Number(t.threshold) || 0,

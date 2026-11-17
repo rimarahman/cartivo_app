@@ -15,6 +15,9 @@ export const PRODUCTS = {
   501: { id: 501, handle: "protection", title: "Shipping protection", variants: [v(5001, 501, "Default Title", 299)] },
   601: { id: 601, handle: "bottle", title: "Bottle", variants: [v(6001, 601, "Blue", 1200), v(6002, 601, "Red", 1400)] },
   701: { id: 701, handle: "soldout", title: "Sold out thing", variants: [v(7001, 701, "Default Title", 900, false)] },
+  // Two $24.95 products for the "progress after discounts" scenarios (the candle takes a 20% line discount).
+  901: { id: 901, handle: "mug", title: "Mug", variants: [v(9001, 901, "Default Title", 2495)] },
+  902: { id: 902, handle: "candle", title: "Candle", variants: [v(9021, 902, "Default Title", 2495)] },
   801: { id: 801, handle: "xss", title: '<img src=x onerror="window.__xss=1">Evil', variants: [v(8001, 801, '<b onmouseover="window.__xss=1">V</b>', 500)] },
 };
 export const variantById = (id) => Object.values(PRODUCTS).flatMap((p) => p.variants).find((x) => x.id === Number(id));
@@ -44,7 +47,7 @@ function toFunction(list) {
   for (const c of list) {
     const cfg = c.config;
     const schedule = { startDate: c.startsAt?.slice(0, 10) ?? null, endDate: c.endsAt?.slice(0, 10) ?? null, countries: cfg.countries || [] };
-    if (c.type === "rewards") out.rewards.push({ id: c.id, ...schedule, basis: cfg.basis, tiers: cfg.tiers.map((t) => ({ id: t.id, threshold: Number(t.threshold) || 0, type: t.type, value: Number(t.value) || 0, label: t.label, labels: {}, thresholds: parseCurrencyAmounts(t.currencyThresholds), giftVariantIds: (t.gifts || []).map((g) => g.variantId).filter(Boolean) })) });
+    if (c.type === "rewards") out.rewards.push({ id: c.id, ...schedule, basis: cfg.basis, afterDiscounts: cfg.afterDiscounts !== false, tiers: cfg.tiers.map((t) => ({ id: t.id, threshold: Number(t.threshold) || 0, type: t.type, value: Number(t.value) || 0, label: t.label, labels: {}, thresholds: parseCurrencyAmounts(t.currencyThresholds), giftVariantIds: (t.gifts || []).map((g) => g.variantId).filter(Boolean) })) });
     if (c.type === "bxgy") out.bxgy.push({ id: c.id, ...schedule, buyProductIds: ids(cfg.buyProducts), buyQuantity: Math.max(1, Number(cfg.buyQuantity) || 1), getProductIds: ids(cfg.getProducts), getQuantity: Math.max(1, Number(cfg.getQuantity) || 1), percent: Math.min(100, Math.max(0, Number(cfg.percent) || 0)), message: c.name });
     if (c.type === "volume") out.volume.push({ id: c.id, ...schedule, productIds: ids(cfg.products), combineProducts: !!cfg.combineProducts, tiers: cfg.tiers.map((t) => ({ minQuantity: Number(t.minQuantity) || 0, percent: Number(t.percent) || 0 })).sort((a, b) => a.minQuantity - b.minQuantity), message: c.name });
   }
@@ -59,6 +62,14 @@ const giftTier = (extra = {}) => ({ id: "g1", threshold: 50, type: "free_gift", 
 const rewards = (tiers, extra) => campaign("cmp_rewards", "rewards", { tiers }, extra);
 const bxgy = (cfg, id = "cmp_bxgy") => campaign(id, "bxgy", { buyProducts: [ref(101)], getProducts: [ref(201, 2001)], ...cfg });
 const addon = (cfg = {}) => campaign("cmp_addon", "addon", { product: ref(501, 5001), label: "Add shipping protection for {{price}}", ...cfg });
+// Rewards progress after discounts (config.afterDiscounts). Candle has a 20% line discount (volume, from
+// 1 unit): Mug 24.95 + Candle 19.96 = 44.91 paid, 49.90 before discounts.
+const shipTiers = [
+  { id: "fs45", threshold: 45, type: "free_shipping", value: 100, label: "Free shipping", gifts: [] },
+  { id: "fs50", threshold: 50, type: "free_shipping", value: 100, label: "Free express", gifts: [] },
+];
+const candle20 = () => campaign("cmp_vol", "volume", { products: [ref(902)], tiers: [{ minQuantity: 1, percent: 20 }] });
+const progressRewards = (cfg) => campaign("cmp_rewards", "rewards", cfg);
 const past = new Date(Date.now() - 864e5 * 2).toISOString();
 const future = new Date(Date.now() + 864e5 * 2).toISOString();
 
@@ -93,6 +104,18 @@ export const SCENARIOS = {
     delete c.config.expiredText;
     return c;
   })()]),
+  afterLine: scenario([progressRewards({ tiers: shipTiers, afterDiscounts: true }), candle20()]),
+  afterLine50: scenario([progressRewards({ tiers: [shipTiers[1]], afterDiscounts: true }), candle20()]),
+  // Published before the setting existed: no afterDiscounts key, which means "after discounts".
+  afterLineMissing: scenario([(() => { const c = progressRewards({ tiers: shipTiers }); delete c.config.afterDiscounts; return c; })(), candle20()]),
+  beforeLine: scenario([progressRewards({ tiers: shipTiers, afterDiscounts: false }), candle20()]),
+  afterOrderCode: scenario([progressRewards({ tiers: [shipTiers[0]] })], { codes: { SAVE10: 10 } }),
+  beforeOrderCode: scenario([progressRewards({ tiers: [shipTiers[0]], afterDiscounts: false })], { codes: { SAVE10: 10 } }),
+  afterPercentTier: scenario([progressRewards({ tiers: [
+    { id: "pct45", threshold: 45, type: "percent_off", value: 10, label: "10% off", gifts: [] },
+    { id: "fs48", threshold: 48, type: "free_shipping", value: 100, label: "Free shipping", gifts: [] },
+  ] })]),
+  afterQuantity: scenario([progressRewards({ basis: "quantity", afterDiscounts: true, tiers: [{ id: "q2", threshold: 2, type: "free_shipping", value: 100, label: "Free shipping", gifts: [] }] }), candle20()]),
   everything: scenario([rewards([giftTier()]), bxgy({ percent: 100, autoAdd: true }), addon(), campaign("cmp_vol", "volume", { products: [ref(301)] })], { codes: { SAVE10: 10 } }),
 };
 // The same cart in each one-click look (`everything_<preset id>`), for the accessibility scan.
