@@ -264,6 +264,7 @@ export type RewardTier = {
 export const DEFAULT_CAMPAIGN_CONFIG: Record<CampaignType, any> = {
   rewards: {
     basis: "subtotal", // subtotal | quantity
+    afterDiscounts: true, // subtotal goals: count what the shopper pays (discount tiers always count before discounts)
     progressText: "You're {{remaining}} away from {{reward}}",
     completeText: "🎉 Congrats! You've unlocked all rewards",
     giftPickerTitle: "Choose your free gift",

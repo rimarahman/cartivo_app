@@ -5,7 +5,8 @@ export type Line = {
   key: string; variant_id: number; product_id: number; quantity: number; properties: Record<string, string>;
   original_line_price: number; final_line_price: number;
 };
-export type ServerCart = { items: Line[]; total_price: number; item_count: number; note: string; discount_codes: { code: string }[] };
+export type ServerCart = { items: Line[]; total_price: number; item_count: number; note: string; discount_codes: { code: string }[];
+  cart_level_discount_applications: { title: string; total_allocated_amount: number }[] };
 export type ServerState = { cart: ServerCart; log: any[]; track: any[] };
 
 // Every test gets its own cart (cookie session) and collects page errors, so a JS exception fails the test.
