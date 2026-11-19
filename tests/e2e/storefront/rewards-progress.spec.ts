@@ -119,3 +119,36 @@ test.describe("Rewards progress after discounts", () => {
     await expect(dots(page).nth(0)).toHaveClass(/ck-done/);
   });
 });
+
+// Per-tier progress message (tier.progressText, falls back to the campaign's) and the {{goal}} variable.
+// Mug is $24.95.
+test.describe("Rewards per-tier message and {{goal}}", () => {
+  test("RWD-10 the next tier's own message is used, with {{goal}} @p1", async ({ shop, page, errors }) => {
+    await shop.open("tierCopy", "/");
+    await shop.seed([{ id: MUG }]);
+    await shop.openDrawer();
+    await expect(message(page)).toHaveText("Only $20.05 left of $45.00 for Free shipping");
+    expect(errors).toEqual([]);
+  });
+
+  test("RWD-11 a tier without its own message uses the campaign message @p1", async ({ shop, page }) => {
+    await shop.open("tierCopy", "/");
+    await shop.seed([{ id: MUG }, { id: MUG }]); // $49.90: $45 tier done, $50 tier next
+    await shop.openDrawer();
+    await expect(message(page)).toHaveText("Spend $50.00 for Free express, $0.10 to go");
+  });
+
+  test("RWD-12 the tier message is translated per language @p2", async ({ shop, page }) => {
+    await shop.open("tierCopyFr", "/");
+    await shop.seed([{ id: MUG }]);
+    await shop.openDrawer();
+    await expect(message(page)).toHaveText("Plus que $20.05 sur $45.00");
+  });
+
+  test("RWD-13 quantity goals: {{goal}} is a number of items @p2", async ({ shop, page }) => {
+    await shop.open("tierCopyQty", "/");
+    await shop.seed([{ id: MUG }]);
+    await shop.openDrawer();
+    await expect(message(page)).toHaveText("2 items more of 3 items");
+  });
+});

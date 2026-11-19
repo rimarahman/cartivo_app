@@ -173,6 +173,11 @@ export default function DrawerSettings() {
             details="Replaces your theme's cart page/drawer with Cartivo."
             {...d("interceptCartLinks")}
           />
+          <Switch
+            label="Stop the page behind the drawer from scrolling"
+            details="Turn off to let shoppers scroll the page while the cart is open."
+            {...d("lockScroll")}
+          />
           <Grid>
             <Select
               label="Drawer position"

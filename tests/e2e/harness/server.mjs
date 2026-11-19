@@ -147,7 +147,7 @@ function page(s, kind, handle, widget) {
   const sc = SCENARIOS[s.scenario];
   const product = kind === "product" ? Object.values(PRODUCTS).find((p) => p.handle === handle) : null;
   const ctx = {
-    moneyFormat: "${{amount}}", locale: "en", country: "US", language: "EN", rootUrl: "/", template: kind,
+    moneyFormat: "${{amount}}", locale: sc.locale || "en", country: "US", language: "EN", rootUrl: "/", template: kind,
     designMode: false, previewDrawer: false, cart: priced(s),
     product: product && { title: product.title, has_only_default_variant: product.variants.length < 2, featured_image: null,
       variants: product.variants.map((v) => ({ id: v.id, title: v.title, available: v.available, price: v.price, compare_at_price: null, featured_image: null,

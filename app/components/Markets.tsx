@@ -72,9 +72,14 @@ type Translations = Record<string, Record<string, string>>;
 function textFields(type: CampaignType, config: any) {
   const fields = CAMPAIGN_TEXT_KEYS[type].map((f) => ({ ...f, fallback: String(config[f.key] ?? "") }));
   if (type === "rewards") {
-    (config.tiers || []).forEach((t: any, i: number) =>
-      fields.push({ key: `tier.${t.id}.label`, label: `Tier ${i + 1} reward name`, fallback: t.label || "" }),
-    );
+    (config.tiers || []).forEach((t: any, i: number) => {
+      fields.push({ key: `tier.${t.id}.label`, label: `Tier ${i + 1} reward name`, fallback: t.label || "" });
+      fields.push({
+        key: `tier.${t.id}.progressText`,
+        label: `Tier ${i + 1} progress message`,
+        fallback: t.progressText || config.progressText || "",
+      });
+    });
   }
   if (type === "announcement") {
     (config.messages || []).forEach((m: string, i: number) =>

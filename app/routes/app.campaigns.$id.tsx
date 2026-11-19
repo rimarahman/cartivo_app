@@ -118,7 +118,7 @@ function RewardsEditor({ config, set }: Props) {
             />
             <TextField
               label="Progress message"
-              details="Variables: {{remaining}}, {{reward}}"
+              details="Variables: {{remaining}}, {{goal}}, {{reward}}. Used for tiers without their own message."
               {...bind(config, set, "progressText")}
             />
             <TextField label="All rewards unlocked message" {...bind(config, set, "completeText")} />
@@ -186,6 +186,13 @@ function RewardsEditor({ config, set }: Props) {
                     label="Reward name shown to customers"
                     value={tier.label}
                     onChange={(v) => setTier(i, { label: v })}
+                  />
+                  <TextField
+                    label="Progress message for this tier (optional)"
+                    placeholder={config.progressText}
+                    details="Shown while this tier is the next goal. Variables: {{remaining}}, {{goal}}, {{reward}}. Leave empty to use the main progress message."
+                    value={tier.progressText || ""}
+                    onChange={(v) => setTier(i, { progressText: v })}
                   />
                   {!isQty && (
                     <TextField
