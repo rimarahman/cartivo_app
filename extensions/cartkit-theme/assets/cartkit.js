@@ -284,12 +284,15 @@
     var parts = key.split(".");
     if (parts[0] === "tier") {
       var tier = (c.config.tiers || []).filter(function (x) { return x.id === parts[1]; })[0];
-      return tier ? tier.label || "" : "";
+      var field = parts[2] || "label";
+      return tier && tier[field] != null ? String(tier[field]) : "";
     }
     if (parts[0] === "messages") return (c.config.messages || [])[Number(parts[1])] || "";
     return c.config[key] == null ? "" : String(c.config[key]);
   }
   function tierLabel(c, tier) { return ct(c, "tier." + tier.id + ".label"); }
+  // A tier's own progress message, or the campaign's when the tier has none.
+  function tierProgressText(c, tier) { return ct(c, "tier." + tier.id + ".progressText") || ct(c, "progressText"); }
   // Goal in shop currency. A fixed amount for the cart currency (Markets, e.g. EUR 45) wins over conversion.
   function tierTarget(c, tier) {
     var fixed = c.config.basis !== "quantity" && tier.thresholds && cart.currency ? tier.thresholds[cart.currency] : undefined;
@@ -684,12 +687,21 @@
     var next = tiers.filter(function (tier) { return !tierUnlocked(c, tier, value); })[0];
     var message;
     if (next) {
-      var remaining = tierTarget(c, next) - tierValue(c, next, value);
-      var remainingText = c.config.basis === "quantity"
-        ? Math.ceil(remaining) + (Math.ceil(remaining) === 1 ? " item" : " items")
+      var target = tierTarget(c, next);
+      var remaining = target - tierValue(c, next, value);
+      var isQty = c.config.basis === "quantity";
+      var items = function (n) { return n + (n === 1 ? " item" : " items"); };
+      var remainingText = isQty
+        ? items(Math.ceil(remaining))
         // toFixed drops float noise first (45 - 44.91 is 0.0900000000003, which would ceil to 10 cents).
         : money(Math.ceil(+(remaining * RATE * 100).toFixed(6)));
-      message = fill(esc(ct(c, "progressText")), { remaining: "<strong>" + esc(remainingText) + "</strong>", reward: "<strong>" + esc(tierLabel(c, next)) + "</strong>" });
+      // The goal itself (e.g. "$50" or "3 items"); a fixed Markets amount shows as entered.
+      var goalText = isQty ? items(Math.ceil(target)) : money(Math.round(+(target * RATE * 100).toFixed(6)));
+      message = fill(esc(tierProgressText(c, next)), {
+        remaining: "<strong>" + esc(remainingText) + "</strong>",
+        reward: "<strong>" + esc(tierLabel(c, next)) + "</strong>",
+        goal: "<strong>" + esc(goalText) + "</strong>",
+      });
     } else {
       message = esc(ct(c, "completeText"));
     }
@@ -1220,7 +1232,8 @@
     if (!state.open) {
       state.open = true;
       root.classList.add("ck-open");
-      document.documentElement.classList.add("ck-locked");
+      // Settings published before lockScroll existed keep the lock.
+      if (S.drawer.lockScroll !== false) document.documentElement.classList.add("ck-locked");
       setTimeout(function () { drawer.focus(); }, 50);
       track("drawer_open");
       ga("view_cart", { currency: cart.currency, value: cart.total_price / 100 });

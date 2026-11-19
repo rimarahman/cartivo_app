@@ -118,6 +118,20 @@ export const SCENARIOS = {
     { id: "fs48", threshold: 48, type: "free_shipping", value: 100, label: "Free shipping", gifts: [] },
   ] })]),
   afterQuantity: scenario([progressRewards({ basis: "quantity", afterDiscounts: true, tiers: [{ id: "q2", threshold: 2, type: "free_shipping", value: 100, label: "Free shipping", gifts: [] }] }), candle20()]),
+  // Per-tier progress messages: the $45 tier has its own, the $50 tier uses the campaign's. Both use {{goal}}.
+  tierCopy: scenario([progressRewards({
+    progressText: "Spend {{goal}} for {{reward}}, {{remaining}} to go",
+    tiers: [{ ...shipTiers[0], progressText: "Only {{remaining}} left of {{goal}} for {{reward}}" }, shipTiers[1]],
+  })]),
+  // Same, with a French translation of the first tier's message.
+  tierCopyFr: scenario([progressRewards({
+    tiers: [{ ...shipTiers[0], progressText: "Only {{remaining}} left of {{goal}}" }, shipTiers[1]],
+    translations: { fr: { "tier.fs45.progressText": "Plus que {{remaining}} sur {{goal}}" } },
+  })], { locale: "fr" }),
+  tierCopyQty: scenario([progressRewards({ basis: "quantity", progressText: "{{remaining}} more of {{goal}}", tiers: [{ id: "q3", threshold: 3, type: "free_shipping", value: 100, label: "Free shipping", gifts: [] }] })]),
+  scrollFree: scenario([], { settings: { drawer: { lockScroll: false } } }),
+  // Published before the setting existed: no lockScroll key, which keeps the lock.
+  scrollOldConfig: (() => { const s = scenario([]); delete s.settings.drawer.lockScroll; return s; })(),
   everything: scenario([rewards([giftTier()]), bxgy({ percent: 100, autoAdd: true }), addon(), campaign("cmp_vol", "volume", { products: [ref(301)] })], { codes: { SAVE10: 10 } }),
 };
 // The same cart in each one-click look (`everything_<preset id>`), for the accessibility scan.

@@ -15,6 +15,7 @@ export const DEFAULT_SETTINGS = {
     width: 420,
     openOnAdd: true,
     interceptCartLinks: true,
+    lockScroll: true, // stop the page behind the open drawer from scrolling
     title: "Your cart",
     emptyText: "Your cart is empty",
     emptyButtonText: "Continue shopping",
@@ -257,6 +258,7 @@ export type RewardTier = {
   type: "free_shipping" | "free_gift" | "percent_off" | "fixed_off";
   value: number;
   label: string;
+  progressText?: string; // this tier's own progress message; empty = the campaign's
   gifts: ProductRef[];
   currencyThresholds?: string; // Markets: "EUR 45, GBP 40"
 };
@@ -333,7 +335,7 @@ export function parseCurrencyAmounts(text: string | undefined | null): Record<st
 }
 
 // Texts of each campaign type that can be translated per language (Markets).
-// "tier.<id>.label" and "messages.<index>" keys are added per campaign.
+// "tier.<id>.label", "tier.<id>.progressText" and "messages.<index>" keys are added per campaign.
 export const CAMPAIGN_TEXT_KEYS: Record<CampaignType, { key: string; label: string }[]> = {
   rewards: [
     { key: "progressText", label: "Progress message" },

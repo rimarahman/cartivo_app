@@ -305,3 +305,31 @@ test.describe("Accessibility & keyboard", () => {
     expect(escaped, "focus left the aria-modal dialog").toEqual([]);
   });
 });
+
+// Setting drawer.lockScroll (default on): the page behind the open drawer doesn't scroll.
+test.describe("Background scroll", () => {
+  const locked = (page: import("@playwright/test").Page) =>
+    page.evaluate(() => getComputedStyle(document.documentElement).overflowY === "hidden");
+
+  test("SCR-01 default: the page behind the open drawer can't scroll; closing releases it @p1", async ({ shop, page }) => {
+    await shop.open("base", "/");
+    await shop.openDrawer();
+    expect(await locked(page)).toBe(true);
+    await page.keyboard.press("Escape");
+    await expect(page.locator(".ck-root.ck-open")).toHaveCount(0);
+    expect(await locked(page)).toBe(false);
+  });
+
+  test("SCR-02 lockScroll off: the page stays scrollable while the drawer is open @p1", async ({ shop, page }) => {
+    await shop.open("scrollFree", "/");
+    await shop.openDrawer();
+    expect(await locked(page)).toBe(false);
+    await expect(page.locator("html.ck-locked")).toHaveCount(0);
+  });
+
+  test("SCR-03 settings published before lockScroll existed keep the lock @p2", async ({ shop, page }) => {
+    await shop.open("scrollOldConfig", "/");
+    await shop.openDrawer();
+    expect(await locked(page)).toBe(true);
+  });
+});
